@@ -1,0 +1,22 @@
+<div class='span21 page_type'>
+  <%= link_to "创建页面", new_manage_page_path(:locale => :en, :type => PageType::EXCLUDE_TYPES[1]), :class => 'btn btn-primary create_button'%>
+  <table class='order-admin order-center table table-hover'>
+    <tr>
+      <th>标题</th>
+      <th>创建时间</th>
+      <th width='30%'>操作</th>
+    </tr>
+    <%= content_tag_for(:tr,  @pages) do |page| %>
+      <td><%= link_to page.title, page_path(page) %></td>
+      <td><%= page.created_at.to_s(:db) %></td>
+      <td>
+        <%= link_to "英文编辑", edit_manage_page_path(page, :locale=>:en), :class => 'btn' %>
+        <%= link_to "中文编辑", edit_manage_page_path(page, :locale=>:cn), :class => 'btn' %>
+        <%= link_to "俄文编辑", edit_manage_page_path(page, :locale=>:ru), :class => 'btn' %>
+        <%= link_to "删除", manage_page_path(page), :class => 'btn', :method => :delete %>
+      </td>
+    <% end -%>
+  </table>
+  <%= will_paginate @pages, :renderer => PaginationNoFollow %>
+</div>
+

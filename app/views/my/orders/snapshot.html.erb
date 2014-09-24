@@ -1,0 +1,51 @@
+<div class="row">
+  <section class="span18">
+  <div class="prdimg">
+    <div class="item-img">
+      <img src="<%= "#{@product.pic_url_version(:middle)}" %>" alt="<%= @product.name %>" style="float: left;">
+    </div>
+  </div>
+  <span class="prdinfo clearfix">
+    <h1><%= @product.name %></h1>
+    <dl>
+      <dt><%= product_t "price" %>:</dt>
+      <dd class="price">
+      <div class="price">US $<%= @product.price.roundf(2) %> </div>
+      </dd>
+    </dl>
+    <dl class="prop">
+      <dt><%= product_t "prop" %>:</dt>
+      <dd><%= @product.pv_values %></dd>
+    </dl>
+    <dl>
+      <dt><%= product_t "quantity" %>:</dt>
+      <dd><%= @product.quantity %></dd>
+    </dl>
+    <dl>
+      <dt><%= t_views('.order_date') %>:</dt>
+      <dd><%= @product.created_at.to_s(:db) %></dd>
+    </dl>
+    <dl>
+      <dt><%= "#{product_t("total")} #{product_t("price")}" %>:</dt>
+      <dd>
+      <strong id="calc_total" class="price">
+        <span>1 x $<%= @product.price.roundf %> = </span> $<%= @product.price.roundf(2) %>
+      </strong>
+      </dd>
+    </dl>
+    <div class="alert">
+      <p align="center">
+      This is a snapshot of the product taken when the order was placed at <%= @product.created_at.to_s(:db) %>
+      <br />
+      <%= link_to product_t("go_to_origin_product"), product_path(@product.taobao_id), :style=>"text-decoration:underline; font-size:1.2em; text-align: center;" %>
+      </p>
+    </div>
+  </span>
+  </section>
+  <aside class="span6 seller-info">
+  <div class="box">
+    <h3><%= t 'detail.seller_info' %></h3>
+    <%= render 'products/seller', :taobao_id => @product.taobao_id, :store => @store %>
+  </div>
+  </aside>
+</div>

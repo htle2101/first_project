@@ -1,0 +1,21 @@
+<div class="section hide" id="w_transfer">
+  <h3><%= t_views 't_via' %> Western Union</h3>
+  <div class="body">
+    <div class="form-horizontal control-group">
+      <label class="control-label"><%= image_tag "pay_western.gif" %></label>
+      <div class="controls">
+        <table class="tables">
+          <tbody>
+            <tr><td><%= t_views 'w_first_name' %>:</td><td>MIN</td></tr>
+            <tr><td><%= t_views 'w_last_name' %>:</td><td>ZHOU</td></tr>
+            <tr><td><%= t_views 'w_country' %>:</td><td>CHINA</td></tr>
+            <tr><td><%= t_views 'w_address' %>:</td><td>No.977 Shangfeng Road, Pudong New Area, Shanghai, China 201203</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class='append-bottom'><%= t_views 'notice1', :type => 'Western Union' %></p>
+    <%= render 'w_t_form' %>
+    <p><%= t_views 'notice2' %></p>
+  </div>
+</div>

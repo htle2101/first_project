@@ -1,0 +1,90 @@
+<% if notice %>
+  <div class="alert alert-success"><%= notice %></div>
+<% end %>
+<div class="row-fluid">
+  <div class="span6">
+    <section class="well reminder">
+      <h5>已抓取产品(通过taobao API以及产品列表中抓取的产品id导入产品)：</h5>
+      <hr>
+      <div class="row-fluid">
+        <span class="span8">已抓取：<%= redis.scard("crawl:product:imported") %></span>
+        <span class="span8">待抓取：<%= total_count %></span>
+      </div>
+    </section>
+  </div>
+  <div class="span6">
+    <section class="well reminder">
+      <h5>待抓取产品(通过taobao API以及产品列表中抓取的产品id导入产品)：</h5>
+      <hr>
+      <div class="row-fluid">
+        <span class="span6">通过店铺抓取：<%= redis.llen("crawl:seller:queue") %></span>
+        <span class="span6">通过目录抓取：<%= redis.llen("crawl:category:queue") %></span>
+        <span class="span6">通过关键词抓取：<%= redis.llen("crawl:keyword:queue") %></span>
+        <span class="span6">通过tag抓取：<%= redis.llen("crawl:tag:queue") %></span>
+      </div>
+    </section>
+  </div>
+  <div class="span6">
+    <section class="well reminder">
+      <h5>待抓取产品列表(仅抓取产品id，非产品本身)：</h5>
+      <hr>
+      <div class="row-fluid">
+        <span class="span6">通过店铺抓取：<%= redis.scard("crawl:seller:waiting") %></span>
+        <span class="span6">通过目录抓取：<%= redis.scard("crawl:category:waiting") %></span>
+        <span class="span6">通过关键词抓取：<%= redis.scard("crawl:keyword:waiting") %></span>
+        <span class="span6">通过tag抓取：<%= redis.scard("crawl:tag:waiting") %></span>
+      </div>
+    </section>
+  </div>
+  <div class="span6">
+    <section class="well reminder">
+      <h5>卖家评分抓取：</h5>
+      <hr>
+      <div class="row-fluid">
+        <span class="span8">已抓取未更新：<%= redis.hlen("crawl:store:hash") %></span>
+        <span class="span8">已加入抓取列表带抓取：<%= redis.llen("crawl:store:queue") %></span>
+        <span class="span8">未更新：<%= Store.where(:user_id => nil).count %></span>
+      </div>
+    </section>
+  </div>
+</div>
+<%= search_form_for @search, :url => manage_crawls_path, :html => {:class => "well form-inline", :method => :get } do |f| %>
+  <label class="split-left">关键词/店铺url/目录cid/tag:</label>
+  <%= f.text_field :key_cont, :class => "input-large", :placeholder => '模糊匹配' %>
+  <label class="split-left">抓取类型:</label>
+  <%= f.select :crawl_type_eq, CrawlLog::TYPE, {:include_blank => 'All'}, :class => 'input-small' %>
+  <label class="split-left">抓取状态:</label>
+  <%= f.select :status_eq, CrawlLog::STATUS, {:include_blank => 'All'}, :class => 'input-small' %>
+  <%= f.submit '搜索', :class => 'btn split-left' %>
+  <label class="split-left label label-info">共 &nbsp;<%= @crawl_logs.total_entries %>&nbsp; 条记录</label>
+  <%= link_to '添加抓取', new_manage_crawl_path, :class => "btn btn-primary" %>
+<% end %>
+
+<table class="order-admin table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th><%= sort_link @search, :key, '关键词或店铺url或目录cid', :default_order => 'desc' %></th>
+      <th>抓取数量</th>
+      <th>抓取类型</th>
+      <th width="20%">抓取状态(仅表示产品列表抓取状态)</th>
+      <th width="15%">创建日期</th>
+      <th width="18%">操作(暂不提供对finish状态的操作)</th>
+    </tr>
+  </thead>
+  <% @crawl_logs.each do |cl| %>
+    <tr>
+      <td><%= link_to cl.key, key_url(cl), :target => "_blank" %></td>
+      <td><%= cl.count %></td>
+      <td><%= CrawlLog::TYPE.invert[cl.crawl_type] %></td>
+      <td><%= CrawlLog::STATUS.invert[cl.status] %></td>
+      <td><%= cl.created_at.to_s(:db) %></td>
+      <td>
+        <% if cl.waiting? %>
+          <%= link_to '编辑', edit_manage_crawl_path(cl) %>
+          <%= link_to '删除', manage_crawl_path(cl), :class => "delete" %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate @crawl_logs,  :renderer => PaginationNoFollow %>

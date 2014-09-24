@@ -1,0 +1,43 @@
+<% dps = order.deposits.partial.order('created_at desc').select{|dp| dp.order_products.send(type.split('_').last).present? } %>
+<% items_count ||= dps.map(&:item_ids).join(',').split(',').count %>
+<% dps.each_with_index do |dp, dp_index| %>
+  <% (ops = dp.order_products.send(type.split('_').last)).each_with_index do |op, index| %>
+    <tr>
+      <td>
+        <div class="wrap_goods">
+          <span class="img">
+            <%= link_to taobao_url(op.taobao_id), :target => "_blank" do %>
+              <%= image_tag op.pic_url_version(:small), :alt => op.name %>
+            <% end %>
+          </span>
+          <div class="goods_info" style="width:82%">
+            <p class="name"><%= link_to op.name, taobao_url(op.taobao_id), :target => "_blank" %></p>
+            <p class="note"><%= op.pv_values_html.try(:html_safe) %></p>
+          </div>
+        </div>
+      </td>
+      <td class="no_left">$<%= op.price.roundf %></td>
+      <td class="no_left"><%= op.quantity %> 件</td>
+      <td class="no_left"><%= color_status(op.status) %></td>
+      <% if index == 0 %>
+        <td rowspan="<%= ops.size %>">
+          <strong><%= "$#{dp.amount.roundf}" %></strong>
+        </td>
+        <td rowspan="<%= ops.size %>">
+          <% if can?(:manage, dp) %>
+            <% if dp.can_edit? && dp.is_refund? %>
+              <%= link_to '审核', [:edit, :manage, dp], :class => 'edit_deposit' %>
+            <% else %>
+              <%= link_to '查看', [:manage, dp], :class => 'edit_deposit' %>
+            <% end %>
+          <% end %>
+        </td>
+        <% if dp_index == 0 %>
+          <td class='last' rowspan="<%= items_count %>">
+            <b><%= t_models(order, 'get_status') %></b><br /><%= "( #{t_models(order, 'get_partial_status')} )" if order.partial_status? %>
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+<% end %>

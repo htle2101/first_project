@@ -1,0 +1,22 @@
+<div class='span21 well page_type'>
+  <div class="create_button">
+    <%= link_to "创建文章", new_manage_page_path(:locale => :en, :type => "help"), :class => 'btn btn-primary'%>
+    <%= link_to "管理文章分类", manage_page_types_path, :class => 'btn pull-right' %>
+    <%= link_to "全部展开", 'javascript:void(0)', :class => 'btn btn-primary expand_all pull-right' %>
+    <%= link_to "全部隐藏", 'javascript:void(0)', :class => 'btn btn-primary hide_all pull-right', :style => "display: none" %>
+  </div>
+  <%= content_tag_for(:ul, @page_types) do |pt| -%>
+    <%= render 'page_type', :page_type => pt%>
+    <%= content_tag_for(:ul, pt.pages, :class=>"hide_page_type_list page_type_list_#{pt.id}", :style => "display: none") do |page| %>
+      <%= render 'page', :page => page %>
+    <% end -%>
+    <%= content_tag_for(:ul, pt.children, :class => "offset1 hide_page_type_list page_type_child_#{pt.id}", :style => "display: none") do |ptc| %>
+      <%= render 'page_type', :page_type => ptc %>
+      <%= content_tag_for(:ul, ptc.pages, :class=>"hide_page_type_list page_type_list_#{ptc.id}", :style => "display: none") do |ptcp| %>
+        <%= render 'page', :page => ptcp%>
+      <% end -%>
+    <% end -%>
+  <% end -%>
+  </dl>
+  <%= will_paginate @page_types, :renderer => PaginationNoFollow %>
+</div>

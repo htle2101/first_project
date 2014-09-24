@@ -1,0 +1,26 @@
+<table class="table" >
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>关联订单</th>
+      <th>评价</th>
+      <th width = "300px">评语</th>
+      <th>类型</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @pf.each do |pf| %>
+    <tr>
+      <td><%= link_to pf.user_name, manage_user_path(pf.user_id), :target => "_blank" %></td>
+      <td><%= link_to pf.order_id, manage_order_path(pf.order_id), :target => "_blank"  %></td>
+      <td>
+        <% pf.stars.times do %>
+        <i class = " icon-star"></i>
+        <% end %>
+      </td>
+      <td><%= pf.comment %></td>
+      <td><%= pf.get_review_type %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

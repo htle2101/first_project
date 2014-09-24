@@ -1,0 +1,16 @@
+<div id='products_area' style='display: none;' class='well'>
+  <label>站内商品链接或淘宝ID<span style="color: red; font-size: 11px; margin-left: 5px;">(添加产品后点击确认)</span></label>
+  <%= text_field_tag :taobao_id, nil, :class => "search-query input-xxlarge", :id => :taobao_id %>
+  <%= link_to "添加", 'javascript:void(0)', :id => 'add_product', :class => "btn", :style => 'margin-top: -8px;'%>
+  <div class='product_list' style='height: 50px;'>
+    <% guide.products.each do |p| %>
+      <span id="product_image_<%= p[:taobao_id] %>">
+        <img id="product_photo_<%= p[:taobao_id] %>" src="<%= p[:pic_url] %>" alt="<%= p[:taobao_id] %>" data-id="<%= p[:taobao_id] %>" style='width: 50px;'/>
+        <a class='icon-remove remove_product' style='margin-top: -15px; width: 20px;' data-id="<%= p[:taobao_id] %>" ></a>
+      </span>
+    <% end -%>
+  </div>
+  <% unless guide.products.blank? %>
+    <a href="javascript:void(0)" class="btn btn-primary offset10" id="select_products">确定</a>
+  <% end %>
+</div>

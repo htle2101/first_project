@@ -1,0 +1,9 @@
+<%= link_to "创建英文导购", new_manage_guide_path(:locale => :en), :class => 'btn btn-primary', :style=>'margin-bottom: 10px;'%>
+<%= link_to "创建中文导购", new_manage_guide_path(:locale => :cn), :class => 'btn btn-primary', :style=>'margin-bottom: 10px;'%>
+<%= link_to "创建俄文导购", new_manage_guide_path(:locale => :ru), :class => 'btn btn-primary', :style=>'margin-bottom: 10px;'%>
+<div class='tabbable'>
+  <ul class='nav nav-tabs'>
+    <li class="<%= nav_active?('index', :action_name) %>"><%= link_to '按时间列表', manage_guides_path %></li>
+    <li class="<%= nav_active?('category_index', :action_name) %>"><%= link_to '按目录列表', category_index_manage_guides_path %></li>
+  </u>
+</div>

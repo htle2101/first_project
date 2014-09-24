@@ -1,0 +1,19 @@
+<% @manage_product ||= Product.new %>
+<div class="control-group">
+  <label class="control-label">打折类型:</label>
+  <div class="controls input-append">
+    <%= promotion.select :promotion_type, options_for_select([["虚拟打折", 1], ["真实打折", 2]], @manage_product.promotion.try(:promotion_type)), {:include_blank => "不打折" }, :class => "promotion_type"  %>
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label">打折折扣:</label>
+  <div class="controls input-append">
+    <%= promotion.text_field :bc_discount, :value => @manage_product.promotion.try(:bc_discount), :class => "promotion_discount" %>% off
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label">打折时间:</label>
+  <%= date_picker promotion, @manage_product.promotion, :bc_started_at %> - 
+  <%= date_picker promotion, @manage_product.promotion, :bc_ended_at  %>
+</div>
+

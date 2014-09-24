@@ -1,0 +1,52 @@
+<div class="page-header">
+  <h1>订单详情</h1>
+</div>
+<div class="row-fluid">
+  <%= render 'title' %>
+  <%= render 'detail' %>
+  <%= render 'message' %>
+  <% if @order.purchase_products.present? && can?(:manage, PurchaseProduct) -%>
+    <div class='purchase_products'>
+      <hr>
+      <h3 class="well">
+        淘宝代购订单
+        <%= form_tag manage_purchase_on_taobao_path,  :method => :post, :class => "pull-right batch-order" do %>
+          <%= hidden_field_tag :purchase_products, [] %>
+          <%= submit_tag "批量下单", :class => "btn btn-success" %>
+        <% end %>
+      </h3>
+      <table class="order-admin">
+        <thead>
+          <tr>
+            <th width=10><input type="checkbox" class="taobao-all-select"></th>
+            <th width="20">NO.</th>
+            <th width="40%">产品</th>
+            <th width="10%">淘宝价格</th>
+            <th width="10%">购买价格</th>
+            <th width="5%">数量</th>
+            <th>单重</th>
+            <th>产品图片</th>
+            <th width="70">淘代购状态</th>
+            <th width="30">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @order.purchase_products.order('store_id').each_with_index do |item, index| %>
+            <%= render item, :index => index %>
+          <% end %>
+        </tbody>
+      </table>
+    <% end -%>
+  </div>
+  <hr>
+</div>
+<% content_for :javascript  do %>
+  <script type='text/javascript'>
+    $(function(){
+        var link = location.href.match(/#tab\w/)
+        if(link != null) {
+          $('a[href=' + link[0] + ']').click();
+        }
+    });
+  </script>
+<% end -%>

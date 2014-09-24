@@ -1,0 +1,40 @@
+<div class="myaccount-header">
+  <h3><%= t_views 'title' %></h3>
+</div>
+<div class="srch-box">
+  <%= search_form_for @search, :url => history_my_wallet_path, :html => {:class => "form-inline", :method => :get } do |f| %>
+    <label><%= t_views 'type' %></label>
+    <%= f.select :fund_type_eq, search_select("Deposit::FUND_TYPE"), {:include_blank => t_views('all') }, :style => 'width:145px' %>
+    <label class="split-left"><%= t_views 'pay_through' %></label>
+    <%= f.select :pay_type_eq, search_select('Deposit::PAY_TYPE'), {:include_blank => t_views('all')}, :style => 'width:115px' %>
+    <label class="split-left"><%= t_views 'status' %></label>
+    <%= f.select :status_eq, search_select('Deposit::STATUS'), {:include_blank => t_views('all')}, :style => 'width:95px' %>
+    <label class="split-left"><%= t_views 'date' %></label>
+    <%= f.text_field :created_at_gteq, :class => "span2 datepicker", :value => init_date() %>
+    - <%= f.text_field :created_at_lteq, :class => "span2 datepicker", :value => init_date("lteq") %>
+    <%= f.submit :Search, {:class => "btn"} %>
+  <% end %>
+</div>
+<table class="data-table-order table">
+  <thead>
+    <tr>
+      <th><%= t_views 'time' %></th>
+      <th><%= t_views 'type' %></th>
+      <th><%= t_views 'pay_through' %></th>
+      <th><%= t_views 'amount' %></th>
+      <th><%= t_views 'status' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @history.each do |d| %>
+      <tr>
+        <td><%= d.created_at.to_s(:db) %></td>
+        <td><%= t_models d, 'get_fund_type' %></td>
+        <td><%= t_models d, 'get_pay_type' %></td>
+        <td>$<%= d.amount %></td>
+        <td><%= t_models d, 'get_status' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @history, :renderer => PaginationNoFollow %>

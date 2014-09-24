@@ -1,0 +1,7 @@
+<div class="control-group " id="state">
+  <label class="control-label">* <%= t_views '.state' %></label>
+  <div class="controls">
+    <% province = @address.manage_province if controller_path == 'manage/orders' %>
+    <%= select(:address, :province, states.collect {|code, full_name| [ full_name, code ] }, {:include_blank => true, :selected => province}, :class => "required", :style => 'font-size:12px') %>
+  </div>
+</div>

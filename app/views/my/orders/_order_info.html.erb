@@ -1,0 +1,73 @@
+<div id="order-info" class="otabs">
+  <h3 class="mmt"><%= t_views('address') %></h3>
+  <address class="address-s"><%= address_html(@order.order_address, true) %></address>
+  <h3 class="mmt"><%= t_views 'order_detail' %></h3>
+  <table class="cart_list my-order">
+    <thead>
+      <tr class="column-headers">
+        <th></th>
+        <th style="text-align:left;"><%= t 'items' %></th>
+        <th><%= t 'unit_price' %></th>
+        <th><%= t 'quantity' %></th>
+        <th><%= t 'weight' %></th>
+        <th><%= t 'picture' %></th>
+        <th><%= t_views 'index.status' %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order.order_products.order('store_id').each_with_index do |op, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td>
+            <div class="wrap_goods">
+              <span class="img" style="width:60px;height:60px;line-height:60px;">
+                <a target="_blank" href="<%= my_product_snapshot_path(op) %>">
+                  <%= image_tag op.pic_url_version(:v60) %>
+                </a>
+              </span>
+              <div class="goods_info">
+                <p class="name"><%= link_to op.get_name, my_product_snapshot_path(op) %></p>
+                <p class="note"><%= op.get_pv_values %></p>
+              </div>
+            </div>
+          </td>
+          <td><%= t('cash_sign') %><%= op.price.roundf %></td>
+          <td><%= op.quantity %></td>
+          <td><%= op.weight %>g</td>
+          <td>
+            <% op.photos.each do |photo| %>
+              <a href="<%= photo.image_url %>" class="image_review" data-original-title="<%= t_views "product_preview" %>">
+                <%= image_tag(photo.image_url(:small), :style=>'width:20px') if photo.image? %>
+              </a>
+            <% end unless @order.waiting? %>
+          </td>
+          <td><%= color_status(op.status) %></td>
+        </tr>
+      <% end %>
+      <tfoot>
+        <tr>
+          <td colspan="7">
+            <div class="price-list">
+              <ul>
+                <li><span class="tit"><%= t_views 'sub_total' %>:</span><span class="vl">$ <%= @order.origin_sub_total.roundf %></span></li>
+                <li><span class="tit"><%= t_views 'shipping_cost' %>:</span><span class="vl">$ <%= @order.origin_shipping_cost.roundf %></span></li>
+                <li><span class="tit"><%= t_views 'discount' %>:</span><span class="vl">$ <%= @order.discount.roundf %></span></li>
+                <% if @order.order_price_changed? %>
+                  <li><span class="tit"><%= t_views 'price_modify' %>:</span>
+                    <span class="vl">
+                      <%= (p_c = @order.price_changes.roundf)[/^-/] ? p_c.insert(1, ' $ ') : "$ #{p_c}" %>
+                    </span>
+                  </li>
+                <% end %>
+                <% @order.order_adjustments.each do |oa| %>
+                  <li><span class="tit"><%= t_models(oa, "get_adjustment_type") %>:</span><span class="vl">$ <%= oa.price.roundf %></span></li>
+                <% end %>
+                <li><b class="tit"><%= t_views 'all_total' %>:</b><span class="total price ">$ <%= @order.total.roundf %></span></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </tbody>
+  </table>
+</div>

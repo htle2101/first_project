@@ -1,0 +1,55 @@
+<% if flash[:notice].present? %>
+  <div class="alert alert-success"><%= flash[:notice] %></div>
+<% end -%>
+<section class="ac-content">
+  <div class="myaccount-header">
+    <%= link_to "返回大订单管理", manage_large_orders_path(:unread => true), :class => "manage-address" %>
+    <h3>大订单管理</h3>
+  </div>
+
+  <div class="split-left clearfix">
+    <div class="append-bottom">
+      <table class="table data-table-order">
+          <thead>
+              <tr>
+                  <th colspan=2>商品</th>
+                  <th>需求数量</th>
+                  <th>淘宝价</th>
+                  <th>单价</th>
+                  <th>总价</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td><%= image_tag image_version((p = @large_order.related_item).pic_url, :v30) %></td>
+                  <td><%= link_to p.name, taobao_url(p.taobao_id) %></td>
+                  <td><%= @large_order.spec["quantity"] %></td>
+                  <td>¥<%= p.price %></td>
+                  <td>$<%= p.bc_price.roundf(1) %></td>
+                  <td>$<%= (p.bc_price * @large_order.spec["quantity"]).roundf(2) %></td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+
+    <ul class="comment">
+      <% @large_order.bc_messages.each do |message| %>
+      <li class="<%= "rp" if message.user != @large_order.user %>">
+        <h2 style="padding:0px 5px;"><%= link_to message.user.username, manage_user_path(message.user) %><span> <%= message.created_at.to_s(:db) %></span></h2>
+        <p style="padding:0px 5px;"><%= add_format_to(message.content).html_safe %></p>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+  <% if can? :manage, @message.bc_conversation %>
+  <div class="span10" style="margin-top:10px;">  
+      <%= form_for @message, :url => { :action => "send_message" }, :class => "form-vertical", :id => "replyForm", :style => "margin-top: 10px" do |f| %>
+        <%= f.hidden_field :bc_conversation_id, :value => (id = @message.bc_conversation_id) %>
+        <%= f.text_area :content, :value => "Dear buyer\n", :class => "span24", :rows => 9, :minlength => "3" %>
+        <span>需至少10个单词才可提交，可以拉动右下角扩大文本框大小</span><br/>
+        <%= f.submit "回复", :class => "btn btn-primary" %>
+        <%= link_to "标记已读", mark_manage_large_order_path, :class => "btn" if id %>
+      <% end %>
+  </div>
+  <% end -%>
+</section>

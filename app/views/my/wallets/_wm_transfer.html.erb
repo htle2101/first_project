@@ -1,0 +1,19 @@
+<div class="section hide" id="wm_transfer">
+  <h3><%= t_views 't_via' %> WebMoney</h3>
+  <div class="body">
+    <div class="form-horizontal control-group">
+      <label class="control-label"><%= image_tag "pay_webmoney.gif" %></label>
+      <div class="controls">
+        <table class="tables">
+          <tbody>
+            <tr><td width="46">WMID:</td><td>220986667640</td> </tr>
+            <tr><td><%= t_views 'wm_purse' %>:</td><td>Z410446159189</td> </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class='append-bottom'><%= t_views 'notice1', :type => 'WebMoney' %></p>
+    <%= render 'wm_t_form' %>
+    <p><%= t_views 'notice2' %></p>
+  </div>
+</div>

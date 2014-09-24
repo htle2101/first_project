@@ -1,0 +1,62 @@
+<%= form_for [:manage, page], :html => {:class => "form pages"} do |f|%>
+  <div class="control-group">
+    <% if page.announcement? || page.common? %>
+      <%= hidden_field_tag 'page[page_type_id]', page.page_type_id %>
+    <% else %>
+      <div class="control-label"><label><strong>目录</strong></label></div>
+      <div class="controls">
+        <% if page.new_record? %>
+          <%= select_tag :page_type_id, options_from_collection_for_select(PageType.help_root, 'id', 'name'), {:class => "input-large"} %>
+        <% else %>
+          <%= select_tag :page_type_id, options_from_collection_for_select([page.parent_or_self_page_type], 'id', 'name'), {:class => "input-large"} %>
+        <% end -%>
+        <%= f.select 'page_type_id', second_page_type_selections(page), {:class => "input-large"} %>
+        <span style="color: red;font-size: 25px;">*</span>
+        <em>(注意: 二级目录为空则直接创建在一级目录下)</em>
+      </div>
+    </div>
+  <% end %>
+  <div class="control-group">
+    <div class="control-label"><label><strong>标题</strong></label></div>
+    <div class="controls">
+      <%= text_field_tag "page[title]", page.title(params[:locale]), :class => "input-xxlarge page_required" %>
+      <span class='page_required'>*</span>
+      <% unless page.announcement? || page.common? %>
+        <%= check_box_tag "page[weight]", 1, page.weight==1, :class => "input-small" %> 置顶
+      <% end -%>
+    </div>
+  </div>
+  <% if !page.announcement? && params[:locale] == 'en' %>
+    <div class="control-group">
+      <div class="control-label"><label><strong>slug</strong></label></div>
+      <div class="controls">
+        <%= text_field_tag "slug", page.slug, :class => "input-xxlarge" %>
+        <em>(默认根据标题生成，支持以空格分隔)</em>
+      </div>
+    </div>
+  <% end -%>
+  <div class="control-group">
+    <div class="control-label"><label><strong>正文</strong></label></div>
+    <div class="controls">
+      <%= text_area_tag "page[content]", page.content(params[:locale]), :style=> "width: 1000px; height: 600px;", :id => 'page_content' %>
+    </div>
+  </div>
+  <%= hidden_field_tag :locale, params[:locale] %>
+  <div class="control-group">
+    <div class="controls offset19">
+      <button type='submit' class="btn btn-primary" value="post">发布</button>
+    </div>
+  </div>
+<% end -%>
+
+<% content_for :javascript do %>
+  <script type="text/javascript">
+    $(function() { KindEditor.create('#page_content', {
+uploadJson: '/kindeditor/upload',
+allowFileManager: true,
+fileManagerJson: '/kindeditor/filemanager',
+langType: "<%= params[:locale] == 'cn' ? 'zh_CN' : 'en' %>",
+items: ['source', 'undo', 'redo', 'preview', 'code','insertorderedlist', 'insertunorderedlist', 'formatblock', 'bold','italic', 'underline', 'removeformat', 'image', 'anchor', 'link']
+}); });
+</script>
+<% end %>

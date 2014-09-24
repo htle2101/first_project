@@ -1,0 +1,15 @@
+<% share_link = product.share_link(current_user, request.base_url, request.params) %>
+<div class="social-sharing-bars">
+  <div class="share-title">
+    <span class="txt">Share and Earn <span class="price">US $<%= product.commission_price.roundf %></span> for each item sold. <a href="/affiliate" title='About Affiliate'>What This?</a></span>
+  </div>
+  <div class="share-wrapper">
+    <%= social_share_button_tag(:url => share_link, :title => product.name, :img => product.pic_url, :locale => I18n.locale, :html => {}) %>
+    <i class="dropper"></i>
+  </div>
+  <!--<div style="display: none;" class="permalink-wrapper">-->
+  <div class="permalink-wrapper">
+    <span class="labels">Link</span>
+    <input class="permalink ellipsis" value="<%= share_link %>" name="permalink" onclick="$(this).select();" readonly="">
+  </div>
+</div>

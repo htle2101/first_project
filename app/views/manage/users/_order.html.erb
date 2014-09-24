@@ -1,0 +1,25 @@
+<div class="ajax_content">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th><%= sort_link @search, :number, '订单编号', {:action => 'orders'}, :remote => true %></th>
+        <th><%= sort_link @search, :created_at, '下单日期', {:action => 'orders'}, :remote => true %></th>
+        <th><%= sort_link @search, :order_products_count, '产品数', {:action => 'orders'}, :remote => true %></th>
+        <th><%= sort_link @search, :sub_total, '总金额', {:action => 'orders'}, :remote => true %></th>
+        <th><%= sort_link @search, :status, '订单状态', {:action => 'orders'}, :remote => true %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr>
+          <td><%= link_to order.number, manage_order_path(order) %></td>
+          <td><%= order.created_at.in_time_zone("Beijing").to_s(:db) %></td>
+          <td><%= order.order_products_count %></td>
+          <td>$ <%= order.total.roundf %></td>
+          <td><%= status(order.status) %></td>
+        </tr>
+      <% end -%>
+    </tbody>
+  </table>
+  <%= will_paginate @orders, :renderer => PaginationNoFollow, :params => {:action => 'orders'}, :remote => true %>
+</div>

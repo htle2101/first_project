@@ -1,0 +1,14 @@
+<div class='tTimLive'>
+  <%= content_tag_for(:div, order.tasks.doing.includes(:task_chains => :task_comments).reverse_order, :class => 'order-task well', :style => 'margin: 10px;') do |task| %>
+    <%= render 'task', :task => task %>
+  <% end -%>
+  <% if order.tasks.complete.present? %>
+    <div class='complete-tasks' style='display:none'>
+      <%= content_tag_for(:div, order.tasks.complete.includes(:task_chains => :task_comments).reverse_order, :class => 'order-task well', :style => 'margin: 10px;') do |task| %>
+        <%= render 'task', :task => task %>
+      <% end -%>
+    </div>
+    <%= link_to "查看所有", "javascript:void(0)", :class => 'view-all' %>
+  <% end -%>
+</div>
+<div data-no-turbolink=''><%= link_to "发起新任务", new_task_manage_order_path(order), :class => 'btn btn-warning send_order', :style => 'margin: 10px;' %></div>

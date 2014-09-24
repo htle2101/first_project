@@ -1,0 +1,17 @@
+<section class="box channel-mid channel-zone">
+  <h3 class="title"><%= fm["slot_h3"][I18n.locale.to_s] %></h3>
+  <div class="bd cc-extend">
+    <div class="cc-img"><%= image_tag fm["slot_img_0"]["src"], :width => "550px", :height => "250px" %></div>
+    <ul class="cc-cate">
+      <% 6.times do |i| %>
+      <li>
+        <a href="<%= fm["slot_a_#{i.to_s}"]['href'] %>">
+        <%= image_tag fm["slot_img_#{(i+1).to_s}"]["src"], :width => "70px", :height => "70px" %>
+        <span><%= fm["slot_span_#{i.to_s}"][I18n.locale.to_s] %></span>
+        </a>
+      </li>
+      <% end  %>
+	  </ul>
+    <div class="cc-exmain"><a rel="nofollow" href="<%= fm["slot_a_6"]["href"] %>"><span style="left:3px; top:40px;"><%= fm['slot_span_6'][I18n.locale.to_s] %></span></a></div>
+  </div>
+</section>

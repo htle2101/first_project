@@ -1,0 +1,22 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>订单编号</th>
+      <th>总计</th>
+      <th>运输方式</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% role_tasks.each do |order| %>
+      <tr>
+        <td><%= link_to order.number, [:manage, order] %></td>
+        <td>
+          <strong><%= number_to_currency(order.total, :locale => :en) %></strong> <span class="sipping">(含运费<%= number_to_currency(order.shipping_cost, :locale => :en) %>)</span>
+        </td>
+        <td><%= order.ship_method %></td>
+        <td><%= link_to "认领", 'javascript:void(0)', :class => 'btn btn-mini order_claim', "data-id" => order.id %></td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>

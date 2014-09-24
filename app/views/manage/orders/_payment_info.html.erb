@@ -1,0 +1,20 @@
+<table class="info-table">
+  <tbody>
+    <tr>
+      <th width="20%" class="ri">应付款：</th>
+      <td>$ <%= @order.total.roundf %></td>
+    </tr>
+    <tr>
+      <th class="ri">已付款：</th>
+      <td>$ <%= @order.status < 2 || @order.status == 7 ? 0 : @order.total.roundf %></td>
+    </tr>
+    <tr>
+      <th class="ri">付款方式：</th>
+      <td><%= Order::PAY_TYPE.invert[@order.pay_type] %></td>
+    </tr>
+    <tr>
+      <th class="ri">付款时间：</th>
+      <td><%= @order.pending_at.try('to_s', :db) %></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,43 @@
+<table class="info-table">
+  <tbody>
+    <tr>
+      <th class="ri v-top" width="20%">发货地址：<br />
+       [<%= link_to '修改', [:shipping, :manage, @order], :class => 'send_order' %>]
+      </th>
+      <td><address><%= address_html @order.order_address, true %></address></td>
+    </tr>
+    <tr>
+      <th class="ri" width="20%">用户选择运输方式：</th>
+      <td><%= @order.ship_method %></td>
+    </tr>
+    <% @order.shippings.each do |ship| %>
+      <tr>
+        <th class="ri" style="border-top: 1px solid #ddd;">
+          [<%= link_to "修改", deliver_manage_order_path(@order, :ship_id => ship.id), :class => "send_order" %>] 实际发货方式：
+        </th>
+        <td><%= ship.ship_method %>
+          <%= "<span class='split-left'>(具体为: #{ship.child_method})</span>".html_safe if ship.child_method %>
+          <%= "<span class='split-left'>(运费: #{ship.price} 元)</span>".html_safe unless ship.price.to_f.zero? %>
+          <%= "<span class='split-left'>(重量: #{ship.weight} g)</span>".html_safe unless ship.weight.to_f.zero? %>
+        </td>
+      </tr>
+      <tr>
+        <th class="ri">发货时间：</th>
+        <td><%= (c_at = ship.created_at).to_s(:db) %> (北京时间: <%= c_at.to_local %>)</td>
+      </tr>
+      <tr>
+        <th class="ri">运单号：</th>
+        <% url = ship.check_url %>
+        <td><%= ship.number %> <%= link_to('查看物流信息', url, :class => 'split-left', :target => '_blank') if url %></td>
+      </tr>
+      <% [['给买家的备注', ship.user_comment], ['后台备注', ship.our_comment]].each do |arr| %>
+        <% if arr[1].present? %>
+          <tr>
+            <th class="ri"><%= arr[0] %>：</th>
+            <td><%= arr[1] %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,17 @@
+<table class="table table-striped">
+  <tbody>
+    <% role_tasks.each do |order| %>
+      <tr class="task_column">
+        <td>
+          <div class="flow">
+            <span><%= timeago_tag (order.refunding_at || order.partial_refunding_at), :lang => 'zh-CN' %></span>
+            <span>订单<%= link_to order.number, [:manage, order] %>已进入退款流程</span>
+            <a href="<%= order.refunding? ? manage_orders_path(:type => 'refunding') : manage_orders_path(:type => 'partial_refunding') %>" class='pull-right go_process btn btn-mini btn-success'>
+              <i class=' icon-arrow-right'></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>

@@ -1,0 +1,25 @@
+<% cache "all_categories_#{I18n.locale}" do %>
+  <% Category.active_roots.in_groups_of(4, false) do |roots| %>
+    <div class="row">
+      <% roots.each do |root| %>
+        <% next if root.slug.blank? %>
+        <dl class="category span6">
+          <% categories = root.active_children %>
+          <dt><%= link_to(root.name, category_products_path(root.slug, root.cid)) %></dt>
+          <% categories.each_with_index do |child, index| %>
+            <% next if child.slug.blank? %>
+            <dd class="<%= 'hide' if index > 5 %>">
+            <%= link_to child.name, category_products_url(child.slug, child.cid) %>
+            </dd>
+          <% end %>
+          <% if categories.size > 6 %>
+            <dd><a href="javascript:void(0);" rel="nofollow"><i class="icon-plus-sign"></i><b><%= t 'category.more' %></b></a></dd>
+          <% end %>
+        </dl>
+      <% end %>
+    </div>
+    <hr>
+  <% end %>
+<% end %>
+
+<% content_for :title, t('category_title', :name => "All Categories", :combination => Category.active_roots.limit(3).map(&:name).join(',')) %>

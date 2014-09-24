@@ -1,0 +1,18 @@
+<table class="table table-striped">
+  <tbody>
+    <% role_tasks.each do |conversation| %>
+      <tr class='task_column'>
+        <td>
+          <div class="flow">
+            <span class="flow-time"><%= timeago_tag conversation.newest_message.created_at, :lang => 'zh-CN' %></span>
+            <span><span class="flow-user"><%= conversation.newest_message.user_username %></span> 的问题等待答复:
+              <%= link_to truncate(conversation.newest_message.content, :length => 30), manage_message_path(conversation.newest_message), :title => conversation.newest_message.content %></span>
+            <a href="<%= manage_message_path(conversation.newest_message) %>" class='pull-right go_process btn btn-mini btn-success'>
+              <i class=' icon-arrow-right'></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>

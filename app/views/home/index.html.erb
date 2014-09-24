@@ -1,0 +1,60 @@
+<aside class="span5 ">
+  <div class="aside-cat "><%= render "categories" %></div>
+  <% @left_modules.each do |lm|  %>
+    <% lm_hash = ActiveSupport::JSON.decode(lm.content) %>
+    <%= render lm_hash["style_id"], :fm => lm_hash %>
+  <% end  %>
+
+  <section class="blog-bx clearfix box" >
+    <h3 class="title"><%= t 'views.index.guides' %></h3>
+    <div class="bd">
+      <ul>
+        <% @guides.each do |g| %>
+          <% if g.translation.title? %>
+            <li><%= link_to truncate(g.title, :length => 25), guide_path(g) %></li>
+          <% end -%>
+        <% end -%>
+      </ul>
+      <span class="view-more"><%= link_to t("views.index.show_more"), guides_path %></span>
+    </div>
+  </section>
+  <% if I18n.locale == :ru %>
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?66"></script>
+    <div id="vk_groups"></div>
+    <script type="text/javascript">
+      VK.Widgets.Group("vk_groups", {mode: 0, width: "210", height: "290"}, 42896465);
+    </script>
+  <% else %>
+    <div class="fb-like-box" data-href="http://www.facebook.com/BuyChinaOfficial" data-width="210" data-height="290" data-show-faces="true" data-border-color="#ffffff" data-stream="false" data-header="true"></div>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+  <% end %>
+
+
+</aside>
+
+<section class="span19 article">
+  <%= render "front_banner" %>
+  <section class="advantage clearfix ">
+    <h3 class="title"><%= t('views.promote.why') %></h3>
+    <ul class="clearfix">
+      <li class="one"><b><%= t('views.promote.high_quanlity') %></b><span class="quiet"><%= t('views.promote.high_quanlity_des') %></span></li>
+      <li class="two"><b><%= t('views.promote.low_price') %></b><span class="quiet"><%= t('views.promote.low_price_des') %></span></li>
+      <li class="third"><b><%= t('views.promote.ms_money') %></b><span class="quiet"><%= raw t('views.promote.ms_money_des') %></span></li>
+    </ul>
+  </section>
+  <%= render 'sub_banner_and_hot_item' %>
+  <% @front_modules.each do |fm|  %>
+    <% cache [I18n.locale, fm] do %>
+      <% fm_hash = ActiveSupport::JSON.decode(fm.content) %>
+      <%= render fm_hash["style_id"], :fm => fm_hash %>
+    <% end %>
+  <% end %>
+</section>
+

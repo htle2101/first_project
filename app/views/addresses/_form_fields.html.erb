@@ -1,0 +1,60 @@
+<div class="control-group">
+  <label class="control-label">* <%= t_views '.contact_name' %></label>
+  <div class="controls">
+    <%= f.text_field :name, :class => 'required' %>
+    <%= f.error_message_on :name, :css_class => 'error help-inline' %>
+  </div>
+</div>
+<div class="control-group ">
+  <label class="control-label">* <%= t_views '.country' %></label>
+  <div class="controls">
+    <%= f.collection_select(:country_id, Country.all, :id, :englishname) %>
+  </div>
+</div>
+<div class="control-group ">
+  <label class="control-label" for="inputWarning">* <%= t_views '.address1' %></label>
+  <div class="controls">
+    <%= f.text_field :address1, :class => 'input-xlarge required' %>
+    <%= f.error_message_on :address1, :css_class => 'error help-inline' %>
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label"><%= t_views '.address2' %></label>
+  <div class="controls">
+    <%= f.text_field :address2, :class => 'input-xlarge' %>
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label">* <%= t_views '.city' %></label>
+  <div class="controls">
+    <%= f.text_field :city, :class => 'required'%>
+    <%= f.error_message_on :city, :css_class => 'error help-inline' %>
+  </div>
+</div>
+<% if @address.state_dict.blank? %>
+  <%= render :partial => "addresses/state_normal", :locals => {:province => @address.province} %>
+<% else %>
+  <%= render :partial => "addresses/state", :locals => {:states => @address.state_dict, :province => @address.province_code} %>
+<% end %>
+<div class="control-group">
+  <label class="control-label">* <%= t_views '.zip' %></label>
+  <div class="controls">
+    <%= f.text_field :zip_code, :class => 'required' %>
+    <%= f.error_message_on :zip_code, :css_class => 'error help-inline' %>
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label">* <%= t_views '.phone_num' %></label>
+  <div class="controls">
+    <%= f.text_field :phone, :class => 'required' %>
+    <%= f.error_message_on :phone, :css_class => 'error help-inline' %>
+  </div>
+</div>
+<div class="form-actions">
+  <% if controller_path == 'manage/orders' %>
+    <%= f.submit "确定", :class => "btn btn-primary" %>
+  <% else %>
+    <button type="submit" class="btn btn-primary" id="save_address"><%= t 'save' %></button>
+    <button class="btn" type="reset"><%= t 'cancel' %></button>
+  <% end %>
+</div>

@@ -1,0 +1,33 @@
+<div style="margin-bottom:5px;">
+  <%= link_to t('message.new'), new_my_message_path, :class => "btn-primary btn" %>
+</div>
+<table class="data-table-order table">
+  <thead>
+    <tr>
+      <th width='40px' style="text-align:center;"><%= t('views.messaging.messages.index.notify') %></th>
+      <th><%= t('views.messaging.messages.index.subject') %></th>
+      <th width=10 style="text-align:center;"><%= t('views.messaging.messages.index.category') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @messages.each do |message| %>
+      <tr>
+        <td width=10 style="text-align:center;">
+          <% if message.user_unread? %>
+            <span class="label label-warning"><%= t_views('new') %></span>
+          <% end %>
+        </td>
+        <td>
+          <b><%= link_to message.subject, my_message_path(message) %></b></br>
+          <time style="color:#999;"><%= message.updated_at.to_s(:db) %></time>
+        </td>
+        <td width=10>
+          <span class="badge badge-info" style="width:60px;display:block;text-align:center;">
+            <%= t ('views.messaging.messages.new.' + Message::CATEGORY[message.related_id]) %>
+          </span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @messages, :renderer => PaginationNoFollow %>

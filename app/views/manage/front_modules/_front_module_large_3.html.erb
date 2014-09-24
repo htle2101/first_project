@@ -1,0 +1,28 @@
+<section class="box channel-mid cc-banner" id = "front_module_large_3" data-content="<%= fm.content if fm.present? %>" data-id="<%= fm.id if fm.present? %>">
+ <h3 class="title" id="slot_h3">待编辑</h3>
+ <div class="bd">
+   <div class="cc-img">
+     <a href="" rel="nofollow" id="slot_a_0">
+       <%= image_tag "front_modules/370_170_tmp.png", :width => "370px", :height => "170px", :id  => "slot_img_0" %>
+     </a>
+   </div>
+   <p class="cc-text">
+     <% 7.times do |i| %>
+     <%= link_to "待编辑", "", :rel => "nofollow", :id => "slot_a_#{(i+1).to_s}" %>
+     <% end  %>
+   </p>
+ <div class="cc-side">
+     <h4 id = "slot_h4">待编辑</h4>
+     <ul>
+       <% 4.times do |i|  %>
+       <li>
+         <a href="" id = "<%= 'slot_a_' + (i+8).to_s %>">
+           <%= image_tag "front_modules/80_80_tmp.png", :width => "80px", :height => "80px", :id  => "slot_img_#{(i+1).to_s}" %>
+         </a>
+       </li>
+       <% end  %>
+     </ul>
+ </div>
+ <div class="cc-more"><a href="" rel="nofollow" id="slot_a_12">待编辑</a></div>
+ </div>
+</section>

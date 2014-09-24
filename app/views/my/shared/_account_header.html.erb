@@ -1,0 +1,6 @@
+<ul class="tab clearfix append-bottom">
+  <li class="<%= 'able' if action_name == 'show' %>"><a href="<%= my_account_path %>"><%= t 'my.account.title' %></a></li>
+  <li class="<%= 'able' if action_name == 'change_pwd' %>"><a href="<%= my_profile_path %>"><%= t 'my.change_pwd.title' %></a></li>
+  <li class="<%= 'able' if action_name == 'index' %>"><a href="<%= my_addresses_path %>"><%= t 'my.address.title' %></a></li>
+</ul>
+<%= render '/my/shared/notice' %>

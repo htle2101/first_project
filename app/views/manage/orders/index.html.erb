@@ -1,0 +1,50 @@
+<%= search_form_for @q, :url => manage_orders_path, :html => {:class => "well form-search"} do |f| %>
+  <label >订单编号</label>
+  <%= hidden_field_tag 'type', params[:type] || 'total' %>
+  <%= f.text_field :number_eq, {:class => "input-small", :placeholder => "NO."} %>
+  <label class="split-left" >买家昵称</label>
+  <%= f.text_field :user_name_eq, {:class => "input-small"} %>
+  <label class="split-left">下单时间</label>
+  <%= f.text_field :created_at_gteq, :class => "input-date datepicker", 'data-date' => init_date %>
+  <%= f.text_field :created_at_lteq, :class => "input-date datepicker", 'data-date' => init_date("lteq") %>
+  <label class="split-left">国际运单号</label>
+  <%= f.text_field :track_no_eq, {:class => "input-small"} %>
+  <%= f.submit :Search, {:class => "btn"} %>
+<% end %>
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <%= raw header_tabs << header_tabs_date %>
+  </ul>
+</div>
+<table class="order-admin center-order">
+  <thead>
+    <tr>
+      <th width="375">产品</th>
+      <th>单价</th>
+      <th>数量</th>
+      <th>产品状态</th>
+      <% if params[:type][/^partial_refund/] %>
+        <th>应退总额</th>
+        <th>操作</th>
+        <th class="last">订单状态</th>
+      <% else %>
+        <th>总计</th>
+        <th>订单状态</th>
+        <th class="last">操作</th>
+      <% end %>
+    </tr>
+  </thead>
+  <% others, u_id, = nil, nil %>
+  <% @orders.each_with_index do |order, index| %>
+    <% if u_id != order.user_id && @type == 'fahuo' %>
+      <%= render others if others.present? %>
+      <% others = other_orders(order.user_id) %>
+    <% end %>
+    <%= render order %>
+    <% u_id = order.user_id %>
+    <%= render others if others.present? && index+1 == @orders.length %>
+  <% end %>
+</table>
+<hr>
+<%= will_paginate @orders, :renderer => PaginationNoFollow %>
+<div id="to_verify" class="modal hide fade"></div>

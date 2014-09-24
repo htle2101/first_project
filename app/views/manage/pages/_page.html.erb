@@ -1,0 +1,9 @@
+<li class='offset1 page_name'>
+<%= link_to page.title, page_path(page) %><span>(<%= "置顶  " if page.weight != 0 %><i class='icon-thumbs-up'></i> <%= page.up %>  <i class='icon-thumbs-down'></i> <%= page.down %>)</span>
+<div class='pull-right'>
+  <%= link_to "英文编辑", edit_manage_page_path(page, :locale=>:en), :class => 'btn', "data-no-turbolink" => true %>
+  <%= link_to "中文编辑", edit_manage_page_path(page, :locale=>:cn), :class => 'btn', "data-no-turbolink" => true %>
+  <%= link_to "俄文编辑", edit_manage_page_path(page, :locale=>:ru), :class => 'btn', "data-no-turbolink" => true %>
+  <%= link_to "删除", manage_page_path(page), :class => 'btn', :method => 'delete' %>
+</div>
+</li>

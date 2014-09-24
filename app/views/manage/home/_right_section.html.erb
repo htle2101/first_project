@@ -1,0 +1,15 @@
+<div class="span12">
+  <div class="tTimLive">
+    <ul class="nav nav-tabs">
+      <% @sections.each do |section| %>
+        <li class="<%= 'active' if role_task_type == section[:type] %>">
+        <%= link_to section[:display_name], manage_path(params.merge(:role_task_type => section[:type], :role_task_page => nil)) %>
+        </li>
+      <% end -%>
+    </ul>
+    <% if role_task_type.present? %>
+      <%= render role_task_type, :role_tasks => role_tasks %>
+      <%= will_paginate role_tasks, :param_name => :role_task_page, :renderer => PaginationNoFollow, :previous_label => "◀", :next_label => "►" %>
+    <% end -%>
+  </div>
+</div>

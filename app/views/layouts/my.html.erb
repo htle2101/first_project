@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title><%= content_for?(:title) ? yield(:title) : t("views.layout.slogan") %></title>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/buychina.ico" />
+    <!--[if IE]><script src="/assets/html5.js"></script><![endif]-->
+    <%= cache_page_assets(:css, 'buychina') %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
+    <div class="container">
+      <%= render 'shared/header' %>
+      <section id="content" class="<%= controller_name == 'home' ? 'row append-bottom' : 'clearfix' %>">
+        <%= render('my/shared/nav') %>
+        <div class="row">
+          <%= render('my/shared/left') %>
+          <section class="ac-content span20">
+            <%= yield %>
+          </section>
+        </div>
+      </section>
+      <%= render 'shared/footer' %>
+    </div>
+    <%= javascript_include_tag "application" %>
+    <%= yield :javascript -%>
+    <%= yield :trace -%>
+  </body>
+</html>

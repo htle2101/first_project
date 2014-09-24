@@ -1,0 +1,46 @@
+<%= render 'title' %>
+<div class="tabbable">
+  <ul class='nav nav-tabs'>
+    <li class="active">
+    <%= link_to "推广产品", request.url %>
+    </li>
+  </ul>
+</div>
+
+<table class='order-admin table table-hover'>
+  <tr>
+    <th >产品名</th>
+    <th width='10%'>推广时间</th>
+    <th width='10%'>操作</th>
+  </tr>
+  <% @referrals.each do |r| %>
+    <tr>
+      <td class="product_thumb">
+        <% if r.product.blank? %>
+          <%= "该产品已删除  #{r.taobao_id}" %>
+        <% else %>
+          <div class="wrap_goods">
+            <span class="img">
+              <a target="_blank" href="<%= r.product_url %>">
+                <%= image_tag r.product.pic_url_version(:small) %>
+              </a>
+            </span>
+            <div class="goods_info">
+              <p class="name">
+              <%= link_to r.product_name, r.product_url, :target => "_blank" %>
+              </p>
+            </div>
+          </div>
+        <% end -%>
+      </td>
+      <td><%= r.created_at.to_date.to_s %></td>
+      <td>
+        <% unless r.product.blank? %>
+          <%= link_to "查看详情", details_manage_affiliates_path("q[taobao_id]" => r.taobao_id, "q[referral_user_id]" => r.referral_user_id, :type => 'sns') %>
+        <% end -%>
+      </td>
+    </tr>
+  <% end -%>
+</table>
+
+<%= will_paginate @referrals, :renderer => PaginationNoFollow %>

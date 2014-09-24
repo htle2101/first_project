@@ -1,0 +1,30 @@
+<tr class='product'>
+  <td><%= index + 1 %></td>
+  <td class="product_thumb">
+    <div class="wrap_goods">
+      <span class="img">
+        <%= link_to my_product_snapshot_path(op), :target => "_blank" do %>
+          <%= image_tag op.pic_url_version(:small) %>
+        <% end %>
+      </span>
+      <div class="goods_info" style="width:85%">
+        <p class="name"><%= link_to op.name, my_product_snapshot_path(op) %></p>
+        <p class="note"><%= raw op.pv_values_html %></p>
+        <% unless (comm = op.comment).blank? %>
+          <div class="m-message"><span class="red">买家留言: </span><%= comm %></div>
+        <% end %>
+      </div>
+    </div>
+  </td>
+  <td>$ <%= op.price.roundf %></td>
+  <td><%= op.quantity %></td>
+  <td><%= op.weight %> g</td>
+  <td>
+    <% op.photos.each do |photo| %>
+      <a href="<%= photo.image_url %>" class="image_review">
+        <%= image_tag(photo.image_url(:small), :style=>'width:20px') if photo.image? %>
+      </a>
+    <% end unless op.purchase_product.blank? %>
+  </td>
+  <td><%= color_status op.status %></td>
+</tr>

@@ -1,0 +1,36 @@
+<%= content_for :javascript do %>
+<script type='text/javascript'>
+$(function() {
+  return $('select').focusout(function() {
+    console.log($(this).val());
+    if ($(this).val() === "1" || $(this).val() === "3") {
+      return $(".correct_word").fadeIn();
+    } else {
+      return $(".correct_word").fadeOut();
+    }
+  });
+});
+</script>
+<% end %>
+<div class="well">
+  <% if flash[:notice] %>
+    <div class="alert"><%= flash[:notice] %></div>
+  <% end %>
+  <%= form_tag("/manage/batch_products", :method => "POST") do %>
+  <div class="field">
+    <%= label_tag "产品匹配关键词" %>
+    <%= text_field_tag :keyword, nil %>
+  </div>
+  <div class="field">
+    <%= label_tag "操作" %>
+    <%=select_tag :action_id, options_for_select([['批量纠正', 1], ['批量下架', 2], ['批量替换关键词', 3]]) %>
+  </div>
+  <div class="field correct_word" style="visibility:none;">
+    <%= label_tag "修正内容（当前只修改英文翻译）" %>
+    <%= text_field_tag :correct_word, nil %>
+  </div>
+  <div class="actions">
+    <%= submit_tag "提交", :class => "btn btn-primary" %>
+  </div>
+<% end %>
+</div>

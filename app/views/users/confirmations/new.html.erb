@@ -1,0 +1,15 @@
+<h2><%= t 'views.users.confimations.resendconfirms' %></h2>
+
+<%= simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="inputs">
+    <%= f.input :email, :required => true %>
+  </div>
+
+  <div class="actions">
+    <%= f.button :submit, t("views.users.confimations.resendconfirms") %>
+  </div>
+<% end %>
+
+<%= render "links" %>

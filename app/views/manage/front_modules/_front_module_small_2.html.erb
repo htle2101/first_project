@@ -1,0 +1,16 @@
+<section class="box channel-right channel-zone" id = "front_module_small_2" data-content="<%= fm.content if fm.present? %>" data-id="<%= fm.id  if fm.present? %>">
+  <h3 class="title" id = "slot_h3">名字</h3>
+  <div class="bd  cc-img-top">
+    <div class="cc-img">
+      <a rel="nofollow" href="<%= fm.class || "#" %>" id = "slot_a_0" target="_blank">
+        <%= image_tag "front_modules/150_120_tmp.png", :width => "150px", :height => "120px", :id => "slot_img_0" %>
+      </a>
+    </div>
+    <ul class="cc-cate">
+      <% 4.times do |i| %>
+      <li><a href="#" rel="nofollow" id = "slot_a_<%= i+1 %>" target="_blank">待输入文本</a></li>
+      <% end  %>
+    </ul>
+    <div class="cc-more"><a rel="nofollow" href="#" id = "slot_a_5" target="_blank">View more</a></div>
+  </div>
+</section>

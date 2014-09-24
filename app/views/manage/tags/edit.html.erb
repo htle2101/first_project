@@ -1,0 +1,55 @@
+<h1 align="center"><b>属性编辑</b></h1><br>
+<%= form_for @tag, :url => manage_tag_path, :html => {:class => "edit_category form-horizontal well form-inline", :multipart => true} do |f| %>
+  <%= hidden_field_tag :type, params[:type] %>
+  <div class="control-group name">
+    <%=f.label "英文名称", :class => "split-left", :style => "margin-left:90px" %>
+    <%=f.text_field :name, :value => @tag.name(:en), :style =>"margin-left:19px", :class =>"required" %>
+    <%=f.label "俄文名称", :class => "split-left" %>
+    <%=f.text_field :name_ru, :value => @tag.name(:ru) %>
+    <%=f.label "中文名称", :class => "split-left" %>
+    <%=f.text_field :name_cn, :value => @tag.name(:cn) %>
+  </div>
+
+  <% if @tag.class.name == "PropValue" %>
+    <div class="control-group">
+      <%=f.label "Url", :class=>"control-label" %>
+      <div class="controls">
+        <%=f.text_field :url %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%=f.label "Description", :class=>"control-label" %>
+      <div class="controls">
+        <%=f.text_area :description, :rows => 3 %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%=f.label "Status", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.select :status, @klass.constantize::STATUS.invert.to_a, :include_blank => "请选择" %>
+    </div>
+  </div>
+
+  <% if @tag.class.name == "PropValue" %>
+    <div class="control-group">
+      <%=f.label "Logo", :class=>"control-label" %>
+      <div class="controls">
+        <%=f.file_field :logo %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%=f.label "Image", :class=>"control-label" %>
+      <div class="controls">
+        <%=f.file_field :image %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.submit "提交" %>
+  </div>
+<% end %>

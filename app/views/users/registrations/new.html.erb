@@ -1,0 +1,63 @@
+<div class="location"> <a href="/"><%= t('home') %></a> &gt; <%= t 'signup'%> </div>
+<div class="padd clearfix">
+  <section class="span15 login-left">
+    <h1><%= t 'views.users.registrations.new.join'%></h1>
+    <%= form_for(resource, :as => resource_name, :url => signup_path, :html => {:id => "signup-form", :class => "form-horizontal"}) do |f| %>
+      <%= flash_wrap_content(:error) if flash[:error] %>
+      <%= flash_wrap_content(:notice) if flash[:notice] %>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'email'%></label>
+        <div class="controls">
+          <%= f.email_field :email, :type => "text", :class => "required email text input-xlarge", :remote => "/users/check?type=email" %>
+          <%= f.error_message_on :email, :html_tag => 'span', :css_class => 'help-inline' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'username'%></label>
+        <div class="controls">
+          <%= f.text_field :username, :class => "required alphanumeric text input-xlarge", :minlength => "4", :maxlength => "20", :remote => "/users/check?type=username" %>
+          <%= f.error_message_on :username, :html_tag => 'span', :css_class => 'help-inline' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'password'%></label>
+        <div class="controls">
+          <%= f.password_field :password, :class => "required text input-xlarge", :minlength => "6", :maxlength => "30" %>
+          <%= f.error_message_on :password, :html_tag => 'span', :css_class => 'help-inline' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= t 'password_confirm'%></label>
+        <div class="controls">
+          <%= f.password_field :password_confirmation, :class => "required text input-xlarge", :equalTo => "#user_password", :minlength => "6", :maxlength => "30" %>
+          <%= f.error_message_on :password_confirmation, :prepend_text => "The rePassword ", :html_tag => 'span', :css_class => 'help-inline' %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'verification' %></label>
+        <div class="controls">
+          <%= text_field_tag 'captcha', nil, :class => "required text", :style => "width: 182px", :autocomplete => 'off'%>
+          <%= render 'simple_captcha/update_captcha' %>
+          <%= f.error_message_on :captcha, :html_tag => 'span', :css_class => 'help-inline' %>
+        </div>
+      </div>
+      <div>
+        <label class="control-label" ></label>
+        <div class="controls">
+          <p class="help-block"><%= raw t 'views.users.registrations.new.help_block'%></p>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= t 'signup'%></button>
+      </div>
+    <% end %>
+  </section>
+  <section class="login-right span7"> <b><%= t 'views.users.registrations.new.already_account'%></b>
+    <p>
+    <%= link_to login_path do %>
+      <strong><%= t 'signin'%></strong>
+      <% end %>
+    </p>
+    <%= render 'users/links' %>
+  </section>
+</div>

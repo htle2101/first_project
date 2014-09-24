@@ -1,0 +1,74 @@
+<h3>用户基本信息</h3>
+<table class="order-admin table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户名</th>
+      <th>角色</th>
+      <th>注册时间</th>
+      <th>登录次数</th>
+      <th>最后登录时间</th>
+      <th>最后登录IP</th>
+      <th>最后登录国家</th>
+      <th>验证状态</th>
+      <th>推广码</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @user.id %></td>
+      <td>
+        <!--
+        <span rel="tooltip" title="点击修改">
+          <%#= best_in_place(@user, :username, :nil => @user.username, :type => :input, :path => manage_user_path(@user), :inner_class => 'input-mini') %>
+        </span>-->
+        <%= @user.username %>
+      </td>
+      <td><%= @user.roles.map(&:title).join(",") %></td>
+      <td><%= @user.created_at.to_s(:db) %></td>
+      <td><%= @user.sign_in_count %></td>
+      <td><%= @user.last_sign_in_at.to_s(:db) %></td>
+      <td><%= @user.last_sign_in_ip %></td>
+      <td><%= @user.location || "未知" %></td>
+      <td><%= @user.confirmed? ? "已验证" : "未验证" %></td>
+      <td><%= @user.affiliate_id %></td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<h3>用户行为统计</h3>
+<div class="span4 well">
+  <h4>钱包金额:</h4>
+  可用余额: <strong rel="tooltip" title="">$ <%= current_user.admin? ? best_in_place(@account, :fund, :nil => @account.fund, :type => :input, :path => change_fund_manage_user_path(@user), :inner_class => 'input-mini') : @account.fund %></strong>
+  <br>
+  冻结资金: <strong>$ <%= @account.frozen_fund %></strong>
+</div>
+<div class="span4 well">
+  <h4>收藏:</h4>
+  产品数: <strong><%= @user.favourite_products.count %></strong><br>
+  店铺数: <strong><%= @user.favourite_stores.count%></strong>
+</div>
+<div class="span4 well">
+  <h4>订单数:</h4>
+  未支付: <strong><%= @user.orders.waiting.count %></strong><br>
+  已支付: <strong><%= @user.orders.where("status > 1 && status != 7").count %></strong><br>
+</div>
+<div class="span4 well">
+  <h4>订单金额:</h4>
+  未付款: <strong>$ <%= order_status_amount("status = 1") %></strong> <br>
+  已付款: <strong>$ <%= order_status_amount("status > 1 && status != 7") %></strong>
+</div>
+<div class="order-list clear">
+  <hr>
+  <h3>订单列表</h3>
+  <%= search_form_for @search, :url => orders_manage_user_path(@user), :html => {:class => 'well form-inline', :id => 'user_orders_search', :remote => true} do |f| %>
+    下单日期: 从
+    <%= f.text_field :created_at_gteq, :class => "input-small datepicker", :value => init_date() %>
+    至
+    <%= f.text_field :created_at_lteq, :class => "input-small datepicker", :value => init_date('lteq') %>
+    <label class="split-left">订单状态</label>
+    <%= f.select :status_eq, Order.status_cn.invert, {:include_blank => 'All'}, :class => 'input-small' %>
+    <%= f.submit '搜索', :disable_with => '搜索中...', :class => 'btn split-left' %>
+  <% end %>
+  <%= render "order" %>
+</div>

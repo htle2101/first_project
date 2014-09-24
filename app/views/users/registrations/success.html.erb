@@ -1,0 +1,20 @@
+<div class="padd clearfix">
+  <h2 class="orange  append-bottom"><%= t 'views.users.registrations.success.almost_success_1'%></h2>
+  <h3 class=""><%= t 'views.users.registrations.success.almost_success_2'%></h3>
+  <p class="large"><%= t 'views.users.registrations.success.almost_success_3'%>
+  <b><%= current_user.try(:email) %></b><br />
+  <%= t 'views.users.registrations.success.almost_success_4'%> </p><br/>
+  <p class="quiet">
+  <a href="javascript:void(0);" class="resend-confirmation-link"><%= t 'views.users.registrations.success.resend'%></a>
+  <%= image_tag 'zoomloader.gif', :class => "hide loading" %>
+  </p>
+  <% if current_user.try(:affiliate_id?) %>
+    <p class="quiet">
+    <a href="<%= my_affiliates_path(:type => 'all') %>"><%= t 'views.users.registrations.success.affiliate'%></a>
+    </p>
+  <% end %>
+</div>
+<% content_for :trace do %>
+  <%= render :partial => 'shared/ga_signup' %>
+<% end %>
+<%= render "shared/timeout" %>

@@ -1,0 +1,79 @@
+<div class="myaccount-header">
+  <%= link_to t_views('back'), my_orders_path, :class => "manage-address" %>
+  <h3><%= t_views('transaction_details') %></h3>
+</div>
+<table class="info-table">
+  <tbody>
+    <tr>
+      <th width="20%" class="ri"><%= t_views('order_number') %>:</th>
+      <td><%= @order.number %></td>
+    </tr>
+    <% if @order.order_price_changed? && @order.waiting? %>
+      <tr><th class="ri"><%= t_views('.reminder') %></th>
+        <td class='red'><strong><%= t_views('order_price_warning')%></strong></td>
+      </tr>
+    <% elsif adjust = @order.unpaid_adjustment %>
+      <tr><th class="ri"><%= t_views('.reminder') %></th>
+        <td class='red'><strong><%= t_views('order_adjustment_warning', {:price => adjust.price})%></strong></td>
+      </tr>
+      <tr><th></th>
+        <td>
+          <%= link_to t_views('.pay_now'), order_adjustment_checkouts_path(:id => adjust.id, :pay_type => :order_adjustment), :class => "btn btn-warning btn-large" %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <th class="ri"><%= t('status') %>:</th>
+      <td><strong class="order-status"><%= t_models(@order, 'get_status') %></strong>
+      </td>
+    </tr>
+    <% @order.shippings.each_with_index do |s, i| %>
+      <tr>
+        <th class="ri"><%= 'Track Info:' if i == 0 %></th>
+        <td>
+          <div class="tracking">
+            <% if s.number.present? %>
+              <span class="track-no"><%= t_views('tracking_number') %>: <strong class="m10"><%= s.number %></strong></span>
+            <% end %>
+            <span class="st"><%= t_views('ship_date') %>: <strong class="m10"><%= s.created_at.strftime('%F %R') %></strong></span>
+            <%= link_to(t_views('click_to_inquiry'), s.check_url, :target => "_blank") if s.number.present? %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+    <tr><th></th>
+      <td>
+      <% if @order.waiting? %>
+        <%= link_to t_views('.pay_now'), payment_checkouts_path(:id => @order.id), :class => "btn btn-warning btn-large" %>
+      <% elsif @order.delivered? || @order.settled? %>
+        <%= link_to t_views('.confirm_delivered'), my_order_reviews_path(@order.number), :class => "btn btn-success" %>
+      <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th class="ri"><%= t_views('.reminder') %>:</th>
+      <td><div class='reminder'><%= t_views('reminder') %></div></td>
+    </tr>
+  </tbody>
+</table>
+<ul class="order-detail tab clearfix append-bottom">
+  <li class="able"><a href="#order-info"><%= t_views('order') %></a></li>
+  <li><a href="#payment-info"><%= t_views('payment') %></a></li>
+  <li><a href="#shipping-info"><%= t_views('shipping') %></a></li>
+  <li><a href="#time-info"><%= t_views('time') %></a></li>
+  <li><a href="#feedback-info"><%= t_views('review') %></a></li>
+</ul>
+
+<%= render "order_info" %>
+<%= render "payment_info" %>
+<%= render "shipping_info" %>
+<%= render "time_info" %>
+<%= render "feedback_info" %>
+<%= render "msg" %>
+<%= content_for :javascript do %>
+  <script type="text/javascript">
+    $(function(){
+      if (window.location.hash !== ""){ $(".order-detail li[rel='" + window.location.hash.substring(1) + "']").trigger('click'); }
+    });
+  </script>
+<% end %>

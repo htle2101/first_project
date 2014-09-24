@@ -1,0 +1,20 @@
+<div class="span10" style="margin-top:10px;">  
+  <%= form_for [:manage, @message], :style => "margin-top:10px" do |f| %>
+    <% if @order.present? && @message.new_record? %>
+      <%= f.hidden_field :user_id, :value => @order.user_id %>
+      <%= f.hidden_field :subject, :value => "Order: #{@order.number}" %>
+      <%= f.hidden_field :related_id, :value => @order.number %>
+      <%= f.hidden_field :related_type, :value => 'Order' %>
+    <% end %>
+    <%= f.hidden_field :admin_unread, :value => false %>
+    <%= f.hidden_field :user_unread, :value => true %>
+    <%= f.fields_for :replies, Reply.new do |r| %>
+      <%= r.hidden_field :user_id, :value => current_user.id %>
+      <% user_name = @order.present? ? @order.user_name : @message.user.username %>
+      <%= r.text_area :content, :value => "Dear #{user_name},\r\n", :rows => 8, :class => 'input-xxlarge' %>
+      <span>需至少10个单词才可提交，可以拉动右下角扩大文本框大小</span><br/>
+    <% end %>
+    <%= f.submit "回复", :class => "btn btn-primary" %>
+    <%= link_to("标记已读", mark_manage_message_path(@message), :class => "btn split-left") if !@message.new_record? && @message.admin_unread %>
+  <% end %>
+</div>

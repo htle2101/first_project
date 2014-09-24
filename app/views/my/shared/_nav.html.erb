@@ -1,0 +1,6 @@
+<div class="location"><i class="icon-home"></i>
+  <a href="/"><%= t 'home' %></a> &gt; <a href="<%= main_app.my_path %>"><%= t 'my_buychina' %></a>
+  <% arr = active_left; (0..3).each do |i| %>
+    <%= (aa = arr[i][2]).blank? ? "" : "&gt; #{aa}".html_safe  %>
+  <% end %>
+</div>

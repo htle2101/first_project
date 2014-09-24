@@ -1,0 +1,12 @@
+<td><%= pt.id %></td>
+<td><%= pt.name %></td>
+<td><%= pt.alias if pt.root? %></td>
+<td><%= best_in_place(pt, :weight, :type => :input, :path=>manage_page_type_path(pt)) if pt.root? %></td>
+<td>
+  <% if pt.root? %>
+    <%= link_to '子目录', 'javascript:void(0)', :class => 'toggle_page_type_children', 'data-id' => pt.id %>(<%= pt.children.size %>) |
+    <%= link_to '创建子目录', new_manage_page_type_path(:parent_id => pt.id) %> |
+  <% end -%>
+  <%= link_to '编辑', edit_manage_page_type_path(pt) %>
+   | <%= link_to '删除', [:manage, pt], :method => 'delete' %>
+</td>

@@ -1,0 +1,15 @@
+<% locale_names = {:en => "英文", :cn => "中文", :ru => "俄文"} %>
+<%= form_for :pv_name, :url => update_pv_name_manage_products_path do |f| %>
+  <% @elements.each do |key, value| %>
+    <%= hidden_field_tag :taobao_id, @product.taobao_id %>
+    <%= key %><br>
+    <%= f.fields_for value.keys[0] do |ef| %>
+      <% [:en, :ru, :cn].each do |locale| %>
+        <%= locale_names[locale] %>
+        <%= ef.text_field locale, :value => value.values[0][locale]  %><br>
+      <% end %>
+    <% end %>
+    <br>
+  <% end %>
+  <%= f.submit '提交' %>
+<% end %>

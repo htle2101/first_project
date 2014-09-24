@@ -1,0 +1,27 @@
+<%= render 'search_form' %>
+<%= "<div class='alert alert-success' style='margin:-16px 0px 4px 0px;'>#{flash[:notice]}</div>".html_safe if flash[:notice] %>
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <li class="<%= 'active' if params[:q][:admin_unread_eq].in? ["true", nil] %>">
+      <%= link_to "待回复", manage_messages_url(:q => params[:q].extract(:related_type_eq).merge(:admin_unread_eq => true)) %>
+    </li>
+    <li class="<%= 'active' if params[:q][:admin_unread_eq] == "false" %>">
+      <%= link_to "已回复", manage_messages_url(:q => params[:q].extract(:related_type_eq).merge(:admin_unread_eq => false)) %>
+    </li>
+    <% if params[:q][:related_type_eq] == "Question" %>
+      <li>
+        <div class="btn-group split-left">
+          <button class="btn dropdown-toggle btn-primary" data-toggle="dropdown">问题类别 <span class="caret"></span></button>
+          <ul class="dropdown-menu" style="min-width:90px;">
+            <% Message::CATEGORY.each do |k, v| %>
+              <li><%= link_to t_models('message.category', Message::CATEGORY[k]), :q => params[:q].merge(:related_id_eq => k) %></li>
+              <li class = "devider"></li>
+            <% end %>
+          </ul>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
+<%= render params[:q][:related_type_eq].downcase.pluralize %>
+<%= will_paginate @messages,  :renderer => PaginationNoFollow %>

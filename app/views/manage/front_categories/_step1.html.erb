@@ -1,0 +1,115 @@
+<div id="step1" style="display:block">
+  <div class="control-group select_locale hide">
+    <%=f.label "语言选择", :class => "control-label" %>
+    <div class="controls">
+      <%=f.select :language, ['all', 'en', 'ru', 'cn'] %>
+    </div>
+  </div>
+  <div class="control-group name">
+    <%=f.label "英文名称", :class => "split-left", :style => "margin-left:90px" %>
+    <%=f.text_field :name, :value =>@front_category.name(:en), :style =>"margin-left:19px", :class =>"required" %>
+    <%=f.label "俄文名称", :class => "split-left" %>
+    <%=f.text_field :name_ru, :value => @front_category.name(:ru) %>
+    <%=f.label "中文名称", :class => "split-left" %>
+    <%=f.text_field :name_cn, :value => @front_category.name(:cn) %>
+  </div>
+
+  <% unless @front_category.type == 4 && @front_category.level != 1 %>
+    <div class="control-group">
+      <%=f.label "模板", :class=>"control-label" %>
+      <div class="controls">
+        <%=f.select :template, FrontCategory::TEMPLATE.invert.to_a %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if [2,3].include?(@front_category.type) -%>
+    <div class="control-group">
+      <%=f.label "英文描述", :class => "split-left", :style => "margin-left:90px" %>
+      <%=f.text_area :description, :value => @front_category.description(:en), :style => "margin-left:19px", :rows => 3%>
+      <%=f.label "俄文描述", :class=>"split-left" %>
+      <%=f.text_area :description_ru, :value => @front_category.description(:ru), :rows => 3 %>
+      <%=f.label "中文描述", :class=>"split-left" %>
+      <%=f.text_area :description_cn, :value => @front_category.description(:cn), :rows => 3 %>
+    </div>
+    <div class="control-group">
+      <%=f.label "英文标签", :class=>"split-left", :style => "margin-left:90px" %>
+      <%=f.text_field :tag, :value => @front_category.tag(:en), :style => "margin-left:19px" %>
+      <%=f.label "俄文标签", :class=>"split-left" %>
+      <%=f.text_field :tag_ru, :value => @front_category.tag(:ru) %>
+      <%=f.label "中文标签", :class=>"split-left" %>
+      <%=f.text_field :tag_cn, :value => @front_category.tag(:cn) %>(以逗号分隔)
+    </div>
+  <% end -%>
+  <% if @front_category.type == 4 && @front_category.level == 1 %>
+    <div class="control-group">
+      <%= f.label "开始时间", :class=>"control-label" %>
+      <%= date_picker f, @front_category, :started_at, "margin-left:19px" %>
+      <%= f.label "结束时间", :style => "margin-left:46px" %>
+      <%= date_picker f, @front_category, :ended_at  %>
+    </div>
+  <% end %>
+  
+  <% unless @front_category.type == 4 && @front_category.level > 1 %>
+    <div class="control-group">
+      <% path = check_slug_manage_front_categories_path(:id => params[:id], :type => @front_category.type) %>
+      <%=f.label "Slug", :class=>"control-label" %>
+      <div class="controls">
+        <%=text_field_tag :slug, @front_category.slug, :remote => path %>(第一次可以不填)
+      </div>
+    </div>
+  <% end %>
+  <% if [1,nil].include?(@front_category.type) -%>
+    <% unless [0,nil].include?(@front_category.parent_id) %>
+      <div class="control-group">
+        <%=f.label "Hot", :class=>"control-label" %>
+        <div class="controls">
+          <%=f.check_box :hot %>
+        </div>
+      </div>
+    <% end %>
+    <div class="control-group sort">
+      <%=f.label "目录排序", :class => "control-label" %>
+      <div class="controls">
+        <%=f.text_field "order", :value => @front_category.order, :class => "required number" %>
+      </div>
+    </div>
+  <% end -%>
+  <div class="control-group">
+    <%=f.label "URL", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.text_field "url"%>
+    </div>
+  </div>
+  <% if @front_category.is_front_category? %>
+    <% unless @front_category.type == 4 && @front_category.level > 1 %>
+      <div class="control-group" id="front_category_category">
+        <%= f.label "关联目录", :class => "control-label" %>
+        <div class="controls">
+          <%= f.text_field :category_tokens, "data-pre" => @front_category.categories.map(&:collect_by_id_and_name).to_json %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+  <% unless @front_category.type == 4 && @front_category.level > 1 %>
+    <div class="control-group">
+      <%=f.label "SNS", :class=>"control-label" %>
+      <div class="controls">
+        <%=f.check_box :is_facebook %>
+      </div>
+    </div>
+  <% end %>
+  <div class="control-group">
+    <%=f.label "Active", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.check_box :active %>
+    </div>
+  </div>
+  <div class="form-actions">
+    <% if @front_category.is_front_category? || @front_category.type == 4 && @front_category.level > 1 %>
+      <%= f.submit "提交" %>
+    <% else %>
+      <%= button_tag "下一步", :disable_with => "Please wait...", :id => "toStep2" %>
+    <% end %>
+  </div>
+</div>

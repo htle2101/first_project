@@ -1,0 +1,61 @@
+<% if Rails.env == 'production' -%>
+  <!-- Google Code for sale Conversion Page -->
+  <script type="text/javascript">
+    /* <![CDATA[ */
+  var google_conversion_id = 1001802596;
+  var google_conversion_language = "en";
+  var google_conversion_format = "2";
+  var google_conversion_color = "ffffff";
+  var google_conversion_label = "kJr9CPSklQMQ5JbZ3QM";
+  var google_conversion_value = <%= orders.amount_with_round %>;
+  /* ]]> */
+</script>
+<script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+  <div style="display:inline;">
+    <img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1001802596/?value=0&amp;label=kJr9CPSklQMQ5JbZ3QM&amp;guid=ON&amp;script=0"/>
+  </div>
+</noscript>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32709381-1']);
+  _gaq.push(['_trackPageview']);
+  <% orders.each do |order| %>
+    _gaq.push(['_addTrans',
+        '<%= order.number %>',           // order ID - required
+        'BuyChina',
+        '<%= order.sub_total %>',          // total - required
+        '',
+        '<%= order.shipping_cost %>',              // shipping
+        '<%= order.order_address.address1 %>',
+        '<%= order.order_address.city %>',
+        '<%= order.order_address.country.try(:englishname) %>'       // city
+        ]);
+
+// add item might be called for every item in the shopping cart
+// where your ecommerce engine loops through each item in the cart and
+// prints out _addItem for each
+<% order.order_products.each do |op| %>
+  _gaq.push(['_addItem',
+      '<%= order.number %>',           // order ID - required
+      '<%= op.sku_id %>',           // SKU/code - required
+      '<%= op.name %>',        // product name
+      '<%= op.product.category.name %>',   // category or variation
+      '<%= op.price %>',          // unit price - required
+      '<%= op.quantity %>'               // quantity - required
+      ]);
+<% end -%>
+<% end -%>
+_gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+
+(function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+
+</script>
+<% end %>

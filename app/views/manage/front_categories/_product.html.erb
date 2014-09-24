@@ -1,0 +1,13 @@
+<form action="<%= add_products_manage_topics_path %>" class="well form-inline">
+  <input type="hidden" name="fcid" value='<%= params[:fcid]%>'>
+  <input type="hidden" name="way" value="product">
+  <label class="split-left">产品详情链接 or 淘宝ID: </label>
+  <input type="text" name="product_id" value="<%= params[:product_id] %>" class="input-xxlarge">
+  <input class="btn search-btn split-left" type="submit" value="搜索">
+</form>
+<br>
+<section align="center">
+  <ul id="gallery_item" class="list clearfix">
+    <%= render('/manage/front_categories/item', :product => @products) if @products %>
+  </ul>
+</section>

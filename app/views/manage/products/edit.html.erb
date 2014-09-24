@@ -1,0 +1,112 @@
+<%= form_for @manage_product, :url => manage_product_path(@manage_product.taobao_id), :html => {:method => :put, :class => "container edit_promotion", :multipart => true} do |f| %>
+  <%= hidden_field_tag :fcid, params[:fcid] %>
+  <legend>
+    淘宝ID：<%= @manage_product.taobao_id %>&nbsp;
+    <a href="<%= reimport_manage_products_path%>?taobao_id=<%= @manage_product.taobao_id %>&fcid=<%= params[:fcid] %>">重新抓取</a>
+  </legend>
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
+    <li><a href="#tab2" data-toggle="tab">打折信息</a></li>
+    <li><a href="#tab3" data-toggle="tab">属性信息</a></li>
+    <li><a href="#tab4" data-toggle="tab">产品详情</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+      <div class="control-group">
+        <label class="control-label">中文名:</label>
+        <div class="controls">
+          <%= text_field_tag 'name[cn]', @manage_product.name(:cn), :class=>"input-xxlarge" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">英文名:</label>
+        <div class="controls">
+          <%= text_field_tag 'name[en]', @manage_product.name(:en), :class=>"input-xxlarge" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">俄文名:</label>
+        <div class="controls">
+          <%= text_field_tag 'name[ru]', @manage_product.name(:ru), :class=>"input-xxlarge" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">重量:</label>
+        <div class="controls input-append">
+          <%= f.text_field :weight, :class=>"input-mini" %><span class="add-on">g</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">长x宽x高: </label>
+        <div class="controls input-append">
+          <%= f.text_field :length, :class => "span1" %> 
+          x <%= f.text_field :width, :class => "span1" %>
+          x <%= f.text_field :height, :class => "span1" %> cm
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">产品单价:</label>
+        <div class="controls input-append">
+          <%= f.text_field :price, :value => @manage_product.bc_price(1, @manage_product.price).round(2), :class=>"input-small" %>
+          <span class="add-on">$</span>
+          <% if @manage_product.on_promotion? %>
+            <span>(打折后价格:<%= @manage_product.bc_price.round(2) %>)
+          <% end %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">库存:</label>
+        <div class="controls input-append">
+          <%= f.text_field :stock_num, :class=>"input-mini" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">图片:</label>
+        <div class="controls input-append">
+          <%= file_field_tag :image %>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="tab2">
+      <%= f.fields_for :promotion do |promotion| %>
+        <%= render "promotion", :promotion => promotion %>
+      <% end %>
+    </div>
+    <div class="tab-pane" id="tab3">
+      <%= f.fields_for :skus do |sku| %>
+        <div class="control-group" style="border-bottom:#DDD solid 1px;">
+          <label class="control-label">
+            <%= sku.object.pv_values(:cn) %>
+            <a href="<%=edit_pv_name_manage_products_path(:id => sku.object.id) %>">编辑名称</a>
+          </label>
+          <div class="controls input-append">
+            <%= sku.text_field :price, :value => sku.object.bc_price(1, sku.object.price).round(2), :class => "input-small" %>
+            <span class="add-on">$</span>
+            <%= sku.hidden_field :to_taobao_price, :value => '1' %>
+            <span class="form-inline" style="margin-left:20px;">库存: </span>
+            <%= sku.text_field :stock_num, :class => "input-small" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="tab-pane" id="tab4">
+      <div class="control-group">
+        <div class="controls">
+          <%= f.fields_for :detail do |detail| %>
+            <%= detail.text_area :description, :style => "width:100%;height:1000px;", :id => 'product_detail_area' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-actions">
+    <%= submit_tag "保存", :class=>"btn btn-primary" %>
+    <%= link_to '返回>>', manage_products_path, :style => 'margin-left:15px;' %>
+  </div>
+<% end %>
+<% content_for :javascript do %>
+  <%= javascript_include_tag 'kindeditor' %>
+  <script type="text/javascript">
+    $(function() { KindEditor.create('#product_detail_area'); });
+  </script>
+<% end %>

@@ -1,0 +1,22 @@
+<div class="span12">
+  <div class="tTimLive">
+    <ul class="nav nav-tabs">
+      <li class="<%= 'active' if @task_type == 'todo_tasks' %>">
+      <%= link_to "最新任务", manage_path(params.merge(:task_type => :todo_tasks, :task_page => nil)) %>
+      </li>
+      <li class="<%= 'active' if @task_type == 'done_tasks' %>">
+      <%= link_to "已处理任务", manage_path(params.merge(:task_type => :done_tasks, :task_page => nil)) %>
+      </li>
+    </ul>
+    <% if tasks.blank? %>
+      <p class="text-success">太好了，问题都已经解决了。^_^ </p>
+    <% else %>
+      <table class="table table-striped">
+        <tbody>
+          <%= render :partial => 'task', :collection => tasks %>
+        </tbody>
+      </table>
+    <% end %>
+    <%= will_paginate tasks, :renderer => PaginationNoFollow, :previous_label => "◀", :next_label => "►" %>
+  </div>
+</div>

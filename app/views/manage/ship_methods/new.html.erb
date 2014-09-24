@@ -1,0 +1,27 @@
+<% path = action_name == 'new' ? manage_ship_methods_path : manage_ship_method_path(@rule) %>
+<%= form_for @rule, :url => path, :html => {:id => :ship_method_rule } do |f| %>
+  <%= f.hidden_field :ship_method_id, :value => @rule.ship_method_id %>
+  <%= f.select :type_source, @rule.part? ? [['国家', 1], ['分区', 0]] : [['国家', 1]] %>&nbsp;&nbsp;
+  <% countries = @rule.part? ? Country.where("#{@rule.name.downcase}!=0") : Country.all %>
+  <% izones = countries.map(&@rule.name.downcase.to_sym).uniq.sort if @rule.part? %>
+  <%= select_tag :ship_country, options_for_select(countries.collect{|country| [country.name, country.id]}, @rule.type_id), :prompt => "全部", :style => "display:none" %>
+  <% if @rule.part? %>
+    <%= select_tag :ship_izone, options_for_select(izones.collect{|izone| ["#{izone}区", izone]}, @rule.type_id), :prompt => "全部", :class => "hide", :style => "display:none" %>
+  <% end %>
+  <label> 免费重量</label>
+  <%= f.text_field :weight_min %>
+  <label> 折扣</label>
+  <%= select_tag :discount_type, options_for_select([['免运费', 0], ['折扣', 1]], (@rule.free? ? 0 : 1)) %>&nbsp;&nbsp;
+  <% style = "display: none" if @rule.free? %>
+  <%= f.text_field :discount, 'data-value' => @rule.free? ? 1 : @rule.discount, :style => style %>
+  <% if @rule.base_cost? %>
+    <label> 基础运费</label>
+    <%= f.text_field :base_cost %><br>
+  <% end %>
+  <label> 重量</label>
+  <%= f.text_field :weight_gte %> - 
+  <%= f.text_field :weight_lte %> (千克)
+  <label> 价格</label>
+  <%= f.text_field :price_gte %> -
+  <%= f.text_field :price_lte %> (美元)
+<% end %>

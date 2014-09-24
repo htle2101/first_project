@@ -1,0 +1,45 @@
+<tr class="border" id="log_<%= purchase_product.order_product_id %>" data-id="<%= purchase_product.id %>">
+  <td><input type="checkbox" class="taobao-batch-select"></td>
+  <td><%= (index ||= nil).present? ? index + 1 : '' %></td>
+  <td>
+    <div class="wrap_goods" style="width:450px">
+      <span class="img">
+        <%= link_to taobao_url(purchase_product.taobao_id), :target => "_blank" do %>
+          <% image_tag purchase_product.pic_url_version(:v60) %>
+        <% end %>
+      </span>
+      <div class="goods_info" style="width:86%">
+        <p class="name">
+          <%= link_to purchase_product.product.try(:name), purchase_product.product.try(:click_url) || taobao_url(purchase_product.taobao_id), :target => "blank" %>
+        </p>
+        <p class="note"><%= purchase_product.pv_values_html.try(:html_safe) %></p>
+        <p>
+          <%= link_to purchase_product.store_name, purchase_product.store_shop_link, :class=> 'pull-left', :target => 'blank' %>
+          <%= render :partial => "shared/aliwangwang", :locals => {:username => purchase_product.store_name} %>
+        </p>
+      </div>
+      <% unless (comment = purchase_product.order_product.comment).blank? %>
+        <div><span class="red">买家留言:</span> <%= comment %></div>
+      <% end %>
+    </div>
+  </td>
+  <td>￥ <%= purchase_product.tb_price %></td>
+  <td><%= (pic = purchase_product.buy_price).to_f > 0 ? "￥ #{pic}" : '' %></td>
+  <td><%= purchase_product.quantity %></td>
+  <td><%= purchase_product.weight %> g</td>
+  <td>
+    <% purchase_product.photos.each do |photo| %>
+      <a href="<%=photo.image_url %>" class="image_review"><%= image_tag(photo.image_url(:small), :style=>'width:20px') if photo.image? %></a>
+      <%= link_to "x", manage_photo_path(:id => photo, :purchase_product_id => purchase_product.id), :class => "delete" if can? :manage, purchase_product%>
+    <% end -%>
+    <% if can?(:manage, purchase_product) && purchase_product.photos.size < 3 %>
+      <a class='add_image' id="add_image_<%=purchase_product.id%>" name="<%=manage_photos_url%>" href="#">添加</a>
+    <% end -%>
+  </td>
+  <td><%= color_status(purchase_product.taobao_status) %></td>
+  <td>
+    <% if can?(:manage, purchase_product) && purchase_product.can_edit? %>
+      <%= link_to "修改", edit_manage_purchase_product_path(purchase_product), :class => "purchase_product_edit" %>
+    <% end %>
+  </td>
+</tr>

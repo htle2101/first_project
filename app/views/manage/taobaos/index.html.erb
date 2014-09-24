@@ -1,0 +1,64 @@
+<% if params[:type].to_i == 3 %>
+  <%= form_tag manage_taobaos_get_items_path, :class => "well form-search", :id => "logistic-search", :remote => "true" do %>
+    <%= text_field_tag :out_sid_part, "", :placeholder => "输入物流单号进行快速查单(前几位即可)", :class => "input-xxlarge" %>
+    <%= hidden_field_tag :type, params[:type] %>
+    <%= submit_tag "查单", :class => "btn btn-primary" %>
+  <% end %>
+<% end %>
+<%= search_form_for @q, :url => manage_taobaos_path, :html => {:class => "well span21 form-search"} do |f| %>
+  <%= hidden_field_tag :type, params[:type] %>
+  <div class="span24">
+    <label class="split-left">淘宝订单号</label>
+    <%= f.text_field :taobao_order_num_eq, {:class => "input-small", :placeholder => "需准确单号"} %>
+    <label class="split-left">产品名</label>
+    <%= f.text_field :order_product_name_cont, {:class => "input-small", :placeholder => "可模糊查询"} %>
+    <label class="split-left">订单ID</label>
+    <%= f.text_field :order_id_eq, {:class => "input-small", :placeholder => "需准确ID"} %>
+    <label class="split-left" >卖家昵称</label>
+    <%= f.text_field :store_name_cont, {:class => "input-small", :placeholder => "可模糊查询"} %>
+    <%= f.submit "搜索", {:class => "btn btn-primary"} %>
+  </div>
+  <div class="span24" style="margin-top:10px;">
+    <label class="split-left">下单时间</label>
+    <%= f.text_field :created_at_gteq, :class => "input-small datepicker", :value => init_date('gteq',{}, 3) %>
+    <label class="split-left"></label>
+    <%= f.text_field :created_at_lteq, :class => "input-small datepicker", :value => init_date("lteq") %>
+  </div>
+<% end %>
+<% if [1].include? params[:type].to_i %>
+  <%= form_tag manage_purchase_on_taobao_path,  :method => :post, :class => "well span3 batch-order" do %>
+    <%= hidden_field_tag :purchase_products, [] %>
+    <%= submit_tag "批量下单", :class => "btn btn-success" %>
+  <% end %>
+<% end %>
+<% if params[:type].to_i == 8 %>
+  <div class="span3 well">
+    <%= link_to "Session", manage_taobao_session_path, :class => "update_session btn btn-inverse" %>
+  </div>
+<% end %>
+<table class="table order-admin">
+  <thead>
+    <tr>
+      <% if [1].include? params[:type].to_i %>
+      <th width=10><input type="checkbox" class="taobao-all-select"></th>
+      <% end %>
+      <th width=70><%= sort_link @q, :store_name, '店铺', :default_order => 'desc', :type => params[:type] %></th>
+      <th width=60><%= sort_link @q, :order_id, '订单ID', :default_order => 'desc', :type => params[:type] %></th>
+      <th width=50></th>
+      <th width=300>产品</th>
+      <th width=40><%= sort_link @q, :quantity, '数量', :default_order => 'desc', :type => params[:type] %></th>
+      <th width=30>发往</th>
+      <% if [0, 1, 2].include?(params[:type].to_i) %>
+        <th width=70>淘宝订单号</th>
+        <th>购买备注&nbsp;<small style="color:#bbb;">(单击添加或编辑)</small></th>
+        <th width=25>操作</th>
+      <% elsif params[:type].to_i == 3 %>
+        <th>运单号</th>
+        <th>物流信息</th>
+        <th width=25>操作</th>
+      <% end %>
+    </tr>
+  </thead>
+  <%= render "items" %>
+</table>
+<%= will_paginate @items, :renderer => PaginationNoFollow %>

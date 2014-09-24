@@ -1,0 +1,19 @@
+<table class="table table-striped">
+  <tbody>
+    <% role_tasks.each do |conversation| %>
+      <tr class='task_column'>
+        <td>
+          <div class="flow">
+            <span class="flow-time"><%= timeago_tag conversation.newest_message.created_at, :lang => 'zh-CN' %></span>
+            <span>用户 <span class="flow-user"><%= link_to conversation.newest_message.user_username, [:manage, conversation.newest_message.user] %></span> 的大单询盘待答复:
+              <%= link_to truncate(conversation.newest_message.content, :length => 30), manage_large_order_path(conversation.newest_message), :title => conversation.newest_message.content %>
+            </span>
+            <a href="<%= manage_large_order_path(conversation.newest_message) %>" class='pull-right go_process btn btn-mini btn-success'>
+              <i class=' icon-arrow-right'></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>

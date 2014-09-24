@@ -1,0 +1,48 @@
+<%= render 'my/shared/account_header' %>
+<div class="section">
+  <h3><%= t 'my.account.about_you' %></h3>
+  <div class="body">
+    <%= form_for current_user, :url => my_account_path, :method => :put, :html => {:id => 'edit_account', :class=> "form-horizontal"} do |f| %>
+      <div class="control-group ">
+        <label class="control-label"><%= t 'my.account.email' %></label>
+        <div class="controls"><span class="uneditable-input input-large"><%= current_user.email %></span></div>
+      </div>
+      <div class="control-group ">
+        <label class="control-label"><%= t 'my.account.user_name' %></label>
+        <div class="controls"><span class="uneditable-input input-large"><%= current_user.username %></span></div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.account.first_name' %></label>
+        <div class="controls">
+          <%= f.text_field :first_name %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.account.last_name' %></label>
+        <div class="controls">
+          <%= f.text_field :last_name %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inlineCheckboxes"><%= t 'my.account.gender' %></label>
+        <div class="controls">
+          <label class="radio inline">
+            <%= f.radio_button :gender, 0 %> <%= t 'my.account.male' %>
+          </label>
+          <label class="radio inline">
+            <%= f.radio_button :gender, 1 %> <%= t 'my.account.female' %>
+          </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.account.location' %></label>
+        <div class="controls">
+          <%= f.text_field :location %>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= t 'submit' %></button>
+      </div>
+    <% end %>
+  </div>
+</div>

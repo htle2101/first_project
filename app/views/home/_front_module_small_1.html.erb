@@ -1,0 +1,19 @@
+<section class="box channel-right channel-zone">
+  <h3 class="title"><%= fm["slot_h3"][I18n.locale.to_s] %></h3>
+  <div class="bd  cc-img-top feature">
+    <div class="cc-img">
+      <a href="<%= fm["slot_a_0"]['href'] %>" rel="nofollow">
+        <%= image_tag fm["slot_img_0"]["src"], :width => "150px", :height => "130px" %>
+      </a>
+    </div>
+    <ul class="cc-cate">
+      <li>
+        <a rel="nofollow" href="<%= fm["slot_a_1"]['href'] %>"><%= fm["slot_a_1"][I18n.locale.to_s] %></a>
+      </li>
+      <li><span  class="price"><%= fm['slot_span_0'][I18n.locale.to_s] %></span></li>
+    </ul>
+    <div class="cc-more">
+      <a rel="nofollow" href="<%= fm["slot_a_2"]['href'] %>"><%= fm["slot_a_2"][I18n.locale.to_s] %></a>
+    </div>
+  </div>
+</section>

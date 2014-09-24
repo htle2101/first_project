@@ -1,0 +1,100 @@
+  <div id="front_module_edit_total" class = "span24 well">
+    <h1>基础信息<small>点击模块开始编辑</small></h1>
+    <div class="input-prepend">
+      <span class="add-on">模块摘要</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="标题" value="<%= (@fm.title if @fm) || "模块" %>" data-id="title" style="font-weight:bold;">
+      <% if action_name == "edit"  %>
+        <a href="javascript:void(0)" class = "btn btn-primary front_module_edit_button" style="block">开始编辑</a>
+      <% end  %>
+    </div>
+  </div>
+<% unless @fm %>
+  <div class="front_module_choose_panel well">
+    <h1>模块选择</h1>   
+    <%= image_tag 'type_small_1.png', "data-url" => manage_front_modules_type_path("front_module_small_1"), :class => "front_module_choose_button" %>
+    <%= image_tag 'type_small_2.png', "data-url" => manage_front_modules_type_path("front_module_small_2"), :class => "front_module_choose_button" %>
+    <%= image_tag 'type_small_3.png', "data-url" => manage_front_modules_type_path("front_module_small_3"), :class => "front_module_choose_button" %>
+    <%= image_tag 'type_large_1.png', "data-url" => manage_front_modules_type_path("front_module_large_1"), :class => "front_module_choose_button" %>
+    <%= image_tag 'type_large_2.png', "data-url" => manage_front_modules_type_path("front_module_large_2"), :class => "front_module_choose_button" %>
+    <%= image_tag 'type_large_3.png', "data-url" => manage_front_modules_type_path("front_module_large_3"), :class => "front_module_choose_button" %>
+    <%= image_tag 'type_deals_1.png', "data-url" => manage_front_modules_type_path("front_module_deals_1"), :class => "front_module_choose_button" %>
+    <%= image_tag 'type_left_1.png', "data-url" => manage_front_modules_type_path("front_module_left_1"), :class => "front_module_choose_button" %>
+  </div>
+<% end  %>
+
+<div id="front_module_show" class="homepage">
+  <div style="float:left;">
+    <%= render(ActiveSupport::JSON.decode(@fm.content)["style_id"], :fm => @fm) if @fm %>
+  </div>
+</div>
+
+<div class = "span8 well front_module_edit" style="display:none; float:left;">
+
+  <div id="front_module_edit_slot_img" class = "span24 front_module_edit" style = "display:none;" >
+    <h3>图片编辑<small>高亮部分为当前编辑部分</small></h3>
+    <div class="input-prepend">
+      <div class="required span23 front_module_uploader"data-type="src" style="border:3px dotted #999999;">
+        <b>图片拖进来</b><div id = "uploader"></div>
+      </div>
+    </div>
+    <a href="javascript:void(0)" class = "btn btn-primary front_module_save span23" >保存</a>
+  </div>
+
+  <div id="front_module_edit_slot_span" class = "span24 front_module_edit" style = "display:none;" >
+    <h3>SPAN编辑<small>高亮部分为当前编辑部分</small></h3>
+    <div class="input-prepend a_text">
+      <span class="add-on">中文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="cn">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">俄文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="ru">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">英文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="en">
+    </div>
+    <a href="javascript:void(0)" class = "btn btn-primary front_module_save span23" >保存</a>
+  </div>
+
+  <div id="front_module_edit_slot_h3" class = "span24 front_module_edit" style = "display:none;" >
+    <h3>标题编辑<small>高亮部分为当前编辑部分</small></h3>
+    <div class="input-prepend a_text">
+      <span class="add-on">中文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="cn">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">俄文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="ru">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">英文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="en">
+    </div>
+    <a href="javascript:void(0)" class = "btn btn-primary front_module_save span23" >保存</a>
+  </div>
+
+  <div id="front_module_edit_slot_h4" class = "span24 front_module_edit" style = "display:none;" >
+    <h3>h4编辑<small>高亮部分为当前编辑部分</small></h3>
+    <div class="input-prepend a_text">
+      <span class="add-on">中文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="cn">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">俄文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="ru">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">英文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="en">
+    </div>
+    <a href="javascript:void(0)" class = "btn btn-primary front_module_save span23" >保存</a>
+  </div>
+
+  <div id="front_module_edit_slot_a" class = "span24 front_module_edit" style = "display:none;" >
+    <h3>链接编辑<small>高亮部分为当前编辑部分</small></h3>
+    <div class="input-prepend">
+      <span class="add-on">链接</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="链接" data-type="href">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">中文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="cn">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">俄文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="ru">
+    </div>
+    <div class="input-prepend a_text">
+      <span class="add-on">英文</span><input class="required span20" id="prependedInput" size="16" type="text" placeholder="文字" data-type="en">
+    </div>
+    <a href="javascript:void(0)" class = "btn btn-primary front_module_save span23" size="16">保存</a>
+  </div>
+</div>

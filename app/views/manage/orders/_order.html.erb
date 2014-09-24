@@ -1,0 +1,87 @@
+<tbody>
+  <tr><td colspan="7" class="space"></td></tr>
+  <tr>
+    <td colspan="7" class="last head">
+      <span class="split-left">订单编号 : <%= link_to order.number, manage_order_path(order) %></span>
+      <span class="split-left">下单时间 : <%= order.created_at.strftime("%F %R") %></span>
+      <span class="split-left">买家昵称 : <%= link_to order.user_name, manage_user_path(order.user_id) %></span>
+      <% if Message.get_related_conversation(order.number).try(:admin_unread?)%>
+        <a href='<%= "/manage/orders/#{order.id}#message" %>' class="split-left red"><新留言></a>
+      <% end %>
+      <%= '<span class="split-left red"><有未支付的补单!></span>'.html_safe if order.unpaid_adjustment %>
+      <%= '<span class="split-left red"><补单成功!></span>'.html_safe if order.paid_adjust %>
+      <%= "<span class='split-left red'><订单发往: #{order.get_shipped_to}></span>".html_safe if order.get_shipped_to %>
+      <% if order.tasks.doing.present? && task = order.tasks.doing.last.current_task %>
+        <a href='<%= manage_order_path(order) %>'>
+          <span class='split-left red'><%= "< " + task.to.username + " 正在处理 Order:" + order.id.to_s + " 任务!>"%></span>
+        </a>
+      <% end %>
+      <% hide = (order.delivery_status != 1 && @type == 'fahuo') %>
+      <% if @type == 'fahuo' %>
+        <span style="margin:-9px 0px -9px 0px;float:right;">
+          <% ads = order.order_address %>
+          <b><%= ads.name %></b>; <%= ads.address1 %><br />
+          <%= "#{ads.city}, #{ads.province}, #{ads.zip_code}, #{ads.country.englishname}" %>
+        </span>
+        <%= '<a href="javascript:;" class="f-right merge_order"><i class="icon-plus"></i></a>'.html_safe if order.delivery_status != 1 %>
+      <% end %>
+    </td>
+  </tr>
+  <% if order.partial_status? && params[:type][/^partial_refund/] %>
+    <%= render "list_refund_item", :order => order, :type => @type %>
+  <% else %>
+    <% (ops = order.order_products).each_with_index do |op, index| %>
+      <tr class="<%= 'hide' if hide %>">
+        <td>
+          <div class="wrap_goods">
+            <span class="img">
+              <%= link_to taobao_url(op.taobao_id), :target => "_blank" do %>
+              <%= image_tag op.pic_url_version(:small), :alt => op.name %>
+              <% end %>
+            </span>
+            <div class="goods_info" style="width:82%">
+              <p class="name"><%= link_to op.name, taobao_url(op.taobao_id), :target => "_blank" %></p>
+              <p class="note"><%= raw op.pv_values_html %></p>
+            </div>
+          </div>
+        </td>
+        <td class="no_left">$<%= op.price.roundf %></td>
+        <td class="no_left"><%= op.quantity %> 件</td>
+        <td class="no_left"><%= color_status(op.status) %></td>
+        <% if index == 0 %>
+          <td rowspan="<%= ops.size * 2 %>">
+            <div>
+              <strong><%= "$#{order.total.roundf}" if index == 0 %></strong>
+              <p style="color: gray">(<%= order.shipping_cost? ? "含运费$#{order.shipping_cost.roundf}" : "免运费"%>)</p>
+            </div>
+          </td>
+          <td rowspan="<%= ops.size * 2 %>"><b><%= t_models(order, 'get_status') %></b></td>
+          <td class='last' rowspan="<%= ops.size * 2 %>">
+            <% if order.refunding? %>
+              <% dp = order.deposits.order_refund.first %>
+              <% if dp.present? && can?(:manage, dp) %>
+                <% if dp.can_edit? %>
+                  <%= link_to '审核', [:edit, :manage, dp], :class => 'edit_deposit' %>
+                <% else %>
+                  <%= link_to '查看', [:manage, dp], :class => 'edit_deposit' %>
+                <% end %>
+                <br />
+              <% end %>
+            <% end %>
+            <%= link_to "订单详情", manage_order_path(order) %>
+          </td>
+        <% end %>
+      </tr>
+      <% if op.get_status == 'purchased' %>
+        <% if l = get_logistics(op.id) %>
+        <tr style="background-color:#efffef;" class="<%= 'hide' if hide %>">
+          <td colspan="4" style="text-align:left;">
+            <span><%= l['company_name'] %>: <%= l['out_sid'] %></span>
+            <span class="split-left">[ <%= l["status_time"] %> => <%= l["status_desc"] %> ]</span>
+          </td>
+        </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</tbody>

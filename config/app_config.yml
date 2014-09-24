@@ -1,0 +1,14 @@
+common: &common
+  data: xxx
+
+development:
+  <<: *common
+
+test:
+  <<: *common
+
+production:
+  <<: *common
+
+staging:
+  <<: *common

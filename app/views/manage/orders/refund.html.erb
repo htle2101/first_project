@@ -1,0 +1,21 @@
+<div class="span8">
+  <%= form_for @deposit, :url => [:refund, :manage, @order], :method => :post, :html => {:class => "send_order"} do |f| %>
+    <% type = params[:type] %>
+    <%= hidden_field_tag :type, type %>
+    <%= hidden_field_tag :state_to, type == 'order' ? 'refunding' : 'partial_refunding' %>
+    <%= f.hidden_field :user_id, :value => @order.user_id %>
+    <%= f.hidden_field :order_number, :value => @order.number %>
+    <label>退款类型: <span class="red"><%= type == 'order' ? '全额' : '部分' %></span> 退款</label>
+    <%#= hidden_field_tag :r_total, (arr = @order.refund_price(type)).sum.round(2) %>
+    <label>可退金额: $<%= (arr = @order.refund_price(type)).sum.round(2) %>
+    <% unless type == 'order' %>
+      <%= f.hidden_field :item_ids, :value => @order.order_products.shortage.map(&:id).join(',') %>
+      <span>（产品: $<%= arr.first %><span class="split-left">运费: $<%= arr.last %></span>）</span>
+    <% end %>
+    </label>
+    <label>实退金额: $ <%= f.text_field :amount, :value => arr.sum.round(2), :class => 'pn input-mini required' %></label>
+    <div class="form-actions">
+      <%= f.submit "确定", :class => "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

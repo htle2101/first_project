@@ -1,0 +1,68 @@
+<aside class="span4 account">
+<div class="summary-list">
+  <ul class="nav nav-list">
+    <li class="<%= live_active? main_app.my_path %>">
+    <a href="<%= main_app.my_path %>">
+      <i class="<%= live_active?(main_app.my_path, "icon-white") %> icon-home"></i> <%= t_views 'my.left_nav.my_bc' %>
+    </a>
+    </li>
+    <% arr = active_left %>
+    <li class="<%= (arr_order = arr[0])[0] %>">
+      <a href="<%= main_app.my_orders_path %>">
+        <i class="<%= arr_order[1] %> icon-list-alt"></i> <%= t_views 'my.left_nav.order' %>
+      </a>
+      <div class="sub-link <%= 'hide' if arr_order.blank? %>">
+        <% ['dispute', 'settled', 'completed', nil].each do |type| %>
+          <a href="<%= to_orders(type) %>" class="<%= left_able('type', type) %>">
+            <%= t_views "my.left_nav.#{type||'all'}" %> (<%= current_user.order_count_by_status(Order::TABS[type]) %>)
+          </a>
+        <% end %>
+      </div>
+    </li>
+    <li class="<%= live_active? main_app.my_favourites_path %>">
+    <a href="<%= main_app.my_favourites_path %>">
+      <i class="<%= live_active?(main_app.my_favourites_path, "icon-white") %> icon-heart"></i> <%= t_views 'my.left_nav.favourite' %>
+    </a>
+    </li>
+    <li class="<%= live_active? [main_app.my_account_path, main_app.my_profile_path, main_app.my_addresses_path] %>">
+    <a href="<%= main_app.my_account_path %>">
+      <i class="<%= live_active?(main_app.my_account_path, "icon-white")%> icon-user"></i> <%= t_views 'my.left_nav.account' %>
+    </a>
+    </li>
+    <li class="<%= live_active? [main_app.my_messages_path, main_app.new_my_message_path] %>">
+    <a href="<%= main_app.my_messages_path %>">
+      <i class="<%= live_active?(main_app.my_messages_path, "icon-white") %> icon-question-sign"></i> <%= t_views 'my.left_nav.question' %>
+    </a>
+    </li>
+    <li class="<%= is_wallet = live_active?([main_app.transfer_my_wallet_path, main_app.withdraw_my_wallet_path, main_app.history_my_wallet_path]) %>">
+    <a href="<%= main_app.transfer_my_wallet_path %>">
+      <i class="<%= is_wallet.present? ? "icon-white" : "" %> icon-lock"></i> <%= t_views 'my.left_nav.wallet' %>
+      <div class="sub-link <%= 'hide' if is_wallet.blank? %>">
+        <a href="<%= transfer_my_wallet_path %>" class="<%= live_active?(main_app.transfer_my_wallet_path, 'current') %>"><%= t_views 'my.left_nav.transfer_money'%></a>
+        <a href="<%= withdraw_my_wallet_path %>" class="<%= live_active?(main_app.withdraw_my_wallet_path, 'current') %>"><%= t_views 'my.left_nav.withdraw_money'%></a>
+        <a href="<%= history_my_wallet_path %>" class="<%= live_active?(main_app.history_my_wallet_path, 'current') %>"><%= t_views 'my.left_nav.transacton_history' %></a>
+      </div>
+    </a>
+    </li>
+    <% if current_user.messages.large_orders.present? %>
+    <li class="<%= live_active?(main_app.my_large_orders_path) %>">
+      <a href="<%= main_app.my_large_orders_path %>">
+        <i class="icon-gift"></i><%= t_views "my.left_nav.large_order"%>
+      </a>
+      </li>
+    <% end %>
+    <% if current_user.affiliate_id? %>
+      <li class="<%= is_affiliate = live_active?([my_affiliates_path(:type => "all"), settle_my_affiliates_path, my_affiliates_path(:type => 'waiting_settle')]) %>">
+      <a href="<%= my_affiliates_path(:type => "all") %>" class="<%= live_active?(my_affiliates_path(:type => "all"), 'current') %>">
+        <i class="<%= is_affiliate.present? ? "icon-white" : "" %> icon-star"></i> <%= t_views 'my.left_nav.affiliate_program'%>
+        <div class="sub-link <%= 'hide' if is_affiliate.blank? %>">
+          <a href="<%= my_affiliates_path(:type => "all") %>" class="<%= live_active?(my_affiliates_path(:type => "all"), 'current') %>"><%= t_views 'my.left_nav.summary' %></a>
+          <a href="<%= my_affiliates_path(:type => 'waiting_settle') %>" class="<%= live_active?(my_affiliates_path(:type => 'waiting_settle'), 'current') %>"><%= t_views 'my.left_nav.waiting_settle' %></a>
+          <a href="<%= settle_my_affiliates_path %>" class="<%= live_active?(settle_my_affiliates_path , 'current') %>"><%= t_views 'my.left_nav.settle' %></a>
+        </div>
+      </a>
+      </li>
+    <% end %>
+  </ul>
+</div>
+</aside>

@@ -1,0 +1,46 @@
+<% if @message.related_type == "Product" %>
+  <table class="table data-table-order">
+    <thead>
+      <tr>
+        <th colspan="2">商品</th>
+        <th width="70px">需求数量</th>
+        <th width="90px">淘宝价</th>
+        <th width="90px">单价</th>
+        <th width="120px">总价</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="input-mini"><%= image_tag image_version((p = @message.related_item).pic_url, :v60) %></td>
+        <td><%= link_to p.name, p.url, :target => '_blank' %></td>
+        <td><%= @message.quantity %></td>
+        <td>¥<%= p.price %></td>
+        <td>$<%= p.bc_price.roundf(1) %></td>
+        <td>$<%= (p.bc_price * @message.quantity.to_i).roundf(2) %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+<ul class="comment">
+  <% @message.replies.each_with_index do |r, i| %>
+    <% is_buyer = r.user_id != current_user.id %>
+    <li class="<%= "rp" if is_buyer %>" style="padding-left:10px;">
+      <% if i == 0 %>
+        <h2>
+          <% if @message.related_type != 'Order' %>
+            <p>主题：<%= add_format_to(@message.subject).html_safe %></p>
+          <% end %>
+          <% if @message.related_type == "Question" %>
+            <p>类别：<%= t_models 'message.category', @message.get_category %></p>
+          <% end %>
+        </h2>
+      <% else %>
+        <% if is_buyer %>
+          <p style="height:5px;margin-left:-10px;background-color:white;"></p>
+        <% end %>
+      <% end %>
+      <h2><%= link_to r.user.username, manage_user_path(r.user) %><span><%= r.created_at.to_local %></span></h2>
+      <p><%= raw add_format_to(r.content) %></p>
+    </li>
+  <% end %>
+</ul>

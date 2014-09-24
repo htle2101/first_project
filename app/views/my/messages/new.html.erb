@@ -1,0 +1,39 @@
+<% if flash[:notice] %>
+  <div class="alert alert-success"><%= flash[:notice] %></div>
+<% end %>
+
+<div style="border: 2px solid #f0f0f1;">
+  <h3 style="background: #f0f0f1; padding: 0px 20px"><%= t 'views.messaging.messages.new.askaquestion'%></h3>
+  <div style="padding:10px">
+    <%= form_for @message, :url => { :action => "create" }, :html => {:class => 'form-horizontal aq-from'} do |f| %>
+      <%= hidden_field_tag :return_url, @return_url %>
+      <div class="control-group">
+        <label class="control-label"><%= t 'views.messaging.messages.new.catagory'%></label>
+        <div class="controls">
+          <%= f.select :related_id, Message::CATEGORY.invert.collect{|k,v| [t_models('message.category', k), v]}, {}, :class => "required input-large" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="inputWarning"><%= t 'views.messaging.messages.new.subject'%></label>
+        <div class="controls">
+          <%= f.text_field :subject, :class => 'required input-xxlarge' %>
+        </div>
+      </div>
+      <%= f.fields_for :replies, (@message.replies.first || Reply.new) do |r| %>
+        <%= r.hidden_field :user_id, :value => current_user.id %>
+        <div class="control-group">
+          <label class="control-label"><%= t 'views.messaging.messages.new.message'%></label>
+          <div class="controls">
+            <%= r.text_area :content, :rows => 6, :class => "input-xxlarge required" %>
+          </div>
+        </div>
+      <% end %>
+      <div class="control-group">
+        <div class="controls">
+          <%= f.submit t('submit'), :class => "btn btn-primary"%>
+          <%= link_to t('cancel'), (@return_url ? @return_url : my_messages_path), :class => 'btn split-left' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

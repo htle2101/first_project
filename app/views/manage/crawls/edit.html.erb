@@ -1,0 +1,21 @@
+<%= form_for @crawl_log, :url => "/manage/crawls/#{@crawl_log.id}", :html => {:class => "form-horizontal"} do |f| %>
+  <div class="control-group">
+    <label class="control-label">抓取类型：</label>
+    <div class="controls">
+      <%= f.select :crawl_type, CrawlLog::TYPE %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">关键词/店铺url/目录cid：</label>
+    <div class="controls">
+      <ul style="color:red">
+        <li>支持填写多个，每个之间以换行分隔。</li>
+        <li>店铺url应该是http://xxx.tmall.com/ 或 http://xxx.taobao.com/</li>
+      </ul>
+      <%= f.text_field :key %>
+    </div>
+  </div>
+  <div class="form-actions">
+    <%= f.submit "提交", :class => "btn btn-pirmary" %>
+  </div>
+<% end %>

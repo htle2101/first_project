@@ -1,0 +1,18 @@
+<table class='order-admin center-order table table-hover'>
+  <tr>
+    <th>推广 sns</th>
+    <th>数量</th>
+    <th>操作</th>
+  </tr>
+  <% Referral::REFERRAL_AGENT.each do |name, value| %>
+    <tr>
+      <td><%= name %></td>
+      <td><%= referrals[value] %></td>
+      <td>
+        <% if referrals[value].to_i > 0 %>
+          <%= link_to "查看详情", details_manage_affiliates_path(:q => params[:q], "q[referral_agent]" => value, :type => 'referers')  %>
+        <% end -%>
+      </td>
+    </tr>
+  <% end -%>
+</table>

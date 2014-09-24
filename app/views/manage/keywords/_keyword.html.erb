@@ -1,0 +1,13 @@
+<% item = action_name != 'translated' ? Item.new(:title=> name) : Item.new(:title => name.try(:first), :nick => name.try(:last)) %>
+<% key = item.title %>
+<td>
+  <%= key ? best_in_place(item, :title, :nil => key, :type => :input, :path => send("#{action_name}_manage_keywords_path", :key => key, :val => item.try(:nick))) : '' %>
+</td>
+<% if action_name == 'translated' %>
+  <td>
+    <%= key ? best_in_place(item, :nick, :nil => item.nick, :type => :input, :path => send("#{action_name}_manage_keywords_path", :key => key, :val => item.nick, :type => 'up_val'), :activator => nil) : '' %>
+  </td>
+<% end %>
+<td style="text-align:center;">
+  <%= render 'action_bar', :key => key %>
+</td>

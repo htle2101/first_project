@@ -1,0 +1,3 @@
+<%= form_for [:my, @address || current_user.addresses.new], :html => {:class => 'form-horizontal'} do |f| %>
+  <%= render '/addresses/form_fields', :f => f %>
+<% end %>

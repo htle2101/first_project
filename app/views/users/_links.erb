@@ -1,0 +1,10 @@
+<div class="inset">
+  <% if devise_mapping.omniauthable? %>
+    <% resource_class.omniauth_providers.each do |provider| %>
+      <%= link_to omniauth_authorize_path(resource_name, provider), :class => "fb login_button" do %>
+        <div class="logo_wrapper"><span class="logo"></span></div>
+        <span>Sign in with Facebook</span>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

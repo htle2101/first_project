@@ -1,0 +1,13 @@
+<tr class='task_column'>
+  <td>
+    <div class="flow">
+      <%= show_order_task_message(task, task.current_task, false).html_safe %>
+      <% if task.completed? %>
+        <span class="flow-complete">完成</span>
+      <% end -%>
+      <a href='<%= manage_order_path(task.resource) %>' class='pull-right go_process btn btn-mini btn-success'>
+        <i class=' icon-arrow-right'></i>
+      </a>
+    </div>
+  </td>
+</tr>

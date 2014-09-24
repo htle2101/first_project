@@ -1,0 +1,34 @@
+<div class="well span21 upload_images">
+  <h2 class="manage title">上传图片</h2>
+  <%= form_for [:manage, @upload_image], :class => "form-horizontal" do |f| %>
+    <div class="control-group">
+      <div class="controls">
+        <%= image_tag "600x400.png", :id => "upload_image_place_image", :style=>"display: none" %>
+
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label">选择图片</div>
+      <div class="controls">
+         <%= f.file_field :image %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label">图片名称</div>
+      <div class="controls">
+        <%= f.text_field :name %>
+      </div>
+    </div>
+    <%= f.hidden_field :image_type %>
+    <div class="control-group">
+      <div class="controls">
+        <%= f.button "上传", :class => 'btn btn-large btn-primary offset10 upload_image' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <span id="upload_image_place_url" style='font-size: 40px;line-height: 40px;'></span>
+      </div>
+    </div>
+  <% end -%>
+</div>

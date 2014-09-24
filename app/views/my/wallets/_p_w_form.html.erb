@@ -1,0 +1,41 @@
+<%= form_for @deposit, :url => withdraw_my_wallet_path, :html => {:class => 'form-horizontal'} do |f| %>
+  <%= hidden_field_tag 'type', 'p_w' %>
+  <%= hidden_field_tag 'pay', 'paypal' %>
+  <h4 class="balance-ammout"><%= t_views 'p_a_balance' %><b> <%= @account.fund %> </b><span class="quiet">USD</span></h4>
+  <h4 class="balance-ammout"><%= t_views 'p_f_amount' %> <%= @account.frozen_fund %> <span class="quiet">USD</span></h4>
+  <!--
+  <div class="control-group">
+    <label class="control-label"><%#= t_views 'w_via' %></label>
+    <div class="controls">
+      <%#= image_tag "paypal-sm.png"%>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">* <%#= t_views 'p_paypal_account' %></label>
+    <div class="controls">
+      <div class="input-append">
+        <%#= f.text_field :paypal_account, :class => 'text required', :placeholder => 'test@paypal.com' %>
+        <%#= f.error_message_on :paypal_account, :css_class => 'error help-inline', :prepend_text => 'The paypal account ' %>
+      </div>
+    </div>
+  </div>
+  -->
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 'p_amount' %></label>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :amount, :class => 'text required pn', :style => "width:183px;" %><span class="add-on">$</span>
+        <%= f.error_message_on :amount, :css_class => 'error help-inline' %>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label"><%= t_views 'p_comments' %></label>
+    <div class="controls">
+      <%= f.text_area :remark, :rows => 4 %>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary new_deposit"><%= t 'submit' %></button>
+  </div>
+<% end %>

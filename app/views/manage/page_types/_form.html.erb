@@ -1,0 +1,41 @@
+<%= form_for [:manage, page_type], :html =>{:class => "form-inline"} do |f| %>
+  <% if page_type.new_record? || page_type.parent %>
+    <div class="control-group" style="height: 36px;">
+      <label style='width: 75px; text-align: right; margin-right: 24px;'>父目录</label>
+      <%= f.select 'parent_id', PageType.help_root.map{|pt| [pt.name, pt.id]}, :include_blank => true %> <strong>选择空则创建一级目录</strong>
+    </div>
+  <% end -%>
+  <div class="control-group" style="height: 36px;">
+    <label style='width: 75px; text-align: right; margin-right: 24px;'>英文名称</label>
+    <%= text_field_tag 'page_type[name]', @page_type.name(:en), :placeholder=>"必填", :id=>'new_child_page_type_name_en' %>
+    <label style="width: 60px;text-align: right; ">中文名称</label>
+    <%= text_field_tag 'page_type[name_cn]', @page_type.name(:cn), :placeholder=>"类型名称", :id=>'new_child_page_type_name_cn' %>
+    <label style="width: 60px;text-align: right; " class=''>俄文名称</label>
+    <%= text_field_tag 'page_type[name_ru]', @page_type.name(:ru), :placeholder=>"类型名称", :id=>'new_child_page_type_name_ru' %>
+  </div>
+  <div class="control-group root_fields" style="height: 36px; <%= 'display: none' unless page_type.root? %>">
+    <label class=''style='width: 75px; text-align: right; margin-right: 24px;'>英文别名</label>
+    <%= text_field_tag 'page_type[alias]', @page_type.alias(:en), :id=>'new_child_page_type_name_en' %>
+    <label style="width: 60px;text-align: right; " class=''>中文别名</label>
+    <%= text_field_tag 'page_type[alias_cn]', @page_type.alias(:cn), :id=>'new_child_page_type_name_cn' %>
+    <label style="width: 60px;text-align: right; " class=''>俄文别名</label>
+    <%= text_field_tag 'page_type[alias_ru]', @page_type.alias(:ru), :id=>'new_child_page_type_name_ru' %>
+  </div>
+
+  <div class="control-group root_fields" style="height: 36px; <%= 'display: none' unless page_type.root? %>">
+    <label style='width: 75px; text-align: right; margin-right: 24px;'>图片</label>
+    <%= f.file_field :image %>
+    <% if page_type.image? %>
+      <%= image_tag page_type.image, :width => "50px", :height => "50px" %>
+    <% end -%>
+  </div>
+  <div class="control-group root_fields" style="height: 36px; <%= 'display: none' unless page_type.root? %>">
+    <label style='width: 75px; text-align: right; margin-right: 24px;'>权重</label>
+    <%= f.number_field 'weight', :class => 'input-mini pi' %>
+  </div>
+
+  <div class='control-group'>
+    <label style='width: 75px; text-align: right; margin-right: 24px;'></label>
+    <%= f.submit "确定", :class=>"btn btn-primary" %>
+  </div>
+<% end -%>

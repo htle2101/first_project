@@ -1,0 +1,19 @@
+<% if action_name == 'show' %>
+  <div class="modal-body">
+    关键字：<%= @word.name %> <br/>
+    已关联子类：
+    <ul class="nav nav-pills <%= 'hide' if (words = @word.descendants).blank? %>">
+      <%= render :partial => 'shield_child', :collection => words, :as => 'c' %>
+    </ul>
+  </div>
+<% end %>
+<%= form_tag manage_search_keys_path, :class => 'well form-search', :id => 'new_shield' do |f| %>
+  <%= text_field_tag 'key', params[:key], :class => 'required input-medium', :placeholder => "新增关键字（不能为空！）" %>
+  <% if action_name == 'shields' %>
+    <input class="input-medium" id="auto_shields" type="text" autocomplete='false' placeholder='关联父类(即时查询,可不填)'>
+  <% end %>
+  <%= hidden_field_tag 'type', 'shields' %>
+  <%= hidden_field_tag 'parent_id', @word.try(:id) %>
+  <%= hidden_field_tag('add_child', 1) if action_name == 'show' %>
+  <input class="btn split-left to_add_shield" type="submit" value="添加">
+<% end %>

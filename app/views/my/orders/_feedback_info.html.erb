@@ -1,0 +1,27 @@
+<div id="feedback-info" class="otabs hide">
+  <table class="data-table-order" style="margin-top: 5px;">
+    <thead>
+      <tr>
+        <th width="60px"><%= t 'product' %></th>
+        <th></th>
+        <th width="100px"><%= t 'reviews' %></th>
+        <th width="300px"><%= t 'detail.comments' %></th>
+      </tr>
+    </thead>
+    <% @order.product_feedbacks.each do |fb| %>
+      <% op = fb.order_product %>
+      <tr>
+        <td><%= image_tag(op.pic_url_version :v60) %></td>
+        <td>
+          <ul>
+            <li><strong><%= op.name %></strong></li>
+            <li><%= op.get_pv_values %></li>
+            <li>US $<%= fb.price.roundf %> x <%= fb.quantity %> <%= t_views 'review.pieces' %></li>
+          </ul>
+        </td>
+        <td><%= raw '<i class="icon-star"></i>' * fb.stars %></td>
+        <td><%= fb.comment %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

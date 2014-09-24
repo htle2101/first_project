@@ -1,0 +1,17 @@
+<% cache [I18n.locale, @small_promotion] do  %>
+  <div class="clear"></div>
+  <ul class="sub-banner">
+    <% @small_promotion.children.active.order("created_at desc").first(3).each do |promotion| %>
+      <li>
+        <a href="<%= promotion.url %>" rel="nofollow">
+          <img alt="<%= promotion.name %>" src="<%= promotion.index_image %>">
+        </a>
+      </li>
+    <% end if @small_promotion.present? %>
+  </ul>
+<% end %>
+
+<% if @single_item  %>
+<% fm_hash = ActiveSupport::JSON.decode(@single_item.content) %>
+<%= render fm_hash["style_id"], :fm => fm_hash %>
+<% end %>

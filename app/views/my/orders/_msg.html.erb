@@ -1,0 +1,49 @@
+<%=  "<div class=\"alert alert-success\">#{flash[:notice]}<\/div>".html_safe if flash[:notice] %>
+<section class="msg-container" id="msg-info">
+  <h3 class="mmt"><%= t('mes') %></h3>  
+  <% if @message.persisted?  %>
+    <ul class="msg-list">
+      <% @message.replies.each do |reply| %>
+        <% is_user = (reply.user == current_user) %>
+        <li class="msg-block msg-other" style="<%= "background-color:"+ (is_user ? "" : "#fafafa") %>">
+          <div class="name-date">
+            <span class="msg-name"><strong><%= is_user ? @message.user.username : "BuychinaSupport" %></strong></span>
+            <span class="msg-date"><%= reply.created_at.strftime("%Y-%m-%d %R") %></span>
+          </div>
+          <p class="msg-classont" id = "messagedetail"><%= add_format_to(reply.content).html_safe %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if @message.new_record? %>
+    <%= form_for @message, :url => { :action => "send_message" } do |f| %>
+      <%= f.hidden_field :user_id, :value => current_user.id %>
+      <%= f.hidden_field :subject, :value => "Order:#{@order.number}" %>
+      <%= f.hidden_field :related_id, :value => @order.number %>
+      <%= f.hidden_field :related_type, :value => 'Order' %>
+      <%= f.hidden_field :admin_unread, :value => 1 %>
+      <%= f.hidden_field :user_unread, :value => 0 %>
+      <%= f.fields_for :replies do |r| %>
+        <%= r.hidden_field :user_id, :value => current_user.id %>
+        <div class="control-group">
+          <%= r.text_area :content, :rows => 5, :class => "span17", :style => "margin-top:5px" %>
+        </div>
+      <% end %>
+      <div class="control-group">
+        <%= f.submit t('views.messaging.messages.reply'), :class => "btn btn-primary",  :style => "margin-top: 5px;width: 96px" %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= form_for Reply.new, :url => { :action => "send_message" } do |f| %>
+      <%= f.hidden_field :user_id, :value => current_user.id %>
+      <%= f.hidden_field :message_id, :value => @message.id %>
+      <div class="control-group">
+        <%= f.text_area :content, :rows => 5, :class => "span17", :style => "margin-top:5px" %>
+      </div>
+      <div class="control-group">
+        <%= f.submit t('views.messaging.messages.reply'), :class => "btn btn-primary",  :style => "margin-top: 5px;width: 96px" %>
+      </div>
+    <% end %>
+  <% end %>
+</section>

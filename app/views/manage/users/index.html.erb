@@ -1,0 +1,43 @@
+<%= search_form_for [:manage, @q], :html => {:class => "well form-inline"} do |f| %>
+  <label>用户名:</label>
+  <%= f.text_field :username_cont, :class => "input-medium" %>
+  <label class="split-left">邮箱:</label>
+  <%= f.text_field :email_cont, :class => "input-medium" %>
+  <label class="split-left">登陆次数大于</label>
+  <%= f.text_field :sign_in_count_gteq, :class => "input-mini", :placeholder => "次" %>
+  <label class="split-left">注册时间:</label>
+  <%= f.text_field :created_at_gteq, :class => "input-small datepicker", :value => init_date("gteq", :value => "") %>
+  <label>之后</label>
+  <%= f.submit '搜索', :class => "btn split-left" %>
+  <span class="label label-info split-left">共<%= @users.count %>名用户</span>
+<% end %>
+
+<table class="order-admin table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_link @q, :username, "用户名" %></th>
+      <th><%= sort_link @q, :email, "邮箱" %></th>
+      <th><%= sort_link @q, :sign_in_count, '登录次数' %></th>
+      <th><%= sort_link @q, :created_at, '注册时间' %></th>
+      <th><%= sort_link @q, :last_sign_in_at, '最后登录时间' %></th>
+      <th><%= sort_link @q, :location, '国家' %></th>
+      <th><%= sort_link @q, :confirmed_at, '验证状态' %></th>
+      <th><%= sort_link @q, :orders_count, '订单数' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.username, [:manage, user] %></td>
+        <td><%= user.email %></td>
+        <td><%= user.sign_in_count %></td>
+        <td><%= user.created_at.to_s(:db) %></td>
+        <td><%= user.last_sign_in_at.try :to_s, :db %></td>
+        <td><%= user.location %></td>
+        <td><%= user.confirmed? ? "已验证" : "未验证" %></td>
+        <td><strong><%= (c = user.orders_count) == 0 ? '' : c %></strong></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @users, :renderer => PaginationNoFollow %>

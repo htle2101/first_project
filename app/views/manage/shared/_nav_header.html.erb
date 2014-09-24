@@ -1,0 +1,29 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container" style="width:100%;">
+      <%= link_to "后台管理", manage_path, :class=> "brand" %>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li class="<%= nav_active? ["front_categories", "categories", "topics", "brands", "promotions", "front_modules"] %>"><%= link_to "目录管理", manage_front_categories_path %></li>
+          <li class="<%= nav_active? ["messages"] %>">
+            <%= link_to "留言管理", manage_messages_path(:q => {:related_type_eq => "Question", :admin_unread_eq => true}) %>
+          </li>
+          <li class="<%= nav_active? ["orders"] %>"><%= link_to "订单管理", manage_orders_path(:type => "total") %></li>
+          <li class="<%= nav_active? ["users", "affiliates", "emails"] %>"><%= link_to "用户管理", manage_users_path %></li>
+          <li class="<%= nav_active? ["products", 'crawls', "batch_products", "tags"] %>"><%= link_to '产品管理', manage_products_path %></li>
+          <li class="<%= nav_active? ["search_keys",'user_search_keys', 'keywords'] %>"><%= link_to '关键词管理', manage_search_keys_path %></li>
+          <li class="<%= nav_active? "deposits" %>"><%= link_to "汇款管理", manage_deposits_path('q[fund_type_eq]' => 1) %></li>
+          <li class="<%= nav_active? "ship_methods" %>"><%= link_to "运费管理", manage_ship_methods_path(:ship_method_id => 0) %></li>
+          <li class="<%= nav_active? "guides" %>"><%= link_to "导购管理", manage_guides_path %></li>
+          <li class="<%= nav_active? "countries" %>"><%= link_to "分区管理", manage_countries_path %></li>
+          <li class="<%= nav_active? ["pages", "page_types", "upload_images"] %>"><%= link_to "帮助管理", manage_pages_path %></li>
+          <li class="<%= nav_active? ["taobaos"] %>"><%= link_to "淘宝管理", manage_taobaos_path(:type => 1) %></li>
+        </ul>
+        <ul class="nav pull-right">
+          <li><%= link_to current_user.username, "#" %></li>
+          <li><%= link_to "退出", main_app.logout_path %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

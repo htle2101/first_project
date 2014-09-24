@@ -1,0 +1,43 @@
+<%= form_for @deposit, :url => transfer_my_wallet_path, :html => {:class => 'form-horizontal'} do |f| %>
+  <%= hidden_field_tag 'type', 'w_t' %>
+  <%= hidden_field_tag 'pay', 'western' %>
+  <div class="control-group">
+    <label class="control-label">* MTCN</label>
+    <div class="controls">
+      <%= f.text_field :w_transfer_number, :class => 'text required' %>
+      <%= f.error_message_on :w_transfer_number, :prepend_text => 'The number ', :css_class => 'error help-inline' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 't_amount' %></label>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :amount, :class => 'text required pn' %><span class="add-on">$</span>
+        <%= f.error_message_on :amount, :css_class => 'error help-inline' %>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 'w_country' %></label>
+    <div class="controls">
+      <%= f.collection_select(:w_country_id, Country.all, :id, :englishname) %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 'w_sender_f_name' %></label>
+    <div class="controls">
+      <%= f.text_field :w_first_name, :class => 'text required' %>
+      <%= f.error_message_on :w_first_name, :prepend_text => 'The sender\'s first name ', :css_class => 'error help-inline' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 'w_sender_l_name' %></label>
+    <div class="controls">
+      <%= f.text_field :w_last_name, :class => 'text required' %>
+      <%= f.error_message_on :w_last_name, :prepend_text => 'The sender\'s last name ', :css_class => 'error help-inline' %>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary new_deposit"><%= t 'submit' %></button>
+  </div>
+<% end %>

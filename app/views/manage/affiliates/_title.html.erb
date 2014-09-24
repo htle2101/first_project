@@ -1,0 +1,28 @@
+<div class="row-fluid">
+  <div class="span8 well clearfix">
+    <span>
+      <% if @referral_user %>
+        <span style='margin-right: 10px;'><strong>推广人: </strong><%= link_to @referral_user.username, referrals_manage_affiliates_path("q[referral_user_name_eq]" => @referral_user.username) %></span>
+      <% end -%>
+      <% if @referral_sns%>
+        <span><strong>推广SNS: </strong><%= @product.blank? ? "产品不存在" : link_to(@referral_sns, details_manage_affiliates_path(:type => :sns, :q => {:referral_user_id => @referral_user.id, :taobao_id => @product.taobao_id})) %></span>
+      <% end -%>
+    </span>
+    <% if @product %>
+      <div class="order-admin" style="margin-top:5px;">
+        <div class="wrap_goods">
+          <span class="img">
+            <a href="<%= @product.url %>" target="_blank">
+              <%= image_tag @product.pic_url %>
+            </a>
+          </span>
+          <div class="goods_info">
+            <p class="name">
+            <%= link_to @product.name, @product.url, :target => "_blank" %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end -%>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<% act = 'edit;update'[action_name] ? 'edit' : 'new' %>
+<section class="item clearfix <%= 'active' if no_add %>" id="<%= act %>_address_section">
+  <input type="radio" class="radio" id="to_add" name="address_id" <%= 'checked' if no_add %>>
+  <label class="addr-name" for="to_add"><%= t "#{act}_address" %></label>
+  <div class="addr-inputdiv <%= 'hide' unless no_add %>">
+    <%= render 'form' %>
+  </div>
+</section>

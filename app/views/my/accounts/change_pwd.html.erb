@@ -1,0 +1,32 @@
+<%= render 'my/shared/account_header' %>
+<div class="section">
+  <h3><%= t 'my.change_pwd.pwd' %></h3>
+  <div class="body">
+    <%= form_for current_user, :url => reset_password_path, :html => {:method => :put, :id => 'reset_pwd', :class=> "form-horizontal"} do |f| %>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.change_pwd.current_pwd' %></label>
+        <div class="controls">
+          <%= f.password_field :current_password, :class => 'required', :minlength => 6, :size => 20 %>
+          <%= f.error_message_on :password_confirmation %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.change_pwd.new_pwd' %></label>
+        <div class="controls">
+          <%= f.password_field :password, :class => 'required', :minlength => 6, :size => 20 %>
+          <%= f.error_message_on :password %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.change_pwd.confirm_new_pwd' %></label>
+        <div class="controls">
+          <%= f.password_field :password_confirmation, :class => 'required', :equalTo => "#user_password", :minlength => 6, :size => 20 %>
+          <%= f.error_message_on :password_confirmation %>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= t 'submit' %></button>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<section class="box channel-mid cc-banner">
+ <h3 class="title"><%= fm['slot_h3'][I18n.locale.to_s] %></h3>
+ <div class="bd">
+   <div class="cc-img">
+     <a href="<%= fm['slot_a_0']['href'] %>">
+       <%= image_tag fm['slot_img_0']['src'], :width => "370px", :height => "170px"%>
+     </a>
+   </div>
+   <p class="cc-text">
+     <% 7.times do |i| %>
+     <a href="<%= fm["slot_a_#{(i+1).to_s}"]['href'] %>"><%= fm["slot_a_#{(i+1).to_s}"][I18n.locale.to_s] %></a>
+     <% end  %>
+   </p>
+ <div class="cc-side">
+     <h4><%= fm['slot_h4'][I18n.locale.to_s] %></h4>
+     <ul>
+       <% 4.times do |i|  %>
+       <li>
+         <a href="<%= fm['slot_a_' + (i+8).to_s]['href'] %>">
+           <%= image_tag fm["slot_img_#{(i+1).to_s}"]['src'], :width => "80px", :height => "80px" %>
+         </a>
+       </li>
+       <% end  %>
+     </ul>
+ </div>
+ <div class="cc-more">
+   <a href="<%= fm["slot_a_12"]["href"] %>" rel="nofollow"><%= fm["slot_a_12"][I18n.locale.to_s] %></a>
+ </div>
+ </div>
+</section>

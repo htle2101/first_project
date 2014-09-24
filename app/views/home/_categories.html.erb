@@ -1,0 +1,38 @@
+<div class="cate-list">
+  <% height = FrontCategory.active_top_categories.count * 31 + 42 %>
+  <% FrontCategory.active_top_categories.reverse.each_with_index do |category, index| %>
+    <% cache [category, category.translation] do %>
+      <dl class="cate-list-item ">
+        <dt class="cate-name"><%= link_to category.name, category.url %></dt>
+        <dd style="top:-<%= index * 31 %>px; height:<%= height %>px;" class="sub-cate-list" >
+          <ul>
+            <% category.children.order("`order` asc").in_groups_of(2, false).each do |records| %>
+              <li class="clearfix">
+                <% records.each do |child| %>
+                  <div class="sub-cate-box ">
+                    <div class="title">
+                      <%= link_to child.name, child.url %>
+                    </div>
+                    <div class="data-list">
+                      <% child.children.order("`order` asc").each do |se_child| %>
+                        <a href="<%= se_child.url %>">
+                          <%= se_child.name %>
+                          <% if se_child.hot %>
+                            <img src="/images/new_icon.gif" alt="<%= se_child.name %>">
+                          <% end %>
+                        </a>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </dd>
+      </dl>
+    <% end %>
+  <% end %>
+  <div class="cate-all-item ">
+    <%= link_to t('category.view_all'), categories_url %>
+  </div>
+</div>

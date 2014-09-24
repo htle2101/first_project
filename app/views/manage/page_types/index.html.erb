@@ -1,0 +1,27 @@
+<div class='span21 page_type'>
+  <%= link_to "创建分类", new_manage_page_type_path, :class => 'btn btn-primary create_button' %>
+  <% if flash[:notice].present? %>
+    <div class="alert error">
+      创建或者更新失败： <%= flash[:notice] %>
+    </div>
+  <% end -%>
+  <table class='order-admin center-order table table-hover'>
+    <tr>
+      <th>No.</th>
+      <th>名称</th>
+      <th>别名</th>
+      <th>权重<em>(点击修改)</em></th>
+      <th>操作</th>
+    </tr>
+    <%= content_tag_for(:tr, @page_types) do |pt| %>
+      <%= render 'page_type', :pt => pt %>
+      <%= render 'page_type_children_flag', :pt => pt %>
+      <%= content_tag_for(:tr, pt.children, :class=>"page_type_children_#{pt.id}", :style=>"display: none") do |ptc| %>
+        <%= render 'page_type', :pt => ptc %>
+      <% end -%>
+      <%= render 'page_type_children_flag', :pt => pt %>
+    <% end -%>
+  </table>
+</div>
+
+<%= will_paginate @page_types, :renderer => PaginationNoFollow %>

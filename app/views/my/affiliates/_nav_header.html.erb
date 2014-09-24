@@ -1,0 +1,4 @@
+<ul class="tab clearfix append-bottom">
+  <li class = "<%= live_active?(my_affiliates_path(:type => "all"), "able") %>"><a href="<%= my_affiliates_path(:type => "all") %>"><%= t_views '.summary' %></a></li>
+  <li class = "<%= live_active?(my_affiliates_path(:type => "waiting_settle"), "able") %>"><a href="<%= my_affiliates_path(:type => "waiting_settle") %>"><%= t_views '.waiting_settle' %></a></li>
+</ul>

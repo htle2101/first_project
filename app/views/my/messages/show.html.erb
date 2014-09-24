@@ -1,0 +1,30 @@
+<%= "<div class=\"alert alert-success\">#{flash[:notice]}<\/div>".html_safe if flash[:notice] %>
+<div class="myaccount-header">
+  <a class="manage-address" href="/my/messages"><%= t 'views.messaging.messages.backtolist'%></a>
+  <h3><%= t('ask_a_q') %></h3>
+</div>
+<div class="clearfix">
+  <ul class="comment-list">
+    <% @message.replies.each do |reply| %>
+    <% is_user = (@message.user_id == reply.user_id) %>
+    <li style="margin-bottom:0px; padding: 5px 8px;<%=  "background-color:"+ (is_user ? "" : "#fafafa") %>">
+      <div class="">
+        <b><%= is_user ? reply.user.username : "BuychinaSupport" %></b>
+        <time class="quiet"><%= reply.created_at.to_s(:long) %></time>
+      </div>
+      <p><%= add_format_to(reply.content).html_safe %></p>
+    </li>
+  <% end %>
+  </ul>
+
+  <%= form_for @reply, :url => { :action => "send_message" } do |f| %>
+    <%= f.hidden_field :message_id, :value => @message.id %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+    <div class="control-group sort">
+      <%= f.text_area :content, :rows => 5, :class => "span17", :style => "margin-top:5px" %>
+    </div>
+    <div class="control-group sort">
+      <%= f.submit t('views.messaging.messages.reply'), :class => "btn btn-primary",  :style => "margin-top: 5px;width: 96px" %>
+    </div>
+  <% end %>
+</div>

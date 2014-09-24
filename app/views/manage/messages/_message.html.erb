@@ -1,0 +1,4 @@
+<li class="<%= "rp" if m.user == User.support %>" style="padding-left: 15px;">
+  <h2><%= link_to m.user.username, manage_user_path(m.user) %><span><%= m.created_at.to_s(:db) %></span></h2>
+  <p><%= add_format_to(m.content).html_safe %></p>
+</li>

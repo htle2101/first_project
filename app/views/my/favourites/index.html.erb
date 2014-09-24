@@ -1,0 +1,36 @@
+<div class="myaccount-header">
+  <h3><%= t "my.favourite.title" %></h3>
+</div>
+
+<ul class="tab clearfix append-bottom favourite">
+  <li class = "<%= tab_able?(request.params[:type], ["Product", nil]) %>">
+    <%= link_to t_views('f_item'), my_favourites_path %>
+  </li>
+  <li class = "<%= tab_able?(request.params[:type], ["Store"]) %>">
+    <%= link_to t_views('f_store'), my_favourites_path(:type => 'Store')%>
+  </li>
+</ul>
+<%= form_tag remove_my_favourites_path, :method => :delete, :id => 'my_favourites' do |f| %>
+  <table class="data-table-order my-favourite">
+    <tbody>
+      <tr>
+        <th width='20'></th>
+        <th><%= t_views('product') %></th>
+        <th><%= t_views('add_date') %></th>
+        <th width='60'><%= t_views('action') %></th>
+      </tr>
+      <% @favourites.each do |fp| %>
+        <%= render "element", {:element => fp, :type => @type} %>
+      <% end %>
+      <tr class="tfoot">
+        <td><input type="checkbox" class="check_all"></td>
+        <td colspan="3" style="text-align:left;"> 
+          <a class="btn" href="javascript:void(0)">
+            <i class="icon-trash"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+<div align="center"><%= will_paginate @favourites, :renderer => PaginationNoFollow %></div>

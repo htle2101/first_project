@@ -1,0 +1,46 @@
+<div class="location"><a href="/"><%= t("home") %></a> &gt; Shopping Cart </div>
+<% if notice %>
+  <div class="alert alert-warn">
+    <a href="javascript:void(0);" data-dismiss="alert" class="close">×</a>
+    <%= notice %>
+  </div>
+<% end %>
+<%= form_tag cart_path, :method => :put, :class => "cart_form" do %>
+  <table border="0" class="cart_list" id="line-items-list">
+    <thead>
+      <tr>
+        <th class="cart_list_head"><%= t("views.carts.edit.product") %></th>
+        <th class="cart_list_head"><%= t("views.carts.edit.quantity") %></th>
+        <th class="cart_list_head"><%= t("views.carts.edit.price") %></th>
+        <th class="cart_list_head"><%= t_views('discount') %></th>
+        <th class="cart_list_head"><%= t("views.carts.edit.action") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if current_cart.try(:line_items).present? %>
+        <%= render :partial => "item", :collection => current_cart.line_items %>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td class="sum" colspan="5">
+          <div class="price-list">
+            <span class="total">Total: $
+              <b class="fund">
+                <%= current_cart.try(:line_items).present? ? current_cart.line_items.sub_total.roundf : 0.00 %>
+              </b>
+            </span>
+          </div>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="cartFoot clearfix">
+    <a href="javascript:void(0)" onclick="history.go(-1);" class="shopgoon"><%= product_t "continue_shop" %></a>
+    <% if current_cart.try(:line_items).try(:count).to_i > 0 %>
+      <a class="btn btn-large btn-primary" href="javascript:void(0);">
+        <i class="icon-shopping-cart icon-white"></i>&nbsp<%= t "views.carts.edit.go_to_checkout" %>
+      </a>
+    <% end %>
+  </div>
+<% end %>

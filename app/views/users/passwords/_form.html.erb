@@ -1,0 +1,14 @@
+<div class="location"><a href="/"><%= t 'home' %></a> &gt; <%= t('forgot_password')%></div>
+<div class="alert alert-success regtip <%= 'hide' unless @email.present? %>">
+  <%= raw t('views.users.password._form.check_mail', :email => @email) %>
+</div>
+<section class="padd clearfix re-pws">
+  <h3 class="append-bottom"><%= t 'forgot_password' %></h3>
+  <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :id => "forget-pwd-form", :method => :post }) do |f| %>
+  <label><%= t 'views.users.password._form.send_guide'%></label>
+    <div class="input-append">
+      <%= f.text_field :email, :class => "required" %>
+      <button type="submit" class="btn"><%= t 'submit' %></button>
+    </div>
+  <% end %>
+</section>

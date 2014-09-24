@@ -1,0 +1,51 @@
+<%= search_form_for @search, :url => send("manage_#{controller_name}_path"), :html => {:class => 'well form-inline', :method => :get} do |f| %>
+  <label class="split-left">名称</label>
+  <%= f.text_field :translations_name_cont, :class => 'input-medium' %>
+  <label class="split-left">模版</label>
+  <%= f.select :template_eq, FrontCategory::TEMPLATE.invert.to_a, {:include_blank => "任意模版" } %>
+  <% if controller_name == "front_categories" %>
+    <label class="split-left">目录排序</label>
+    <%= f.text_field :order_eq, :class => "input-mini" %>
+  <% end %>
+  <label class="split-left">状态</label>
+  <%= f.select :active_eq, [["可见", true], ["不可见", false]], {:include_blank => "任意状态" } %>
+  <%= f.submit '搜索', :class => 'btn split-left' %>
+<% end %>
+<div class="tabbable">
+  <% options = params[:parent_id].present? ? {:id => params[:parent_id]} : {} %>
+  <a href="<%= new_path(options) %>" class="btn create btn-primary"><i class='icon-plus icon-white'></i> 创建<%= front_category_title %></a>
+  <br><br>
+  <div class="category_list">
+    <table class="table table-striped ">
+      <thead>
+        <tr>
+          <th><%= front_category_title %>名称</th>
+          <th>模板</th>
+          <% if controller_name == "front_categories" -%>
+            <th><%= front_category_title %>排序</th>
+            <th><%= front_category_title %>URL</th>
+          <% else -%>
+            <th>语言</th>
+          <% end -%>
+          <th>可见</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% partial = 'manage/front_categories/detail' -%>
+        <% @front_categories.each do |fc| %>
+          <%= render partial, {:fc => fc, :level => 0} %>
+          <% fc.children.each do |two_fc| %>
+            <%= render partial, {:fc => two_fc, :level => 1, :parent_id => fc.id} %>
+            <% two_fc.children.each do |three_fc| -%>
+              <%= render partial, {:fc => three_fc, :level => 2, :parent_id => two_fc.id} %>
+            <% end -%>
+          <% end -%>
+        <% end -%>
+      </tbody>
+    </table>
+    <div align="center">
+      <%= will_paginate @front_categories,  :renderer => PaginationNoFollow %>
+    </div>
+  </div>
+</div>

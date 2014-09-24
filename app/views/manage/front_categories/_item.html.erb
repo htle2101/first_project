@@ -1,0 +1,21 @@
+<% taobao_id, title, store_name = product.values_at('num_iid', 'taobao_id', 'title', 'name', 'nick', 'store_name').compact %>
+<li class="list_li">
+  <div class="list_img">
+    <a href="<%= product_path(taobao_id) %>">
+      <img src="<%= "#{product['pic_url']}_210x210.jpg" %>" alt="<%= title %>">
+    </a>
+  </div>
+
+  <div class="detail">
+    <h4 class="break"><a href="<%= product_path(taobao_id) %>"><%= title.html_safe %></a></h4>
+    <div class="quiet" style="text-align:center;">
+      <span class="price">$ <%= @new_product.bc_price(1, product['price'].to_f).roundf %></span>
+      <%= ((v = product['volume']).to_i > 0 ? " &nbsp;Orders (#{v})" : '').html_safe %>
+    </div>
+    <div class="sname" style="text-align:center;">
+      <a href="<%= store_products_path(:nick => store_name) %>"><%= store_name %></a>
+      <%= image_tag store_level_img(product['score']) %>
+    </div>
+  </div>
+  <%= add_to_favorite('data-id' => taobao_id, 'data-type' => "TopicProduct", :class => "button-favorite", 'data-fcid' => params[:fcid]) %>
+</li>

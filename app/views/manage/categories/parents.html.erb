@@ -1,0 +1,17 @@
+<tr class="parent<%= @category.id %>">
+  <td>父目录</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td><a href="javascrip:;" class="pack-up">收起<a></td>
+</tr>
+<% @category.ancestors.each do |ancestor| -%>
+  <%= render 'detail', :category => ancestor, :mark_class => "parent#{@category.id}" %>
+<% end %>
+<tr class="parent<%= @category.id %>">
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td><a href="javascrip:;" class="pack-up">收起<a></td>
+</tr>

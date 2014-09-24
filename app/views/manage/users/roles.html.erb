@@ -1,0 +1,40 @@
+<%= search_form_for @q, :html => {:class => "well form-inline"}, :url => roles_manage_users_path do |f| %>
+  <label>用户名:</label>
+  <%= f.text_field :username_cont, :class => "input-medium" %>
+  <label>邮箱:</label>
+  <%= f.text_field :email_cont, :class => "input-medium" %>
+  <%= f.submit "搜索", :class => "btn split-right", :style => "margin-left:20px; " %>
+  <span class="label label-info split-left">共<%= @users.count %>名用户</span>
+<% end -%>
+
+<table class="order-admin table table-bordered table-striped">
+  <tr>
+    <th>用户名</th>
+    <th>邮箱</th>
+    <th>角色</th>
+  </tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.username%></td>
+      <td><%= user.email%></td>
+      <td>
+        <% if can? :manage, Role %>
+          <form action='javascript:void(0)' id='roles_<%= user.id %>' style='display: none'>
+            <% Role.where{friendly_name != nil}.each do |role|%>
+              <span><%= check_box_tag "user[role_ids][]", role.id, user.has_role?(role.title) %><%= role.friendly_name %></span>
+            <% end -%>
+            <%= link_to "保存", 'javascript:void(0)', :class => "btn save_roles", :id => "save_#{user.id}", 'data-id' => user.id %>
+          </form>
+        <% end -%>
+        <span id="display_roles_<%= user.id %>">
+          <% user.roles.each do |r| %>
+            <%= r.friendly_name %>
+          <% end -%>
+        </span>
+        <% if can? :manage, Role %>
+          <%= link_to "编辑", 'javascript:void(0)', :class => "btn edit_roles", :id => "edit_roles_#{user.id}", 'data-id' => user.id %>
+        <% end -%>
+      </td>
+    </tr>
+  <% end -%>
+</table>

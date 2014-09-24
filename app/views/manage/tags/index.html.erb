@@ -1,0 +1,79 @@
+<%= search_form_for @q, :url => manage_tags_path, :html => {:class => 'well form-inline'} do |f| %>
+  <label class="split-left">PID</label>
+  <%= f.text_field :pid_eq, :class => "input-mini"%>
+  <label class="split-left">名字</label>&nbsp;&nbsp;
+  <%= f.text_field :translations_name_cont, :class => "input-small" %>
+  <label class="split-left">状态</label>&nbsp;&nbsp;
+  <%= f.select :status_eq, @klass.constantize::STATUS.invert.to_a, {:include_blank => "任意状态" } %>
+  <label class="split-left">类型</label>&nbsp;&nbsp;
+  <%= select_tag :type, options_for_select([["属性", "ItemProp"], ["属性值", "PropValue"]], params[:type]) %>
+  <%= f.submit '搜索', :class => 'btn split-left' %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span24">
+      <%= form_for :tag, :url => edit_pv_status_manage_tags_path, :html => {:id => "form-edit-pv-status", :class => "form-horizontal"} do |f| %>
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Pid</th>
+              <th>属性名称</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% (@tags || []).each do |tag| -%>
+              <%= render "detail", :tag => tag %>
+            <% end -%>
+            <tr>
+              <td><input type="checkbox" class="check_all"></td>
+              <td colspan="4">
+                <a class="btn btn-danger" href="#edit-pv-status" data-toggle="modal">
+                  批量编辑
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div align="center" class="input-append span24">
+          <style>
+            .pagination{display:inline-block;float:left;margin-left:200px;}
+          </style>
+          <%= will_paginate @tags,  :renderer => PaginationNoFollow %>
+          <!-- &nbsp;<input class="span1">
+          <input type="button" class="btn-success" id="change-page" value="Go"> -->
+          <% if @tags.count > 15 %>
+            <input class="span2" type="text" style="margin:22px 0;flaot:left;" value=<%= params[:page] %>>
+            <button class="btn" type="button" id="change-page" style="margin:22px 0;">Go!</button>
+          <% end %>
+        </div>
+        &nbsp;
+        
+        <div class="modal hide fade" id="edit-pv-status">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>批量编辑状态</h3>
+          </div>
+          <div class="modal-body">
+            <%= hidden_field_tag :type, params[:type] %>
+            <div class="control-group">
+              <label class="control-label">状态</label>
+              <div class="controls">
+                <%=select_tag :status, options_for_select(@klass.constantize::STATUS.invert.to_a), :prompt => "请选择" %>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div align="center">
+              <a href="javascript:void(0);" class="btn btn-primary" id="btn-edit-pv-status">提交</a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+

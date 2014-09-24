@@ -1,0 +1,36 @@
+<div id="shipping-info" class="otabs hide">
+  <table class="info-table">
+    <tbody>
+      <!--<tr>
+        <th width="20%" class="ri"><%#= t_views('logistics_service_type') %></th>
+        <td><%#= @order.ship_method %></td>
+      </tr>-->
+      <% @order.shippings.each_with_index do |ship, i| %>
+        <tr style="<%= 'border-top:1px solid #ddd;' unless i == 0 %>">
+          <th width="20%" class="ri"><%= t_views('logistics_service_type') %></th>
+          <td><%= ship.ship_method %></td>
+        </tr>
+        <% if ship.number.present? %>
+          <tr>
+            <th class="ri"><%= t_views('tracking_number') %></th>
+            <td><%= ship.number %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <th class="ri"><%= t_views('ship_date') %></th>
+          <td><%= ship.created_at.strftime("%F %R") %></td>
+        </tr>
+        <% if ship.number.present? %>
+          <tr>
+            <th class="ri"><%= t_views('tracking') %></th>
+            <td><%= link_to t_views('click_to_inquiry'), ship.check_url, :target => "_blank" %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <th class="ri"><%= t_views 'remark' %></th>
+          <td><%= ship.user_comment %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

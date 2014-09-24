@@ -1,0 +1,6 @@
+<%= form_tag manage_keywords_path, :class => 'well form-search', :id => 'new_keyword_trans' do |f| %>
+  <%= text_field_tag 'key', params[:key], :class => 'required input-small', :placeholder => '要翻译单词' %> =>
+  <%= text_field_tag 'val', params[:val], :class => 'required input-small', :placeholder => '翻译后中文' %>
+  <%= hidden_field_tag 'type', 'translated' %>
+  <input class="btn split-left" type="submit" value="添加">
+<% end %>

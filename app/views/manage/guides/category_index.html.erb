@@ -1,0 +1,29 @@
+<section class='span21 guide-category-list'>
+<%= render 'nav_head' %>
+<ul>
+  <%= content_tag_for(:li, @roots, :class => 'list', :style => "width: 100%") do |rg| %>
+    <span class="category-name" data-id="<%= rg.id %>" style="cursor: pointer">
+      <i class='icon-plus'></i><%= rg.root_name %>
+    </span>
+    <ul id="sub-category-list-<%= rg.id %>" style='display: none;'>
+      <%= content_tag_for(:li, rg.sub_category, :class => 'sub-category-list offset1', :style => "width: 100%") do |cg| %>
+        <span class="sub-category-name" data-id="<%= cg.id %>"  style="cursor: pointer">
+          <i class='icon-plus'></i><%= cg.leaf_name %>
+        </span>
+        <ul id="guide-list-<%= cg.id %>" style='display: none;'>
+          <%= content_tag_for(:li, cg.leaf_group, :class => 'offset1') do |g| %>
+            <%= link_to g.title, g %>
+            <span class='pull-right'>
+              <%= link_to '编辑英文版本', edit_manage_guide_path(g, :locale => :en), :class => 'btn' %>
+              <%= link_to '编辑中文版本', edit_manage_guide_path(g, :locale => :cn), :class => 'btn' %>
+              <%= link_to '编辑俄文版本', edit_manage_guide_path(g, :locale => :ru), :class => 'btn' %>
+              <%= link_to '删除', [:manage, g], :method => :delete , :class => 'btn'%>
+            </span>
+          <% end -%>
+        </ul>
+      <% end -%>
+    </ul>
+  <% end -%>
+</ul>
+<%= will_paginate @roots, :renderer => PaginationNoFollow %>
+</section>

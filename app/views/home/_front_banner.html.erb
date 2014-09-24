@@ -1,0 +1,17 @@
+<% cache [I18n.locale, @big_promotion] do %>
+  <div id="slide" class="slide m" style="z-index:0;">
+    <div class="slide-itemswrap">
+      <ul class="slide-items">
+        <% @big_promotion.children.active.order("created_at desc").first(3).each do |promotion| %>
+          <div>
+            <a target="_blank" href="<%= promotion.url %>" rel="nofollow">
+              <img data-name="<%= promotion.name %>" width="550" height="250" data-img="2" alt="Launch Coupon Offer" src="<%= promotion.index_image %>">
+            </a>
+          </div>
+        <% end if @big_promotion.present? %>
+      </ul>
+    </div>
+    <div class="slide-controls" style="z-index:4">
+    </div>
+  </div>
+<% end %>

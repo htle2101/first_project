@@ -1,0 +1,18 @@
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab1" data-toggle="tab">订单详情</a></li>
+    <li><a href="#tab2" data-toggle="tab">付款信息</a></li>
+    <li><a href="#tab3" data-toggle="tab">发货及物流信息</a></li>
+    <li><a href="#tab4" data-toggle="tab">时间记录</a></li>
+    <li><a href="#tab5" data-toggle="tab">订单日志</a></li>
+    <li><a href="#tab6" data-toggle="tab">评价详情</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab1"><%= render 'order_info' %></div>
+    <div class="tab-pane" id="tab2"><%= render 'payment_info' %></div>
+    <div class="tab-pane" id="tab3"><%= render 'shipping_info' %></div>
+    <div class="tab-pane" id="tab4"><%= render 'time_info' %></div>
+    <div class="tab-pane" id="tab5"><%= render 'log_info' %></div>
+    <div class="tab-pane" id="tab6"><%= render 'feedback_info' %></div>
+  </div>
+</div>

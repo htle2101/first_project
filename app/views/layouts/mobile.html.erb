@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag "mobile" %>
+  </head>
+  <body>
+    <div data-role="page" id="sign" data-title="Sign in quickerbuy">
+      <img src="images/logo.png" alt="">
+      <div data-role="header" data-position="inline" data-theme="b">
+        <a href="#" data-icon="home" data-direction="reverse" data-iconpos="notext"> &nbsp;</a>
+        <h2  style=" text-align: right; color:#fff;">
+          <a href="#">My Buycina</a> | <a href="#">Cart (<span>0</span>)</a>
+        </h2>
+      </div>
+      <div class="ui-bar"> <input type="search" data-type="search"  placeholder="Search items..."></div>
+      <div data-role="content">
+        <%= yield %>
+      </div>
+      <div data-role="footer"  >
+        <h6>&copy; 2004 - 2011 Beltal.com All rights reserved.</h6>
+      </div>
+
+    </div>
+    <%= javascript_include_tag "mobile" %>
+  </body>
+</html>

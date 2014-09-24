@@ -1,0 +1,23 @@
+<div class="span8">
+  <%= form_for [:manage, @order_adjustment], :html => {:class => "send_order"} do |f| %>
+    <%= f.hidden_field :order_id %>
+    <%= f.hidden_field :number %>
+    <%= f.hidden_field :user_id %>
+    <div class="control-group">
+      <label class="control-label">类型</label>
+      <div class="controls"><%= f.select :adjustment_type , options_for_select([["补单", OrderAdjustment::TYPE['addition']]]) %></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">价格</label>
+      <div class="controls"><%= f.text_field :price, :class => 'required pn' %></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">备注</label>
+      <div class="controls"><%= f.text_area :comment, :rows => 5 %></div>
+    </div>
+    <div class="form-actions">
+      <%#= f.submit submit_name, :class => "btn btn-primary", :type => 'button' %>
+      <%= f.submit submit_name, :class => "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

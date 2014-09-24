@@ -1,0 +1,15 @@
+//= require jquery
+//= require jquery.form
+//= require jquery.validate
+//= require jquery.jqzoom-core
+//= require jquery.numeric
+//= require jquery.cycle
+//= require jquery.colorbox
+//= require jquery.cookie
+//= require jquery.autocomplete
+//= require jquery.purr
+//= require	jquery.tokeninput
+//= require jcarousellite
+//= require bootstrap-datepicker
+//= require common
+//= require jquery.rating

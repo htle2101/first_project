@@ -1,0 +1,49 @@
+<tbody>
+  <tr><td colspan="7" class="space"></td></tr>
+  <tr>
+    <td colspan="7" class="last head">
+      <span class="split-left">订单编号 : <%= link_to order.number, manage_order_path(order) %></span>
+      <span class="split-left">下单时间 : <%= order.created_at.strftime("%F %R") %></span>
+      <span class="split-left">买家昵称 : <%= link_to order.user_name, manage_user_path(order.user_id) %></span>
+      <% if Message.get_related_conversation(order.number).try(:admin_unread?)%>
+        <a href='<%= "/manage/orders/#{order.id}#message" %>' class="split-left">新留言</a>
+      <% end %>
+    </td>
+  </tr>
+  <% if order.partial_status? && params[:type][/^partial_refund/] %>
+    <%= render "list_refund_item", :order => order %>
+  <% else %>
+    <% (ops = order.order_products).each_with_index do |op, index| %>
+      <tr>
+        <td>
+          <div class="wrap_goods">
+            <span class="img">
+              <%= link_to taobao_url(op.taobao_id), :target => "_blank" do %>
+                <%= image_tag op.pic_url_version(:small), :alt => op.name %>
+              <% end %>
+            </span>
+            <div class="goods_info" style="width:82%">
+              <p class="name"><%= link_to op.name, taobao_url(op.taobao_id), :target => "_blank" %></p>
+              <p class="note"><%= op.pv_values_html.try(:html_safe) %></p>
+            </div>
+          </div>
+        </td>
+        <td class="no_left">$<%= op.price.roundf %></td>
+        <td class="no_left"><%= op.quantity %> 件</td>
+        <td class="no_left"><%= color_status(op.status) %></td>
+        <% if index == 0 %>
+          <td rowspan="<%= ops.size %>">
+            <div>
+              <strong><%= "$#{order.total.roundf}" if index == 0 %></strong>
+              <p style="color: gray">(<%= order.shipping_cost? ? "含运费$#{order.shipping_cost.roundf}" : "免运费"%>)</p>
+            </div>
+          </td>
+          <td rowspan="<%= ops.size %>"><b><%= t_models(order, 'get_status') %></b></td>
+          <td class='last' rowspan="<%= ops.size %>">
+            <%= link_to "订单详情", manage_order_path(order) %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% end %>
+</tbody>

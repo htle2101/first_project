@@ -1,0 +1,50 @@
+<div class="location"><a href="/"><%= t('home')%></a> &gt; <%= t 'signin' %> </div>
+<div class="padd clearfix">
+  <section class="span15 login-left">
+    <h1 class="append-bottom"><%= t 'views.users.sessions.new.sign_in_bc' %></h1>
+    <%= form_for(resource, :as => resource_name, :url => login_path, :html => {:id => 'login-form', :class => 'form-horizontal'}) do |f| %>
+      <%= flash_wrap_content(:error) if flash[:error] %>
+      <%= flash_wrap_content(:notice) if flash[:notice] %>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'login' %></label>
+        <div class="controls">
+          <%= f.text_field :login, :class => "required text", :type => "text" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'password' %></label>
+        <div class="controls">
+          <%= f.password_field :password, :class => "required text" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="optionsCheckbox"></label>
+        <div class="controls">
+          <label class="checkbox">
+            <% if devise_mapping.rememberable? %>
+            <%= f.check_box :remember_me %><%= t('remember_me')%>
+            <% end %>
+            <% if devise_mapping.recoverable? && controller_name != 'passwords' %>
+            <%= link_to t('forgot_password'), new_password_path(resource_name) %><br />
+            <% end %>
+          </label>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= t 'signin' %></button>
+      </div>
+    <% end %>
+  </section>
+  <section class="login-right span7">
+    <h5>Sign in using Facebook</h5>
+    <%= render 'users/links' %>
+    <br>
+    <p>
+      <%= raw t 'views.users.sessions.new.intro' %>
+      <%= link_to signup_path do %>
+        <strong><%= t 'views.users.sessions.new.join_free' %></strong>
+      <% end %>
+    </p>
+  </section>
+</div>
+

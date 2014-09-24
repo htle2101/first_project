@@ -1,0 +1,23 @@
+<span>
+  <% if task.completed? %>
+    <label style='color: green;'>已完成</label>
+  <% else %>
+    <label style='color: red;'>正在处理中</label>
+  <% end -%>
+</span>
+<%= content_tag_for(:div, task.task_chains, :class => 'flow', :style => 'margin-bottom: 5px;') do |task_chain| %>
+  <span><%= show_order_task_message(task, task_chain).html_safe %></span>
+  <%= content_tag_for(:div, task_chain.task_comments) do |task_comment| %>
+    <span>
+      <%= show_username(task_comment.user) %> 说: <%= task_comment.content %> <span class='flow-time'><%= timeago_tag task_comment.created_at, :lang => "zh-CN" %></span>
+    </span>
+  <% end %>
+<% end -%>
+<div style='margin-top: 10px;'>
+  <% if task.current_user == current_user && !task.completed? %>
+    <span><%= link_to "添加说明", add_comment_manage_task_path(task), :class => 'btn btn-primary send_order' %></span>
+    <span data-no-turbolink=''><%= link_to "指派", assign_manage_task_path(task), :class => 'btn btn-primary send_order' %></span>
+    <span><%= link_to "完成", complete_manage_task_path(task), :method => 'put', :confirm => "确定完成整个任务吗?", :class => 'btn btn-success' %></span>
+  <% end -%>
+</div>
+

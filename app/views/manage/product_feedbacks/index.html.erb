@@ -1,0 +1,43 @@
+<%= search_form_for @q, :html => {:class => "well form-inline"}, :url => manage_product_feedbacks_path do |f| %>
+  <label>淘宝ID:</label>
+  <%= f.text_field :taobao_id_eq, :class => "input-medium" %>
+  <%= f.submit '搜索', :class => "btn split-right", :style => "margin-left:20px;" %>
+<% end %>
+<% if @product_feedbacks.empty? %>
+  <div class = "alert">当前无结果</div>
+<% else %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>淘宝ID</th>
+        <th>产品名称</th>
+        <th width="200px">平均评价</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @product_feedbacks.each do |pf| %>
+        <tr>
+          <td><%= pf.taobao_id %></td>
+          <td>
+            <% if pf.product.name.blank? %>
+              <%= "该产品已删除" %>
+            <% else %>
+              <%=image_tag pf.product.pic_url_version(:small) %> &nbsp; <%= link_to pf.product.name(:cn), product_path(pf.taobao_id) %>
+            <% end %>
+            </td>
+          <td>
+            <span>
+              <%= pf.product.avg_star.times do %>
+                <i class = "icon-star"></i>
+              <% end %>分
+            </span>&nbsp;
+            <span class="manage_review_detail btn" data-url="<%= manage_product_feedback_path(pf) %>">详情</span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+<div align = "center">
+  <%= will_paginate @product_feedbacks, :renderer => PaginationNoFollow %>
+</div>

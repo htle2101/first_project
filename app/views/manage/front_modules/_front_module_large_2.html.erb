@@ -1,0 +1,21 @@
+<section class="box channel-mid channel-zone" id = "front_module_large_2" data-content="<%= fm.content if fm.present? %>" data-id="<%= fm.id if fm.present? %>">
+  <h3 class="title" class="front_module_value" id="slot_h3">名字</h3>
+  <div class="bd cc-extend">
+    <div class="cc-img"><%= image_tag "front_modules/550_250_tmp.png", :width => "550px", :height => "250px", :id  => "slot_img_0" %></div>
+    <ul class="cc-cate">
+      <% 6.times do |i| %>
+      <li>
+        <a rel="nofollow" href="#" id = "slot_a_<%= i %>" target="_blank">
+          <%= image_tag "front_modules/70_70_tmp.png", :width => "70px", :height => "70px", :id => "slot_img_#{(i+1).to_s}" %>
+          <span class="front_module_value" id = "slot_span_<%= i %>">品牌名</span>
+        </a>
+      </li>
+      <% end  %>
+	  </ul>
+    <div class="cc-exmain">
+      <a rel="nofollow" href="#" id = "slot_a_6" target="_blank">
+        <span style="left:68px; top:200px;" class="front_module_value" id = "slot_span_6">品牌名</span>
+      </a>
+    </div>
+  </div>
+</section>

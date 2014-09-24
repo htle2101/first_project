@@ -1,0 +1,17 @@
+<div class="selector pnl-country slt-country" style="outline: none !important;">
+  <div class="title">
+    <% if local_assigns[:default_country].present? %>
+      <%= default_country %>
+    <% else %>
+      <span class='css_flag css_us' data-id='34'>United States</span>
+    <% end %>
+    <b></b>
+  </div>
+  <div id="country-container" class="list-container hide" style="z-index: 99; visibility: visible; top:19px; <%= local_assigns[:style] if local_assigns[:style].present? %>">
+    <% @countries.each do |c| %>
+      <%= link_to "javascript:void(0)", :class => cycle("odd", "even"), :rel => "nofollow" do %>
+        <span class="css_flag css_<%= c.code.downcase %>" data-id="<%= c.id %>"><%= c.englishname %></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>

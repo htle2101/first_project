@@ -1,0 +1,43 @@
+<table>
+  <tr>
+    <td width="50%">
+      <%= form_tag send("#{action_name}_manage_keywords_path"), :class => 'well form-search', :method => :get, :width => '200px' do |f| %>
+        关键字<%= text_field_tag 'q', params[:q], :placeholder => '模糊匹配' %>
+        <input class="btn split-left" type="submit" value="搜索">
+        <label class="split-left label label-info">共 &nbsp;<%= @keywords.total_entries %>&nbsp; 条记录</label>
+      <% end %>
+    </td>
+    <td>
+      <%= form_tag manage_keywords_path, :class => 'well form-search', :id => 'new_keyword' do |f| %>
+        <%= text_field_tag 'key', params[:key], :class => 'required', :placeholder => "输入关键字（#{action_name == 'brands' ? '不能为空！' : '字母或数字'}）" %>
+        <%= hidden_field_tag 'type', action_name %>
+        <input class="btn split-left" type="submit" value="添加">
+      <% end if action_name != 'translated' %>
+      <%= render 'trans_form' if action_name == 'translated' %>
+    </td>
+  </tr>
+</table>
+<% msg = action_name == 'translated' ? [18, '<th width="18%">中文（点击修改）</th>'] : [36, ''] %>
+<% str = action_name == 'brands' ? 'alpha ' : '' %>
+<% sort = (params[:s].nil? || params[:s]['desc']) ? ["#{str}asc", ' ▼'] : ["#{str}desc", ' ▲'] %>
+<% s = params[:s].nil? ? '' : sort[1] %>
+<table class="order-admin table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th><%= link_to "关键字#{s}", send("#{action_name}_manage_keywords_path", params.merge(:s => sort[0])), :class => "sort_link" %>（点击修改）</th>
+      <%= msg[1].html_safe %>
+      <th style="text-align:center;" width="16%">操作</th>
+      <th><%= link_to "关键字#{s}", send("#{action_name}_manage_keywords_path", params.merge(:s => sort[0])), :class => "sort_link" %>（点击修改）</th>
+      <%= msg[1].html_safe %>
+      <th style="text-align:center;" width="16%">操作</th>
+    </tr>
+  </thead>
+  <% num = 0; @keywords.in_groups_of(2, false) do |s| %>
+    <tr>
+      <%= render 'keyword', :name => s[0], :num => num+=1 %>
+      <%= render 'keyword', :name => s[1], :num => num+=1 %>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate @keywords,  :renderer => PaginationNoFollow %>
+<div id="add_trans" class="modal hide fade"><%= render 'trans_form' if action_name != 'translated' %></div>

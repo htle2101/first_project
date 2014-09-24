@@ -1,0 +1,30 @@
+<%= simple_form_for [:manage, @taobaoke_product], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :cid %>
+  <%= f.input :taobao_id %>
+  <%= f.input :title %>
+  <%= f.input :nick %>
+  <%= f.input :price %>
+  <%= f.input :pic_url %>
+  <%= f.input :click_url %>
+  <%= f.input :commission %>
+  <%= f.input :commission_rate %>
+  <%= f.input :commission_num %>
+  <%= f.input :commission_volume %>
+  <%= f.input :coupon_price %>
+  <%= f.input :coupon_rate %>
+  <%= f.input :coupon_start_time %>
+  <%= f.input :coupon_end_time %>
+  <%= f.input :volume %>
+  <%= f.input :shop_click_url %>
+  <%= f.input :seller_credit_score %>
+  <%= f.input :item_location %>
+  <%= f.input :shop_type %>
+  <%= f.input :taobaoke_cat_click_url %>
+  <%= f.input :keyword_click_url %>
+  <%= f.input :status %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                manage_taobaoke_products_path, :class => 'btn' %>
+  </div>
+<% end %>

@@ -1,0 +1,60 @@
+<tr class="product">
+  <td class="product_thumb">
+    <div class="wrap_goods">
+      <span class="img">
+        <%= link_to product_path(item.product.taobao_id) do %>
+          <%= image_tag item.product.pic_url_version(:small) %>
+        <% end %>
+      </span>
+      <div class="goods_info">
+        <p class="name">
+          <%= link_to item.product.name, product_path(item.product.taobao_id) %>
+        </p>
+        <p class="note">
+          <%= item.pv_values_html.try(:html_safe) if item.pv_values.present? %>
+        </p>
+        <% if controller_name == "checkouts" %>
+          <div class="m-message">
+            <%= text_area_tag "comment#{item.id}".to_sym, '', :class => "m-textarea", :placeholder => "Add remark (Optional)" %>
+          </div>
+        <% end -%>
+      </div>
+    </div>
+  </td>
+  <% if controller_name == "checkouts" -%>
+    <td class="product_price">
+      <% if item.product.on_promotion? %>
+        <del class="original-price" style="color: #999;font-size:11px;display:block">
+          $<span class="original-price-fund"><%= item.original_price.roundf %></span>
+        </del>
+      <% end %>
+      <div style="font-weight:bold">$<span class="fund"><%= item.price.roundf %></span><span style="font-weight:normal;color:#555;"><%= t('views.carts.edit.piece') %></span></div>
+    </td>
+    <td><%= item.weight.roundf %>g</td>
+    <td><%= item.quantity %></td>
+    <td class="ri">
+      <span class="bold">$<%= item.total_price.roundf(2) %></span>
+    </td>
+  <% elsif item.product.on_sale? -%>
+    <td class="quantity">
+      <span class="decrease" rel=".cart-item-quantity">-</span>
+      <%= text_field_tag "line_items[#{item.id}][quantity]", item.quantity, :class => "pi cart-item-quantity", "data-id" => item.id %>
+      <span class="increase" rel=".cart-item-quantity">+</span>
+    </td>
+    <td class="product_price">
+      <% if item.product.on_promotion? %>
+        <del class="original-price" style="color: #999;font-size:11px;display:block">
+          $<span class="original-price-fund"><%= item.original_price.roundf %></span>
+        </del>
+      <% end %>
+      <div style="font-weight:bold">$<span class="fund"><%= item.price.roundf %></span><span style="font-weight:normal;color:#555;"><%= t_views('piece') %></span></div>
+    </td>
+    <td><b><%= item.product.discount == 0 ? '-' : "#{item.product.discount}%" %></b></td>
+    <td class="remove">
+      <a class="item-remove" href="javascript:void(0);" data-id="<%= item.id %>"><%= t 'views.carts._item.remove'%></a>
+    </td>
+  <% else %>
+    <td colspan='4' style="text-align:center; font-weight:bold;"><p class="hint"><%= t_views("off_sale") %></p><td>
+    <% current_cart.line_items.destroy(item) %>
+  <% end -%>
+</tr>

@@ -1,0 +1,30 @@
+<%= form_for @deposit, :url => transfer_my_wallet_path, :html => {:class => 'form-horizontal'} do |f| %>
+  <%= hidden_field_tag 'type', 'b_t' %>
+  <%= hidden_field_tag 'pay', 'bank' %>
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 't_amount' %></label>
+    <div class="controls">
+      <div class="input-append">
+        <%= f.text_field :amount, :class => 'text required pn' %><span class="add-on">$</span>
+        <%= f.error_message_on :amount, :css_class => 'error help-inline' %>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 'b_sender' %></label>
+    <div class="controls">
+      <%= f.text_field :b_name, :class => 'text required' %>
+      <%= f.error_message_on :b_name, :prepend_text => 'The sender\'s name ', :css_class => 'error help-inline' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">* <%= t_views 'b_date' %></label>
+    <div class="controls">
+      <%= f.text_field :b_date, :class => 'text required datepicker', :value => (init_date('lteq',:column => "wm_date") - 1) %>
+      <%= f.error_message_on :b_date, :prepend_text => 'The Date ', :css_class => 'error help-inline' %>
+    </div>
+  </div>
+  <div class="form-actions">
+    <%= f.submit t('submit'), :class => "btn btn-primary new_deposit" %>
+  </div>
+<% end %>

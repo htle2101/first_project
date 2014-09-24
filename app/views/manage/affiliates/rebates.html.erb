@@ -1,0 +1,40 @@
+<%= search_form_for @q, :url => rebates_manage_affiliates_path, :html => {:class => "well form-search"} do |f| %>
+  <label>推广人</label>
+  <%= f.text_field :referral_user_name_eq, :class => "input-small" %>
+  <label class="split-left">
+    <%= f.text_field :created_at_gteq, :class => "input-small datepicker" %>
+    < 结算时间 <
+  </label>
+  <%= f.text_field :created_at_lteq, :class => "input-small datepicker" %>
+  <%= f.submit :Search, {:class => "btn"} %>
+<% end -%>
+
+<table class="order-admin center-order table table-hover">
+  <thead>
+    <tr>
+      <th>时间</th>
+      <th>产品名</th>
+      <th>单价</th>
+      <th>数量</th>
+      <th>总价</th>
+      <th>返利</th>
+      <th>推广人</th>
+      <th>状态</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @referral_products.each do |rp| %>
+      <tr>
+        <td><%= rp.paid_at.try(:to_date) %></td>
+        <td><%= rp.order_product.name %></td>
+        <td><%= rp.order_product.price.roundf %></td>
+        <td><%= rp.order_product.quantity %></td>
+        <td><%= rp.order_product.total.roundf %></td>
+        <td><%= rp.order_product.commission.roundf %></td>
+        <td><%= rp.referral_user.username %></td>
+        <td><%= t_models(rp, 'get_status') %>(<%= link_to rp.transaction_id.to_s, manage_deposits_url('q[fund_type_eq]' => 4) %>)</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @referral_products, :renderer => PaginationNoFollow %>

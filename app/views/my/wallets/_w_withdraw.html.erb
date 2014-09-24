@@ -1,0 +1,54 @@
+<div class="section hide" id="w_withdraw">
+  <h3><%= t 'my.wallets.w_via' %> Western Union</h3>
+  <div class="body">
+    <form class="form-horizontal">
+      <h4 class="balance-ammout"><%= t 'my.wallets.your_balance' %><b> 0.0 </b><span class="quiet">USD</span></h4>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'my.wallets.w_via' %></label>
+        <div class="controls">
+          <%= image_tag "pay_western.gif" %>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'my.wallets.withdrawal_amount' %> </label>
+        <div class="controls">
+          <input type="text"  >
+          <span class="help-inline">USD</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'my.address.country' %>:</label>
+        <div class="controls">
+          <select >
+            <option>something</option>
+            <option>USA</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'my.address.city' %></label>
+        <div class="controls">
+          <input type="text"  >
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'my.wallets.sender_name' %></label>
+        <div class="controls">
+          <input type="text"  >
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" ><%= t 'comments' %></label>
+        <div class="controls">
+          <textarea ></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= t 'submit' %></button>
+      </div>
+    </form>
+  </div>
+</div>

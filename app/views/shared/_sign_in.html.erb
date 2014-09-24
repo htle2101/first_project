@@ -1,0 +1,35 @@
+<%= form_for user, :url => login_path, :html => {:id => "login-form", :class=>"form-horizontal"} do |f| %>
+  <div id="signin-tab-content" class="tab-panel">
+    <% if flash[:error] %><span class="error"><%= flash[:error] %></span><% end %>
+    <div class="control-group">
+      <label class="control-label"><%= t('email')%></label>
+      <div class="controls">
+        <%= f.email_field :login, :class => "required email text", :type => "text", :remote => user_sign_check_path %>
+        <%= f.error_message_on :login, :html_tag => 'span', :css_class => 'help-inline' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><%= t('password')%></label>
+      <div class="controls">
+        <%= f.password_field :password, :class => "required text" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="optionsCheckbox"></label>
+      <div class="controls">
+        <label class="checkbox">
+          <%= f.check_box :remember_me %>
+          <%= t('remember_me')%> | <%= link_to t('forgot_password'), new_password_path(:user) %>
+        </label>
+      </div>
+    </div>
+    <div class="form-actions">
+      <input class="btn btn-primary" type="submit" value="<%= t('sign_in')%>" id="a-sub" >
+    </div>
+  </div>
+  <% locals = {:devise_mapping => Devise.mappings[:user], :resource_class => User, :resource_name => :user } -%>
+  <div class="or"><span>or</span></div>
+  <div class="controls">
+    <%= render :partial => 'users/links', :locals => locals %>
+  </div>
+<% end %>

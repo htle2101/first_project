@@ -1,0 +1,18 @@
+<div class="modal hide fade in" id="select_category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" >
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Select Related Category</h3>
+  </div>
+  <div class="modal-body">
+    <div ><span>关联目录:<span id='relate_category'></span> <button class='btn' id='clear_category'>清除</button></div>
+  <ul id="category_list">
+    <% Category.active_roots.each do |c| -%>
+    <li><%= link_to c.name, 'javascript:void(0)', {"data-cid" => c.cid, :class=>'select_category', "data-no-turbolink" => 'true' } %></li>
+    <% end -%>
+  </ul>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" id="save_relate_category">Save changes</button>
+  </div>
+</div>

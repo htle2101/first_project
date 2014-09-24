@@ -1,0 +1,7 @@
+<div class="row-fluid">
+  <% res_count = User.where{{created_at.gte => Time.now.yesterday.beginning_of_day}}.count %>
+  <% com_count = User.where{{confirmed_at.not_eq => nil}}.count %>
+  <span class="span8"><a href="<%= manage_users_path %>">昨天新注册用户( <%= res_count %> )</a></span>
+  <span class="span8"><a href="<%= manage_users_path %>">已验证邮箱用户( <%= com_count %> )</a></span>
+  <span class="span8"><a href="<%= manage_users_path %>">用户总数( <%= User.count %> )</a></span>
+</div>

@@ -1,0 +1,26 @@
+<div class="location">
+  <a href="/"><%= t 'home' %></a>
+  <% if (breadcrumb = yield(:breadcrumb)).blank? %>
+    <% if controller_name == 'stores' %>
+      <%= "&gt; #{link_to(@store.name, store_path(@store))}".html_safe if @store %>
+    <% elsif controller_name == 'products' %>
+      <% if cate = @cate || @store_cate || @product.try(:category) %>
+        <% cate.ancestors.each do |c| %>
+          &gt; <%= link_to c.name, category_products_url(c.slug, c.cid) %>
+        <% end %>
+        <%#= "&gt; #{(params[:keyword] || @product).blank? ? cate.name : link_to(cate.name, nav_cate_url(cate.cid, !@product.blank?))}".html_safe %>
+        <%= "&gt; #{(params[:keyword] || @product).blank? ? cate.name : link_to(cate.name, category_products_url(cate.slug, cate.cid))}".html_safe %>
+      <% end %>
+      <%= "&gt; <b>\"#{params[:keyword]}\"</b>".html_safe unless params[:keyword].nil? %>
+      <%= "&gt; <b>#{t('product_info')}</b>".html_safe unless @product.nil? %>
+    <% else %>
+      <% if @category %>
+        &gt; <%= link_to t('category.all'), main_app.categories_url %> &gt; <%= link_to @category.name, category_url(@category) %>
+      <% else %>
+        &gt; <%= t('category.all') %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= breadcrumb %>
+  <% end %>
+</div>

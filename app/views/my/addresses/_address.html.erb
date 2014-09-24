@@ -1,0 +1,14 @@
+<% if address.persisted? %>
+  <address class="span9" id="my_address_<%= address.id %>">
+    <ul>
+      <li><strong><%= address.name %></strong></li>
+      <li><%= "#{address.address1} , #{address.address2}" %></li>
+      <li><%= "#{address.city}, #{address.province}, #{address.zip_code}, #{address.country_englishname}" %></li>
+      <li><%= t 'my.address.phone' %>: <%= address.phone %></li>
+      <li>
+        <button type="button" class="btn" act="<%= edit_my_address_path(address) %>"><%= t 'edit' %></button>
+        <button type="button" class="btn delete" act="<%= my_address_path(address) %>"><%= t 'delete' %></button>
+      </li>
+    </ul>
+  </address>
+<% end %>

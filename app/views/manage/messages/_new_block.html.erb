@@ -1,0 +1,17 @@
+<%= form_for @message, :url => send_message_manage_message_path do |f| %>
+  <%= f.hidden_field :user_id, :value => @order.user.id %>
+  <%= f.hidden_field :subject, :value => "Order:#{@order.number}" %>
+  <%= f.hidden_field :related_id, :value => @order.number %>
+  <%= f.hidden_field :related_type, :value => 'Order' %>
+  <%= f.hidden_field :admin_unread, :value => 0 %>
+  <%= f.hidden_field :user_unread, :value => 1 %>
+  <%= f.fields_for :replies do |r| %>
+    <%= r.hidden_field :user_id, :value => current_user.id %>
+    <div class="control-group">
+      <%= r.text_area :content, :rows => 5, :class => "span17", :style => "margin-top:5px" %>
+    </div>
+  <% end %>
+  <div class="control-group">
+    <%= f.submit t('views.messaging.messages.reply'), :class => "btn btn-primary",  :style => "margin-top: 5px;width: 96px" %>
+  </div>
+<% end %>

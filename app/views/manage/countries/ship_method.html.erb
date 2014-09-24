@@ -1,0 +1,14 @@
+<% if Country.can_izone?(params[:ship_method]) %>
+  <% Country.unscoped.group(params[:ship_method]).map(&(params[:ship_method].to_sym)).each do |key| %>
+    <% next if key.nil? || key == 0 %>
+    <%= render "izone", :izone => key, :ship_method => params[:ship_method] %>  
+  <% end %>
+  <br>
+  <div class="form-inline">
+    分区号
+    <%= text_field_tag :new_izone, Country.max_izone(params[:ship_method]).to_i + 1 %>
+    <%= button_tag "新增分区", :id => "new-izone", "data-ship_method" => params[:ship_method] %>
+  </div>
+<% end %>
+<br>
+<br>

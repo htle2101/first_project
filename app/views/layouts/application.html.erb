@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="<%= lang %>">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <%= render "shared/head_meta" %>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/buychina.ico" />
+    <!--[if lt IE 9]><script src="/assets/html5.js"></script><![endif]-->
+    <%= cache_page_assets(:css, 'buychina') %>
+    <link id="wide-screen" href="" media="screen" rel="stylesheet" type="text/css">
+    <link rel="canonical" href="<%= request.base_url + request.path %>">
+    <% if Rails.env.production? %>
+      <script src="http://a.tbcdn.cn/apps/top/x/sdk.js?appkey=12642556"></script>
+    <% end %>
+    <!--[if lt IE 9]>
+    <script>
+      if (window.screen.width >= 1200)
+        document.getElementById("wide-screen").href = "/assets/wide-screen.css";
+    </script>
+    <![endif]-->
+    <%= csrf_meta_tag %>
+  </head>
+  <body style="<%= action_name.in?('affiliate', 'affiliate_faq') ? 'background: url(/images/afbg.gif) repeat-x' : '' %>">
+    <div class="container <%= fixed_controller %> <%= 'homepage' if 'front_modules;index'[action_name] && controller_name == 'home' %>">
+      <%= render 'shared/header' %>
+      <section id="content" class="<%= (controller_name == 'home' && !action_name.in?('affiliate', 'affiliate_faq')) ? 'row append-bottom' : 'clearfix' %> <%= promotion? %>" <%= item_rich_mark %>>
+        <% names =  'products;categories;guides;stores' %>
+        <%= render('shared/nav') if names[controller_name] %>
+        <%= yield %>
+      </section>
+      <%= render('shared/seo_txt') if controller_name == "home" && action_name == "index" %>
+      <%= render 'shared/footer' %>
+    </div>
+    <%= javascript_include_tag "application" %>
+    <%= yield :javascript -%>
+    <% if controller_name == 'products' && ['show','items'].include?(action_name) && @product.present? %>
+      <script type="text/javascript">
+        var share_link = "<%= @product.share_link(current_user, request.base_url, request.params)%>"
+        $('.social-share-button').attr('data-url', share_link)
+        $('.ellipsis').attr('value', share_link)
+        var sku = new Sku(<%= @product.taobao_id %>, <%= @product.bc_price %>, <%= @product.original_price %>);
+        sku.load(function(){
+              if(sku.skus.length == 1)
+                $("#sku_id").val(sku.skus[0].sku_id);
+            });
+        $("#add-to-cart-form input[name='authenticity_token']").val(auth_token());
+      </script>
+    <% elsif controller_name == 'products' and action_name == 'index' and @cate %>
+      <script type="text/javascript">
+        $.get('/products/guides', {id: "<%= @cate.id %>"}, function(data){
+              $('.category-guides ul').html(data);
+            }
+        , 'text')
+      </script>
+    <% end %>
+    <%= javascript_include_tag("scroll_to_top") if controller_name == 'products' && "index;show"[action_name] %>
+    <%= yield :trace -%>
+  </body>
+</html>

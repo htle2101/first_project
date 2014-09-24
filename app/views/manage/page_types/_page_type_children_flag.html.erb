@@ -1,0 +1,11 @@
+<% unless pt.children.empty? %>
+  <tr class="page_type_children_flag_<%= pt.id %>" style='display: none'>
+    <td>子目录</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>
+      <%= link_to '收起', 'javascript:void(0)', :class => 'toggle_page_type_children', 'data-id' => pt.id %>
+    </td>
+  </tr>
+<% end -%>

@@ -1,0 +1,22 @@
+<div class="cate-list">
+  <% cache "home_categories_#{I18n.locale}" do %>
+    <% Category.active_roots.limit(10).each_with_index do |category, index| %>
+      <dl class="cate-list-item">
+        <dt class="cate-name"><%= link_to category.name, manage_taobaoke_products_path(:q => { :cid_eq => category.cid }) %></dt>
+        <dd style="top:-<%= index * 31 %>px;" class="sub-cate-list">
+        <dl>
+          <dt><%= category.name %></dt>
+          <dd>
+          <% category.active_children.limit(10).each do |child| %>
+            <%= link_to child.name, manage_taobaoke_products_path(:q => { :cid_eq => child.cid }) %>
+          <% end %>
+          </dd>
+        </dl>
+        </dd>
+      </dl>
+    <% end %>
+    <div class="cate-all-item ">
+      <%= link_to t('category.view_all'), categories_url %>
+    </div>
+  <% end %>
+</div>

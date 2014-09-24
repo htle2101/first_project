@@ -1,0 +1,52 @@
+<% fund_type = params[:q].try(:[], :fund_type_in) || '1' %>
+<%= search_form_for @search, :url => manage_deposits_path, :html => {:class => "well form-inline", :method => :get } do |f| %>
+  <input name="q[fund_type_in]" type="hidden" value="<%= params[:q].try(:[], :fund_type_in) || 1 %>">
+  <label>用户名:</label>
+  <%= f.text_field :user_username_cont, :class => "input-small", :placeholder => '模糊匹配' %>
+  <label class="split-left">编号:</label>
+  <%= f.text_field :number_eq, :class => "input-mini" %>
+  <label class="split-left">支付方式:</label>
+  <%= f.select :pay_type_eq, search_select('Deposit::PAY_TYPE'), {:include_blank => 'All'}, :style => 'width:115px' %>
+  <label class="split-left">状态:</label>
+  <%= f.select :status_eq, search_select('Deposit::STATUS'), {:include_blank => 'All'}, :class => 'input-small' %>
+  <label class="split-left">日期:</label>
+  <%= f.text_field :created_at_gteq, :class => "datepicker", :value => init_date(), :style => 'width:65px' %>
+  <label>-</label>
+  <%= f.text_field :created_at_lteq, :class => "datepicker", :value => init_date('lteq'), :style => 'width:65px'  %>
+  <%= f.submit '搜索', :class => 'btn split-left' %>
+  <label class="label label-info">共 &nbsp;<%= @deposits.total_entries %>&nbsp; 条记录</label>
+<% end %>
+<table class="order-admin table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th><%= sort_link @search, "users.username", '用户名', :default_order => 'desc' %></th>
+      <th>编号</th>
+      <th>金额（ $）</th>
+      <th><%= sort_link @search, :pay_type, '支付方式', :default_order => 'asc' %></th>
+      <th><%= sort_link @search, :status, '状态', :default_order => 'asc' %></th>
+      <th width="15%">创建日期</th>
+      <th style="text-align:center;">操作</th>
+    </tr>
+  </thead>
+  <% @deposits.each do |d| %>
+    <tr>
+      <td><%= link_to d.user.username, manage_user_path(d.user) %></td>
+      <td><%= d.number %></td>
+      <td><%= d.amount %></td>
+      <td><%= t_models d, 'get_pay_type' %></td>
+      <td><%= t_models d, 'get_status' %></td>
+      <td><%= d.created_at.to_s(:db) %></td>
+      <td style="text-align:center;">
+        <% if can?(:manage, d) %>
+          <% if d.can_edit? && !d.is_refund? %>
+            <%= link_to '修改', [:edit, :manage, d], :class => 'edit_deposit' %>
+          <% else %>
+            <%= link_to '查看', [:manage, d], :class => 'edit_deposit' %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate @deposits,  :renderer => PaginationNoFollow %>
+<div id="to_verify" class="modal hide fade"></div>

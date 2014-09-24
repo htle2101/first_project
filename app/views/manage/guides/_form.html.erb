@@ -1,0 +1,72 @@
+<div id='guide_start'>
+  <%= form_for [:manage, guide], :html => {:class => "guide-form form"} do |f| %>
+    <div class="control-group">
+      <div class="control-label"><label><strong>关联目录</strong></label></div>
+      <div class="controls">
+        <%= f.text_field 'relate_category', {:class => "input-large category-value required", :style => 'cursor: default;', :readonly => true} %>
+        <span style="color: red;font-size: 25px;">*</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label"><label><strong>标题</strong></label></div>
+      <div class="controls">
+        <%= f.text_field 'title', :class => "input-xxlarge required" %>
+        <span style="color: red;font-size: 25px;">*</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label"><label><strong>正文</strong></label></div>
+      <div class="controls">
+        <%= f.text_area 'content', :style => "width:1055px; height: 400px;", :id => "content" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label"><label><strong>主图片</strong></label><span style="color: gray">(图片宽度必须为302px)</span></div>
+      <div class="controls">
+        <%= f.file_field 'image' %>
+        <%= hidden_field_tag 'guide_image_path', guide.image %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label"><label><strong>标签</strong></label><span style="color: gray">(不同标签用逗号分隔)</span></div>
+      <div class="controls">
+        <%= text_field_tag 'guide[tags]', guide.tags, :class => "input-xxlarge" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="control-label"><label><strong>关联产品</strong></label></div>
+      <div class="controls">
+        <%= text_field_tag "guide[relate_products]", guide.relate_products, :placeholder => '点击添加', :id => :relate_products, :style=>'cursor: default;', :readonly => true %>
+      </div>
+    </div>
+    <%= render 'product_area', :guide => guide %>
+    <a href='javascript:void(0)' id='guide_toggle_advance_options'> 额外字段(SEO)</a>
+    <%= render 'advance_options', :f => f %>
+    <%= hidden_field_tag :locale, params[:locale] %>
+    <div class="control-group">
+      <% if guide.new_record? %>
+        <div class="controls offset17">
+          <button type='submit' name='submit' class="btn guide_post btn-primary" value="post">发布</button>
+          <button type='submit' name='submit' class="btn guide_post btn-primary" value="continue">发布并继续</button>
+          <button type='submit' class="btn guide_review btn-primary">预览</button>
+        </div>
+      <% else  -%>
+        <div class="controls offset19">
+          <button type='submit' class="btn guide_save btn-primary" data-id="<%= guide.id %>">保存</button>
+          <button type='submit' class="btn guide_review btn-primary">预览</button>
+        </div>
+      <% end -%>
+    </div>
+  <% end -%>
+</div>
+
+<%= render 'select_category_modal' %>
+
+<% content_for :javascript do %>
+  <%= javascript_include_tag 'kindeditor' %>
+  <script type="text/javascript">
+    $(function() { KindEditor.create('#content', {
+items: ['source', '|', 'undo', 'redo','formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold','italic', 'underline', 'strikethrough', '|','table', 'hr', 'emoticons','link', 'unlink']
+}); });
+</script>
+<% end %>

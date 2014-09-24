@@ -1,0 +1,29 @@
+<div class="span8">
+  <%= form_for @shipping, :url => [:deliver, :manage, @order], :method => :post, :html => {:class => "send_order"} do |f| %>
+    <%= hidden_field_tag :ship_id , params[:ship_id] %>
+    <%= f.hidden_field :user_id, :value => @order.user_id %>
+    <label>发货类型：<%= select_tag :status, options_for_select(shipping_type, @order.status), :class => "span2" %></label>
+    <label>
+      运输方式：<%= f.select :ship_method_id, shipping_methods, {}, :class => "input-medium", :id => "manage_ship" %>
+      <% ExpressCal::Cost::SHIP_METHOD_CHILDREN.each_key do |key| %>
+        <% able, dis = true, "display:none;" if key != @shipping.ship_method_id %>
+        <%= f.select(:ship_child_id, shipping_shild(key), {}, :class => 'span3', :disabled => able, :id => "child_#{key}", :style => dis) %>
+      <% end %>
+    </label>
+    <label class="split-left">货运号：<%= f.text_field :number, :class => "input-medium" %></label>
+    <label>重量( g ) ：<%= f.text_field :weight, :class => "input-medium pn" %></label>
+    <label>运费( ￥ )：<%= f.text_field :price, :class => "input-medium pn" %></label>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#c_1" data-toggle="tab">给买家的备注</a></li>
+      <li><a href="#c_2" data-toggle="tab">后台备注</a></li>
+    </ul>
+    <div class="tab-content">
+      <% loc = (lo = @order.locale) == 'undefined' ? 'en' : lo %>
+      <label id="c_1" class="tab-pane active">买家备注(<%= loc %>)：<%= f.text_area :user_comment, :rows => 4 %></label>
+      <label id="c_2" class="tab-pane">后台备注：<%= f.text_area :our_comment, :rows => 4 %></label>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "确定", :class => "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

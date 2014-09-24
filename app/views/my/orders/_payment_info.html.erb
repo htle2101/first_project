@@ -1,0 +1,22 @@
+<div id="payment-info" class="otabs hide">
+  <table class="info-table">
+    <tbody>
+      <tr>
+        <th width="20%" class="ri"><%= t_views('order_total') %></th>
+        <td>$<%= @order.total.roundf %></td>
+      </tr>
+      <tr>
+        <th class="ri"><%= t_views('payment_received') %></th>
+        <td>$<%= @order.paid? ? @order.total.roundf : "0.00" %></td>
+      </tr>
+      <tr>
+        <th class="ri"><%= t_views('payment_method') %></th>
+        <td><%= Order::PAY_TYPE.invert[@order.pay_type].try(:capitalize) %></td>
+      </tr>
+      <tr>
+        <th class="ri"><%= t_views('date_received') %></th>
+        <td><%= @order.paid? ? @order.paid_at.strftime("%Y-%m-%d %R") : "Not paid yet." %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

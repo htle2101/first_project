@@ -1,0 +1,4 @@
+<%= form_tag manage_update_taobao_session_path,  :method => :put do %>
+  <%= text_field_tag :session, $redis.hget("Taobao::Session", "current_session"), :placeholder => "session更新" %>
+  <%= submit_tag "更新", :class => "btn btn-success", :confirm => "确定更新" %>
+<% end %>

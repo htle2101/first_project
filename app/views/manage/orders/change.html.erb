@@ -1,0 +1,31 @@
+<div class = "span8">
+  <%= form_for [:manage, @order], :html => {:class => "send_order"} do |f| %>
+    <div class="control-group" id="order_ship_info">
+      <label class="control-label">商品总价：</label>
+      <div class="controls">
+        <%= f.text_field :sub_total, :class => "span2 pn"%>
+      </div>
+    </div>
+    <div class="control-group" id="order_ship_info">
+      <label class="control-label">运费：</label>
+      <div class="controls">
+        <%= f.text_field :shipping_cost, :class => "span2 pn" %>
+      </div>
+    </div>
+    <div class="control-group" id="order_ship_info">
+      <label class="control-label">折扣：</label>
+      <div class="controls">
+        <%= f.text_field :discount, :class => "span2 pn" %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">备注：</label>
+      <div class="controls">
+        <%= f.text_area :price_comment, :rows => 5 %>
+      </div>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "确定", :class => "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

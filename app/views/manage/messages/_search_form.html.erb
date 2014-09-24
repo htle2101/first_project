@@ -1,0 +1,21 @@
+<%= search_form_for @search, :url => manage_messages_path, :html => {:class => 'well form-inline'} do |f| %>
+  <%= f.hidden_field :related_type_eq, :value => params[:q][:related_type_eq] %>
+  <% case params[:q][:related_type_eq]; when 'Question'%>
+    <label class="split-left">
+      问题类别: <%= f.select :related_id_eq, Message::CATEGORY.invert.collect{|k,v| [('- '<<t_models('message.category', k)), v]}, {:include_blank => "全部"}, :class => "input-small" %>
+    </label>
+  <% when 'Order' %>
+    <label class="split-left">订单号: <%= f.text_field :related_id_eq, :class => "input-small" %></label>
+  <% when 'Product' %>
+    <label class="split-left">产品ID: <%= f.text_field :related_id_eq, :class => "input-small" %></label>
+  <% end %>
+  <label class="split-left">
+    状态: <%= f.select :admin_unread_eq, [["待回复", true], ["已回复", false]], {:include_blank => "全部"}, :class => "input-small" %>
+  </label>
+  <label class="split-left">
+    更新时间: <%= f.text_field :updated_at_gteq, :class => "input-small datepicker", :value => init_date('gteq',:column => "updated_at") %>
+    至 <%= f.text_field :updated_at_lteq, :class => "input-small datepicker", :value => init_date('lteq',:column => "updated_at") %>
+  </label>
+  <%= f.submit '搜索', :class => 'btn split-left' %>
+  <label class="split-left label label-info">共 <%= @messages.total_entries %> 条记录</label>
+<% end %>

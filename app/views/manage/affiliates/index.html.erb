@@ -1,0 +1,38 @@
+<%= search_form_for @q, :url => manage_affiliates_path, :html => {:class => 'well form-search'} do |f| %>
+  <%= hidden_field_tag 'type', params[:type] %>
+  <label class='split-left'>用户名</label>
+  <%= f.text_field :username_eq, {:class => 'input-small'} %>
+  <label class='split-left'>邮箱</label>
+  <%= f.text_field :email_eq, {:class => 'input'} %>
+  <%= f.submit :Search, {:class => "btn"} %>
+<% end -%>
+
+<div class="tabbable">
+  <ul class='nav nav-tabs'>
+    <li class="<%= live_active?(manage_affiliates_path(:type => 'all')) %>"><%= link_to "全部用户", manage_affiliates_path(:type => 'all') %></li>
+    <li class="<%= live_active?(manage_affiliates_path(:type => "referraled")) %>"><%= link_to "已推广用户", manage_affiliates_path(:type => 'referraled') %></li>
+  </ul>
+</div>
+
+<table class="order-admin center-order table table-hover">
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>推广产品数量</th>
+      <th>推广订单数量</th>
+      <th>完成订单数量</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @affiliates.each do |user| %>
+      <tr>
+        <td><%= link_to user.username, [:manage, user], :target => "_blank" %></td>
+        <td><%= link_to user.referrals.map(&:taobao_id).uniq.size, referrals_manage_affiliates_path("q[referral_user_name_eq]" => user.username), :target => "_blank" %></td>
+        <td><%= link_to user.referral_products.map{|rp| rp.order}.uniq.size, orders_manage_affiliates_path("q[referral_user_name_eq]" => user.username), :target => "_blank" %></td>
+        <td><%= link_to user.referral_products.select{|rp| rp.order.completed? }.size, orders_manage_affiliates_path("q[referral_user_name_eq" => user.username, "q[referral_status_eq]" => ReferralProduct::REFERRAL_STATUS[:paid]), :target => "_blank" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @affiliates, :renderer => PaginationNoFollow %>

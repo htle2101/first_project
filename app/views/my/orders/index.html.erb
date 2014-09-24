@@ -1,0 +1,35 @@
+<ul class="tab clearfix append-bottom">
+  <%= order_tabs %>
+</ul>
+<table class="order-admin center-order">
+  <thead>
+    <tr>
+      <th width="375"><%= t_views 'product' %></th>
+      <th><%= t_views 'price' %></th>
+      <th><%= t_views 'quantity' %></th>
+      <th><%= t_views 'total' %></th>
+      <th><%= t_views 'order_status' %></th>
+      <th class="last"><%= t_views 'action' %></th>
+    </tr>
+  </thead>
+  <% @orders.each do |order| %>
+    <tbody>
+      <tr><td colspan="7" class="space"></td></tr>
+      <tr>
+        <td colspan="7" class="last head">
+          <span class="split-left" style="margin-left:0;">
+            <%= t_views 'order_number' %> : <%= link_to order.number, my_order_path(order.number) %>
+          </span>
+          <span class="split-left"><%= t_views 'order_date' %> : <%= order.created_at.strftime("%F %H:%M") %></span>
+          <% if Message.order_unread?(order) %>
+            <a href='<%= "/my/orders/#{order.number}#message" %>' class="split-left" style="text-decoration:none;">
+              <span class="badge badge-warning"><%= t_views 'unread_count' %></span>
+            </a>
+          <% end %>
+        </td>
+      </tr>
+      <%= render 'order_product', :order => order %>
+    </tbody>
+  <% end %>
+</table>
+<%= will_paginate @orders, :renderer => PaginationNoFollow %>

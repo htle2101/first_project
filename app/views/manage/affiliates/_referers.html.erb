@@ -1,0 +1,15 @@
+<table class='order-admin center-order table table-hover'>
+  <tr>
+    <th>推广来源</th>
+    <th width=='10%'>IP</th>
+    <th width=='10%'>时间</th>
+  </tr>
+  <% referrals.each do |rr| %>
+    <tr>
+      <td><label title="<%= rr.http_referer %>"><%= truncate(rr.http_referer, :length => 80) %></span></td>
+      <td><%= rr.remote_ip %></td>
+      <td><%= rr.created_at %></td>
+    </tr>
+  <% end -%>
+</table>
+<%= will_paginate referrals, :renderer => PaginationNoFollow %>

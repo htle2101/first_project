@@ -1,0 +1,29 @@
+<% target = element.target %>
+<tr>
+  <td><%= check_box_tag "ids[]", element.id, false, :class => 'check_one' %></td>
+  <% if type.include? "Store" -%>
+    <% path, store, name = '#', target, '' -%>
+  <% else -%>
+    <% path, store, name = product_path(target.taobao_id), target.store, target.name -%>
+  <% end -%>
+  <td class="list_li" style="text-align:left;">
+    <% if !type.include? "Store" %>
+      <div class="favor-img" style="width:40px; height:40px;">
+        <a href="<%= path  %>" style="width:40px; height:40px;">
+          <img src="<%= target.pic_url_version(:thumb) %>" alt="China Wholesale" />
+        </a>
+      </div>
+    <% end %>
+    <div class="span18">
+      <a href="<%= path %>"><%= name %></a>
+      <div class="sname">
+        <span class="quiet"><%= link_to store.name, store_path(store) %></span>
+        <!--<br><a href="#"><img alt="" src="<%#= store.level ?  store_level_img(store.level) : '' %>"></a>-->
+      </div>
+    </div>
+  </td>
+  <td><span class="quiet"><%= element.created_at.to_s(:db) %></span></td>
+  <td>
+    <%= link_to '<i class="icon-trash"></i>'.html_safe, remove_my_favourites_path(:ids => element.id), :class => 'delete' %>
+  </td>
+</tr>

@@ -1,0 +1,15 @@
+<h2><%= t 'views.users.unlock.new.resend_unlock_instructions' %></h2>
+
+<%= simple_form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="inputs">
+    <%= f.input :email, :required => true %>
+  </div>
+
+  <div class="actions">
+    <%= f.button :submit, t('views.users.unlock.new.resend_unlock_instructions') %>
+  </div>
+<% end %>
+
+<%= render "links" %>

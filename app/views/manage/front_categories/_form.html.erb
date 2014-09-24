@@ -1,0 +1,27 @@
+<h1 align="center"><b><%= front_category_title %><%= action_name == "new" ? '创建' : '编辑' %></b></h1><br>
+<div class="well">
+  <h3 style="margin-left:110px">
+    <span>名称:</span>
+    <span style="margin-left:10px"><%= @front_category.name %></span>
+    <span style="margin-left:120px">等级:</span>
+    <span style="margin-left:10px"><%= front_category_level @front_category %>级</span>
+    <% if @front_category.parent.persisted? %>
+      <span style="margin-left:140px">父级:</span>
+      <span style="margin-left:10px"><%= @front_category.parent_name %> </span>
+    <% end %>
+  </h3>
+</div>
+
+<%= form_for @front_category, :url => "/manage/#{controller_name}/#{@front_category.id}", :html => {:class => "edit_category form-horizontal well form-inline", :multipart => true} do |f| %>
+  <%= hidden_field_tag :page, params[:page].present? ? params[:page] : 1 %>
+  <%= hidden_field_tag :root_id, @front_category.root.id %>
+  <%= f.hidden_field :type, :value => @front_category.type %>
+  <%= f.hidden_field :parent_id, :value => @front_category.parent_id %>
+  <%= f.hidden_field :id, :value => @front_category.id %>
+  <% if @edit_seo %>
+    <%= render '/manage/front_categories/edit_seo', :f => f %>
+  <% else %>
+    <%= render '/manage/front_categories/step1', :f => f %>
+    <%= render '/manage/front_categories/step2', :f => f %>
+  <% end %>
+<% end %>

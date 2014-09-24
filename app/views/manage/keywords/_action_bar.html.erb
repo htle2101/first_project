@@ -1,0 +1,6 @@
+<% if key %>
+  <%= link_to('加入品牌', manage_keywords_path, :class => 'add_key', "data-key" => key, 'data-type' => 'brands') + ' | ' unless action_name['brands'] %>
+  <%= link_to('加入提示词', manage_keywords_path, :class => 'add_key', "data-key" => key, 'data-type' => 'autocomplete') + ' |' unless action_name['autocomplete'] %>
+  <%= link_to('加入预翻译', 'javascript:;', :class => "to_add_trans", 'data-key' => key) + ' |' unless action_name['translated'] %>
+  <%= link_to('删除', manage_keyword_path(key, :type => action_name), :class => 'delete') if controller_name['keywords'] %>
+<% end %>

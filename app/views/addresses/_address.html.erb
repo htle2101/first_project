@@ -1,0 +1,17 @@
+<% index ||= 0 %>
+<section class="item clearfix <%= 'active' if index == 0 %>">
+  <input type="radio" class="radio" id="address_<%= (address ||= @address).id %>" name="address_id" value="<%= address.id %>" <%= "checked" if address.is_default || index == 0 %>>
+  <address class="address clearfix">
+    <label for="address_<%= address.id %>">
+      <p class="addr-right">
+        <a href="<%= edit_address_path address %>" val="<%= address.id %>"><%= t 'edit' %></a><br>
+        <a href="<%= address_path address %>" class="delete"><%= t 'delete' %></a>
+      </p>
+      <p class="addr-left"> <em><%= address.name %></em> <br>Tel: <%= address.phone %></p>
+      <p>
+        <%= address.address1 %> <%= address.address2 %><br>
+        <%= "#{address.city}, #{address.province}, #{address.zip_code}" %>, <b><%= address.country_englishname %></b>
+      </p>
+    </label>
+  </address>
+</section>

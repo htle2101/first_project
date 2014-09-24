@@ -1,0 +1,17 @@
+<% if controller_name == 'products' %>
+  <% meta = get_meta %>
+  <% page = params[:page] || params[:page_no] %>
+  <% page_data = page.to_i > 1 ? {:page => t("page", :page => page)} : {:page => nil} %>
+  <title><%= t("#{meta[:type]}_title", meta) %></title>
+  <meta name="keywords" content="<%= t("#{meta[:type]}_keywords", meta.merge(page_data)) %>">
+  <meta name="description" content="<%= t("#{meta[:type]}_desc", meta.merge(page_data)) %>">
+<% elsif controller_name == "stores" %>
+  <% meta = get_store_meta %>
+  <title><%= t("store_title", meta) %></title>
+  <meta name="keywords" content="<%= t("store_keywords", meta) %>">
+  <meta name="description" content="<%= t("store_descriptions", meta) %>">
+<% else %>
+  <title><%= content_for?(:title) ? yield(:title) : t('home_title') %></title>
+  <meta name="keywords" content="<%= content_for?(:keywords) ? yield(:keywords) : t('home_keywords') %>">
+  <meta name="description" content="<%= content_for?(:description) ? yield(:description) : t('home_desc') %>">
+<% end %>

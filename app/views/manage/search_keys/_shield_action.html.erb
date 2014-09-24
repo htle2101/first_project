@@ -1,0 +1,19 @@
+<% if obj == 'header' %>
+  <th>
+    <%= sort_link @search, :name, '关键字', :default_order => 'desc' %> (点击修改)
+    <span class="label pull-right label-info">父目录</span>
+  </th>
+  <th style="text-align:center;" width="9%">操作</th>
+<% else %>
+  <% obj.each do |obj| %>
+    <% name = obj.try(:name) %>
+    <td>
+      <%= best_in_place(obj, :name, :nil => name, :type => :input, :path => manage_search_key_path(obj, :type => 'shields')) if obj %>
+      <%= "<span class='pull-right label label-info'>#{obj.parent.name}</span>".html_safe if obj && !obj.root? %>
+    </td>
+    <td style="text-align:center;">
+      <%= link_to("添加子类", manage_search_key_path(obj, :type => 'shields'), :class => 'new_shield') + ' |&nbsp;'.html_safe if obj && obj.root? %>
+      <%= link_to("删除", manage_search_key_path(obj, :type => 'shields'), :class => 'delete') if obj %>
+    </td>
+  <% end %>
+<% end %>

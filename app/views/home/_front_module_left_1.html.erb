@@ -1,0 +1,22 @@
+<section class="reviews box">
+  <h3 class="title" id="slot_h3"><%= fm['slot_h3'][I18n.locale.to_s] %></h3>
+  <div class="bd">
+    <% 7.times do |i| %>
+    <div class="reviews-c">
+    	<a rel="nofollow" href="<%= fm["slot_a_#{i}"]["href"] %>" class="img"> <img src="<%= fm["slot_img_#{i}"]["src"] %>" alt=""/></a>
+      <div class="sname">
+      	<a rel="nofollow" href="<%= fm["slot_a_#{i+7}"]["href"] %>"><%= fm["slot_a_#{i+7}"][I18n.locale.to_s] %></a>
+      </div>
+      <span class="price"><%= fm["slot_span_#{i}"][I18n.locale.to_s] %></span>
+    </div>
+    <% end %>
+
+    <div class="reviews-c last">
+        <a rel="nofollow" href="<%= fm["slot_a_14"]["href"] %>" class="img"> <img src="<%= fm["slot_img_7"]["src"] %>" alt="" /></a>
+        <div class="sname">
+          <a rel="nofollow" href="<%= fm["slot_a_15"]["href"] %>"><%= fm["slot_a_15"][I18n.locale.to_s] %></a>
+        </div>
+        <span class="price"><%= fm["slot_span_7"][I18n.locale.to_s] %></span>
+    </div>
+  </div>
+</section>

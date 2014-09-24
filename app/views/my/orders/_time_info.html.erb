@@ -1,0 +1,22 @@
+<div id="time-info" class="otabs hide">
+  <table class="info-table">
+    <tbody>
+      <tr>
+        <th width="20%" class="ri"><%= t_views('place_order') %></th>
+        <td><%= @order.created_at.strftime("%Y-%m-%d %R") %></td>
+      </tr>
+      <% if @order.paid? %>
+        <tr>
+          <th class="ri"><%= t_views('order_paid') %></th>
+          <td><%= @order.paid_at.strftime("%Y-%m-%d %R") %></td>
+        </tr>
+      <% end %>
+      <% if @order.shipped? %>
+        <tr>
+          <th class="ri"><%= t_views('shipped_by') %></ <%= @order.ship_method %></th>
+          <td><%= @order.delivered_at.strftime("%F %R") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

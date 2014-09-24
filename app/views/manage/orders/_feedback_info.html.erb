@@ -1,0 +1,30 @@
+<table class="order-admin" >
+  <thead>
+    <tr class="column-headers">
+      <th>产品名</th>
+      <th width="75px">评价星级</th>
+      <th width="300px">评语</th>
+      <th width="65px">类型</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.product_feedbacks.each do |pf| %>
+      <% product = pf.product %>
+      <tr>
+        <td class="product_thumb">
+          <div class="wrap_goods">
+            <span class="img">
+              <%= link_to image_tag(product.pic_url_version :small).html_safe, product.taobao_url, :target => "_blank" %>
+            </span>
+            <div class="goods_info" style="width:75%">
+              <p class="name"><%= link_to product.name, product.taobao_url %></p>
+            </div>
+          </div>
+        </td>
+        <td><%= raw '<i class="icon-star"></i>' * pf.stars %></td>
+        <td><%= pf.comment %></td>
+        <td><%= t_models pf, 'get_review_type' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

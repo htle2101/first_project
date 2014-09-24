@@ -1,0 +1,26 @@
+<%= form_for [:manage, @deposit], :html => {:class => 'well form-inline'} do |f| %>
+  <span><b>用户名:</b> <%= link_to @deposit.user_username, [:manage, @deposit.user], :target => 'blank'  %></span>
+  <span class="split-left"><b>可用资金: </b>$ <%= @deposit.account_fund %></span>
+  <span class="split-left"><b>冻结资金: </b>$ <%= @deposit.account_frozen_fund %></span>
+  <hr style="margin:8px 0;">
+  <span class="pull-left">
+    <% unless @deposit.is_refund? %>
+      状态：<%= f.select :status, search_select('Deposit::STATUS'), {}, :class => 'input-medium' %>
+    <% else %>
+      <%= f.hidden_field :status, :value => Deposit::STATUS['succeed'] %>
+      状态：成功退款
+      <div style="margin-top:10px;">
+        款项退入：
+        <label><%= f.radio_button(:pay_type, Deposit::PAY_TYPE['wallet'], :checked => true) %>钱包</label>
+        <label class="split-left"><%= f.radio_button(:pay_type, Deposit::PAY_TYPE['alipay']) %>支付宝</label>
+        <label class="split-left"><%= f.radio_button(:pay_type, Deposit::PAY_TYPE['webmoney']) %>WebMoney</label>
+      </div>
+    <% end %>
+  </span>
+  <span class="split-left">
+    备注：<%= f.text_area :remark, :rows => 3, :style => 'width:200px' %>
+  </span>
+  <div style="margin-top:10px">
+    <%= f.submit('确定', :class => "btn btn-primary", :id => :to_edit_deposit) if action_name == 'edit' %>
+  </div>
+<% end %>

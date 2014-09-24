@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h4>
+    类型: <%= t_models(@deposit, 'get_fund_type') %><span class="split-left">支付方式: <%= t_models(@deposit, 'get_pay_type') %></span>
+  </h4>
+</div>
+<dl class="dl-horizontal" style="margin:10px 0;">
+  <% if @deposit.get_pay_type == 'bank' %>
+    <dt>充值金额：</dt><dd>$ <%= @deposit.amount %></dd>
+    <dt>汇款人姓名：</dt><dd><%= @deposit.b_name %></dd>
+    <dt>汇款日期：</dt><dd><%= @deposit.b_date %></dd>
+  <% elsif @deposit.get_pay_type == 'western' %>
+    <dt>充值金额：</dt><dd>$ <%= @deposit.amount %></dd>
+    <dt>国家：</dt><dd><%= (c_c = @deposit.country_chinesename).blank? ? '&nbsp;'.html_safe : c_c %></dd>
+    <dt>名字：</dt><dd><%= @deposit.w_first_name %></dd>
+    <dt>姓氏：</dt><dd><%= @deposit.w_last_name %></dd>
+    <dt>汇款单号：</dt><dd><%= @deposit.w_transfer_number %></dd>
+  <% elsif @deposit.get_pay_type == 'webmoney' %>
+    <dt>充值金额：</dt><dd>$ <%= @deposit.amount %></dd>
+    <dt>充值人标识：</dt><dd><%= @deposit.wm_purse %></dd>
+    <dt>充值人姓名：</dt><dd><%= @deposit.wm_name %></dd>
+    <dt>充值时间：</dt><dd><%= @deposit.wm_date %></dd>
+  <% end if @deposit.need_audit? %>
+  <% if @deposit.is_draw? %>
+    <dt>提款金额：</dt><dd>$ <%= @deposit.amount %></dd>
+    <dt>PayPal 帐号：</dt><dd><%= (p_a = @deposit.paypal_account).blank? ? '&nbsp;'.html_safe : p_a %></dd>
+    <dt>提交时间：</dt><dd><%= @deposit.created_at.to_s(:db) %></dd>
+  <% end %>
+  <% if @deposit.wallet_pay || @deposit.is_refund? %>
+    <dt><%= @deposit.is_refund? ? '退款' : '支付' %>金额：</dt><dd>$ <%= @deposit.amount %></dd>
+    <dt>订单编号：</dt><dd><%= link_to @deposit.order.number, manage_order_path(@deposit.order_id), :target => 'blank' %></dd>
+    <dt>提交时间：</dt><dd><%= @deposit.created_at.to_s(:db) %></dd>
+  <% end %>
+</dl>
+<%= render 'form' %>

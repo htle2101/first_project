@@ -1,0 +1,18 @@
+<div class="modal fade hide" id="go-to-payment-modal">
+  <div class="modal-header">
+    <h3><%= t('views.payments.make_payment') %></h3>
+  </div>
+  <div class="modal-body">
+    <p style="line-height:24px;">
+      <i class="icon-info-sign"></i> <%= t('views.payments.after_complete') %> <br>
+      <b><%= t('views.payments.payment_success') %>: </b> &nbsp;
+      <%= link_to t('views.payments.check_my_order'), my_orders_path %> <span class="split">|</span>
+      <%= link_to t('views.products.continue_shop'), root_path %><br>
+      <b><%= t('views.payments.payment_fail') %>: </b> &nbsp;
+      <%= link_to t('views.payments.ask_for_help'), new_my_message_path %> <span class="split">|</span>
+      <a href="javascript:location.reload();"><%= t('views.payments.make_other_payment_method') %></a>
+    </p>
+  </div>
+  <div class="modal-footer">
+  </div>
+</div>

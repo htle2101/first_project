@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <td width="50%">
+      <%= search_form_for @search, :url => shields_manage_search_keys_path, :html => {:class => 'well form-search', :method => :get} do |f| %>
+        <label class="split-left">关键字</label><%= f.text_field :name_cont, :class => 'input-medium', :placeholder => '模糊匹配' %>
+      <label class="split-left checkbox"><%= check_box_tag 'has_child', '1', params[:has_child] %>包含子类</label>
+      <input class="btn split-left" type="submit" value="搜索">
+      <label class="split-left label label-info">共 &nbsp;<%= @keywords.total_entries %>&nbsp; 条记录</label>
+    <% end %>
+    </td>
+    <td><%= render 'shield_form' %></td>
+  </tr>
+</table>
+
+<table class="order-admin table table-striped table-bordered">
+  <thead>
+    <tr>
+      <%= (render(:partial => 'shield_action', :locals => {:obj => 'header'}) * 3).html_safe %>
+    </tr>
+  </thead>
+  <% @keywords.in_groups_of(3) do |arr| %>
+    <tr><%= render 'shield_action', :obj => arr %></tr>
+  <% end %>
+</table>
+<%= will_paginate @keywords,  :renderer => PaginationNoFollow %>
+<div id="shield_modal" class="modal hide fade"></div>

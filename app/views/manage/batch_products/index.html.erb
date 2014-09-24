@@ -1,0 +1,49 @@
+<div class="span24">
+  <div class="btn-toolbar">
+    <div class="btn-group">
+    <%= link_to "创建新任务", new_manage_batch_product_path, :class => "btn btn-primary" %>
+    </div>
+  </div>
+  <table class="table">
+    <tr>
+      <th width=100>关键词</th>
+      <th width=100>方法</th>
+      <th width=100>未完成/总数</th>
+      <th width=500>进度</th>
+      <th width=50>状态</th>
+      <th>操作</th>
+    </tr>
+    <% @infos.each do |info| %>
+    <% info_detail = $redis.hgetall info %>
+    <tr>
+      <td><em style="font-size:16px"><%= keyword=info.to_s.gsub(/^Batch\:Keyword\:/,'').gsub(/\@.*$/, '') %></em></td>
+      <td><%= Util::Batch::JOBS_LIST_CN[info_detail["keyword_solution"]] %></td>
+      <% if info_detail["keyword_status"] == 'Not Start' %>
+      <td>暂无</td>
+      <td width=500>
+        <div class="progress">
+          <div class="bar" style="width: 0%"></div>
+        </div>
+      </td>
+      <td>未开始</td>
+      <td width=100>
+          <%= form_tag manage_batch_product_start_path do |x| %>
+          <%= hidden_field_tag 'batch', info %>
+          <%= submit_tag "开始", :class => "btn" %>
+          <%= link_to '<i class="icon-eye-open"></i>'.html_safe, search_path(:keyword => keyword), :target => "_blank", :class => "btn" %>
+          <% end %>
+      </td>
+      <% else %>
+      <td><%= info_detail["keyword_count"] %>/<%= info_detail["keyword_total"] %></td>
+      <td>
+        <div class="progress">
+          <div class="bar" style="width: <%= (info_detail["keyword_count"].to_f)/(info_detail["keyword_total"].to_f+1)*100 %>%;"></div>
+        </div>
+      </td>
+      <td><%= info_detail["keyword_status"] == 'Worked' ? '完成' : '做功中' %></td>
+      <td><%= link_to '<i class="icon-eye-open"></i>'.html_safe, search_path(:keyword => keyword), :target => "_blank", :class => "btn" %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+</div>

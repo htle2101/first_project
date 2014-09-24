@@ -1,0 +1,38 @@
+<%= search_form_for @search, :url => manage_user_search_keys_path, :html => {:class => 'well form-inline', :method => :get} do |f| %>
+  <label class="split-left">用户名</label><%= f.text_field :user_username_cont, :class => 'input-small', :placeholder => '模糊匹配' %>
+  <label class="split-left">关键字</label><%= f.text_field :search_key_keyword_cont, :class => 'input-small', :placeholder => '模糊匹配'%>
+  <label class="split-left">目录</label><%= f.text_field :category_name_cont, :class => 'input-small', :placeholder => '名称: 模糊匹配' %>
+  <%= f.text_field :cid_eq, :class => 'input-mini pi', :placeholder => '目录ID' %>
+  <label class="split-left"><%= f.text_field :search_count_gteq, :class => 'input-mini pi' %>< 搜索次数 <</label>
+  <%= f.text_field :search_count_lteq, :class => 'input-mini pi' %>
+  <%= f.submit '搜索', :class => 'btn split-left' %>
+  <label class="split-left label label-info">共 &nbsp;<%= @search_keys.total_entries %>&nbsp; 条记录</label>
+<% end %>
+
+<table class="order-admin table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th width="7%"><%= sort_link @search, "users.username", '用户名', :default_order => 'desc' %></th>
+      <th><%= sort_link @search, "search_keys.keyword", '关键字', :default_order => 'desc' %></th>
+      <th width="26%"><%= sort_link @search, :cid, '目录名称', :default_order => 'desc' %><span class="label pull-right">目录ID</span></th>
+      <th width="6%" style="text-align:right;"><%= sort_link @search, :search_count, '搜索次数', :default_order => 'desc' %></th>
+      <th width="12%" style="text-align:center;"><%= sort_link @search, :updated_at, "更新时间" %></th>
+      <th width="5%" style="text-align:center;">操作</th>
+    </tr>
+  </thead>
+  <% @search_keys.each do |s| %>
+    <tr>
+      <td><%= link_to s.user.username, manage_user_search_keys_path('q[user_id_eq]' => s.user_id), :title => '点击查看此用户所有关键字' %></td>
+      <td><%= link_to s.search_key.keyword, products_path(:keyword => s.search_key.keyword, :cid => s.cid), :target => '_blank', "data-no-turbolink" => true %></td>
+      <td>
+        <%= s.category_original_name %>
+        <%= "<span class=\"label pull-right\">#{s.cid}</span>".html_safe unless s.cid.zero? %>
+      </td>
+      <td style="text-align:right;"><%= number_with_delimiter s.search_count %></td>
+      <td style="text-align:center;"><%= s.updated_at.to_s(:db) %></td>
+      <td></td>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate @search_keys,  :renderer => PaginationNoFollow %>
+<div id="add_trans" class="modal hide fade"><%= render 'manage/keywords/trans_form' %></div>

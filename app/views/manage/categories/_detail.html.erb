@@ -1,0 +1,41 @@
+<tr data-id=<%= category.id %> class="<%= mark_class  %>">
+  <td>
+    <%= category.cid %>
+  </td>
+  <td class="name">
+    <a href="<%= category_products_path(category.slug, category.cid) %>" target="_blank">
+      <strong>(<%= category.level + 1 %>级) <%= category.original_name %></strong>
+    </a>
+  </td>
+  <td class="weight" width="230">
+    <% opts = {:type => :input, :activator => "#edit_weight#{category.id}", :inner_class => "input-mini"} %>
+    <%= best_in_place category, :weight, opts.merge(:path =>  manage_category_path(category.id))  %>
+    <a href="javascript:;" id="edit_weight<%= category.id %>" style="float:right"> 编辑</a>
+  </td>
+  <td class="weight" width="230">
+    <%= best_in_place category, :status, type: :select, collection: Category::STATUS.to_a,  :activator => "#edit_status#{category.id}", :path =>  manage_category_path(category.id) %>
+    <a href="javascript:;" id="edit_status<%= category.id %>" style="float:right"> 编辑</a>
+  </td>
+  <td>
+    <% if category.parent %>
+      <a href="javascript:;" class="category-get" data-keyword="parents">父目录</a> |
+    <% end %>
+    <% if category.children.present? %>
+      <a href="javascript:;" class="category-get" data-keyword="children">子目录</a> |
+    <% end %>
+    <a href="javascript:;" class="category-edit">编辑名称</a>
+  </td>
+</tr>
+<% ["en", "ru"].each do |str|  %>
+  <tr data-locale="<%= str %>" class="<%= mark_class %> hide">
+    <td><%= category.cid %></td>
+    <td class="name">
+      <% I18n.locale = str.to_sym -%>
+      <%= '-' * category.level %>
+      <%= best_in_place category, :name, :type => :input, :inner_class => "input-xlarge", :path =>  manage_category_path(category.id)  %>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+<% end %>

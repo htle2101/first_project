@@ -1,0 +1,16 @@
+<footer id="footer">
+  <img src="/images/footer-img.jpg" alt="payment and shipping">
+  <a href="https://passport.webmoney.ru/asp/certview.asp?wmid=220986667640" target="_blank" rel="nofollow">
+    <img src="/images/verified_webmoney.png" alt="Here you can find information as to the passport for our WM-identifier 220986667640" border="0">
+  </a>
+  <a href="http://www.megastock.com/" target="_blank" rel="nofollow">
+    <img src="/images/acc_blue_on_white_en.png" alt="www.megastock.com" border="0">
+  </a>
+
+  <nav class="footer-nav"><a href="/help/about-us" rel="nofollow"><%= t('footer.about_us')%></a> | <a href="/help/contact-us" rel="nofollow"><%= t('footer.contact_us')%></a> | <a href="/help/terms-of-service" rel="nofollow"><%= t('footer.term_of_use')%></a> | <a href="/help/privacy-policy" rel="nofollow"><%= t('footer.privacy_policy')%></a> | <a href="/"> <%= t('footer.taobao_agent') %></a></nav>
+  <p>© 2012 BuyChina Inc.</p>
+</footer>
+<% content_for :trace do %>
+  <%= render :partial => 'shared/ga' %>
+  <%= render :partial => 'shared/ym' %>
+<% end %>

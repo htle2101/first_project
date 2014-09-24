@@ -1,0 +1,25 @@
+<div class="section" id="p_transfer">
+  <h3><%= t 'my.wallets.t_via' %> Paypal</h3>
+  <div class="body">
+    <%= form_tag to_paypal_my_wallet_path, :class => 'form-horizontal' do |f| %>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.wallets.t_via' %></label>
+          <div class="controls">
+            <%= image_tag "paypal-sm.png" %>
+            <p><%= t_views 'p_notice' %></p>
+          </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label"><%= t 'my.wallets.transfer_amount' %></label>
+        <div class="controls">
+          <div class="input-append">
+            <%= text_field_tag :amount, params[:amount], :class => 'text required pn' %><span class="add-on">$</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary new_deposit normal"><%= t 'submit' %></button>
+      </div>
+    <% end %>
+  </div>
+</div>

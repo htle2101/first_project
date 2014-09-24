@@ -1,0 +1,52 @@
+<% @items.each do |i| %>
+  <tr class="l_taobao_item visible" data-id="<%= i.id %>">
+    <% if [1].include? params[:type].to_i %>
+    <td><input type="checkbox" class="taobao-batch-select"></td>
+    <% end %>
+    <td width=60>
+      <strong style="color:#0A3B4A;"><%= i.store_name %></strong>
+      <%= render :partial => "shared/aliwangwang", :locals => {:username => i.store_name} %>
+    </td>
+    <td width=60 class="order_id"><%= link_to i.order_id, manage_order_path(i.order_id) %></td>
+    <td width=50><%= image_tag i.pic_url_version(:small), :alt => i.product.try(:name), :style => "max-height:50px; max-width:50px;" %></td>
+    <td width=300>
+      <%= link_to i.product.try(:name), i.product.try(:taobao_url), :target => "_blank" %>
+      <%= link_to "<span class=\"icon-th-list\"></span>".html_safe, manage_taobao_detail_path(i.id), :class => "order_detail" %>
+      <p class="note"><%= i.pv_values ? i.pv_values_html.try(:html_safe) : "-" %></p>
+      <% unless i.order_product.comment.blank? %>
+        <p class="note">买家备注:<%= i.order_product.comment %></p>
+      <% end %>
+    </td>
+    <td width=40><%= i.quantity %></td>
+    <td width=30><%= i.order.get_shipped_to %></td>
+    <% if [0, 1, 2].include?(params[:type].to_i) %>
+      <td width=70>
+        <% if (o = i.order).present? && params[:type].to_i == 1 %>
+          <% if o.tasks.doing.present? && task = o.tasks.doing.last.current_task %>
+            <a href='<%= manage_order_path(o) %>'>
+              <span class='red'><%= task.to.username + " 正在处理" %></span>
+            </a>
+          <% end %>
+        <% else %>
+          <%= i.taobao_order_num %>
+        <% end %>
+      </td>
+      <td class="taobao_comment">
+        <%= best_in_place i, :comment, :type => :textarea, :path => manage_purchase_product_path(i.id) %>
+      </td>
+      <td width=50><%= link_to "修改", edit_manage_purchase_product_path(i.id), :class => "pp_taobao_edit btn btn-primary" %></td>
+    <% elsif params[:type].to_i == 3 %>
+      <% if l = get_logistics(i.order_product_id) %>
+        <td class="field-for-search"><%= l['company_name'] %></br><%= l['out_sid'] %></td>
+        <td><%= l["status_time"] %></br><%= l["status_desc"] %></td>
+      <% else %>
+        <td class="field-for-search">-</td><td>-</td>
+      <% end %>
+      <td width=110>
+        <style>form.button_to,form.button_to div {display:inline;}</style>
+        <%= button_to "入库", manage_purchase_product_path(i.id, {:purchase_product => {:taobao_status => PurchaseProduct::TS["已入库"]}}), :class => "btn btn-success", :confirm => "确定入库?", :method => :put, :remote => "true" %>
+        <%= link_to "修改", edit_manage_purchase_product_path(i.id), :class => "pp_taobao_edit btn btn-primary" %>
+      </td>
+    <% end %>
+  </tr>
+<% end %>

@@ -1,0 +1,36 @@
+<tr>
+  <td><%= link_to order.number, my_order_path(order.number) %></td>
+  <td>
+    <div class="list-title-wrapper">
+      <% order.order_products.each do |op| %>
+        <%= link_to my_order_path(order.number), :class => "image" do %>
+          <%= image_tag op.pic_url_version(:small) %>
+        <% end %>
+      <% end %>
+    </div>
+  </td>
+  <td>
+    <% if (c = Message.get_related_conversation(order.number)) && c.user_unread? %>
+    <%= link_to "#{my_order_path(order.number)}#msg-info", :class => "order-message" do %>
+        new
+      <% end %>
+    <% end %>
+  </td>
+  <td>$<%= order.total.roundf %></td>
+  <td>
+    <span class="quiet"><%= order.created_at.to_date %><br><%= order.created_at.strftime("%T") %></span>
+  </td>
+  <td><b><%= i18n_status(order.status) %></b></td>
+  <td>
+    <p>
+      <% if order.delivered? || order.partial_delivered? %>
+      <%= link_to t_views('.confirm_delivered'), confirm_deliver_my_order_path(order), :class => "btn btn-small btn-success" unless order.product_feedbacks.empty?%>
+      <%= link_to t_views('.confirm_delivered'), my_order_reviews_path(order.number), :class => "btn btn-small btn-success", :id => "feedback_to_complete" if order.product_feedbacks.empty? %>
+      <% end %>
+      <%= link_to(t_views('.pay_now'), payment_checkouts_path(:id => order.id), :class => "btn btn-small btn-primary") if order.waiting? %>
+      <%= link_to(t_views('review.review'), my_order_reviews_path(order.number), :class => "btn btn-small btn-info") if order.completed? && order.product_feedbacks.empty? %>
+    </p>
+    <p><%= link_to t_views('.view_detail') , my_order_path(order.number) %></p>
+    <p><%= link_to(t('cancel'), cancel_my_order_path(order.number), :class => "cancel-order") if order.waiting? %></p>
+  </td>
+</tr>

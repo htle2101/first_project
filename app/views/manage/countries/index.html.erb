@@ -1,0 +1,24 @@
+<%= search_form_for @search, :url => manage_countries_path, :html => {:class => 'well form-inline', :method => :get} do |f| %>
+  <label class="split-left">名称</label>
+  <%= f.text_field :name_cont, :class => 'input-xlarge' %>
+  <%= f.submit '搜索', :class => 'btn split-left' %>
+<% end %>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <th>国家名称</th>
+    <% @ship_methods.each do |ship_method| %>
+      <th><a href="countries/ship_method?ship_method=<%= ship_method %>"><%= ship_method %></a></th>
+    <% end %>
+  </thead>
+  <tbody>
+    <% @countries.each do |country| %>
+      <tr>
+      <td><%= country.name %></td>
+        <% @ship_methods.each do |ship_method| %>
+          <td><%= country.send(ship_method.downcase) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

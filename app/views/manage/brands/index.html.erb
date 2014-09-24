@@ -1,0 +1,44 @@
+<div class="span20">
+  <%=form_for :q, :url => manage_brands_path, :html => {:class => "well form-inline"}, :method => :get do |f|  %>
+    <label class="split-left">名称</label>
+    <%= f.text_field :name, :value => params[:q][:name], :class => 'input-small'  %>
+    <label class="split-left">首字母</label>
+    <%= f.text_field :first_letter, :value => params[:q][:first_letter], :class => 'input-mini' %>
+    <label class="split-left">CID</label>
+    <%= text_field_tag :url, params[:url], :class => "input-small" %>
+    <label class="split-left">状态</label>&nbsp;&nbsp;
+    <%= f.select :status_eq, Category::STATUS.invert.to_a, {:include_blank => "任意状态" } %>
+    <%= f.submit "搜索", :class => "btn split-left" %>
+  <% end %>
+
+  <table class="table table-striped table-bordered order-admin ">
+    <thead>
+      <tr>
+        <th>品牌名称</th>
+        <th>英文名称</th>
+        <th>俄文名称</th>
+        <th>Logo</th>
+        <th>Image</th>
+        <th>描述</th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @brands.each do |brand| %>
+        <tr>
+          <td><%=link_to brand.name_cn, brand.url_en, :target => "_blank" %></td>
+          <td><%= brand.name_en %></td>
+          <td><%= brand.name_ru %></td>
+          <% logo, image = brand.logo, brand.image %>
+          <td><%= image_tag logo, :size => "60x70" if logo.present?%></td>
+          <td><%= image_tag image, :size => "60x70" if image.present? %></td>
+          <td><%= brand.description %></td>
+          <td><%= Brand::STATUS[brand.status] %></td>
+          <td><%= link_to 'edit', edit_manage_brand_path(brand.id) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @pages, :renderer => PaginationNoFollow %>
+</div>

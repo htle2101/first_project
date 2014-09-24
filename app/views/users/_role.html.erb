@@ -1,0 +1,12 @@
+<tr>
+  <td><%= @user.username%></td>
+  <td><%= @user.email%></td>
+  <td>
+    <% Role.find_each do |role|%>
+      <%= link_to 'add', add_role_manage_user_path(:id => @user.id, :role_id => role.id), :method => :post, :remote => true unless @user.has_role?(role.title)%>
+      <%= link_to 'remove', remove_role_manage_user_path(:id => @user.id, :role_id => role.id), :method => :post, :remote => true if @user.has_role?(role.title)%>
+      <%= role.title %>
+    <% end -%>
+  </td>
+</tr>
+

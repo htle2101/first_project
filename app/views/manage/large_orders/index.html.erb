@@ -1,0 +1,38 @@
+<section class="ac-content">
+  <div class="tabbable">
+    <ul class="nav nav-tabs">
+      <li class="<%= 'active' if params[:unread] == 'true' %>">
+        <%= link_to "待回复大订单", manage_large_orders_path(:unread => true) %>
+      </li>
+      <li class="<%= 'active' if params[:unread] == 'false' %>">
+        <%= link_to "已回复大订单", manage_large_orders_path(:unread => false) %>
+      </li>
+    </ul>
+  </div>
+  <table class=" data-table-order table">
+    <thead>
+      <tr>
+        <th colspan=3>产品</th>
+        <th width="60px">需求数量</th>
+        <th colspan=3><%= t('views.messaging.messages.index.subject') %></th>
+        <th colspan=1><%= t('views.messaging.messages.index.sub_date') %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @large_orders.each do |lo| %>
+        <tr>
+          <td width="30px" colspan=1><%= image_tag image_version((p = lo.related_item).pic_url, :v30) %></td>
+          <td colspan=2><%= p.name %></td>
+          <td><%= lo.spec["quantity"] %></td>
+          <td colspan=3>
+            <b><%= link_to lo.subject, manage_large_order_path(lo) %></b>
+          </td>
+          <td colspan=1 width="118px"><time><%= lo.created_at.to_s(:db) %></time></td>
+          <td width=50px><%= link_to "回复", manage_large_order_path(lo), :class => "btn btn-primary" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @large_orders, :renderer => PaginationNoFollow %>
+</section>

@@ -1,0 +1,11 @@
+<% url = confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) -%>
+<h2 style="color:#FF7600;font-size:16px;">Confirmation Email from BuyChina.com</h2>
+<h3 style="font-size: 14px; line-height: 16px; color: #0F2746;">Dear <%= @resource.email  %>,</h3>
+Just click <%= link_to 'Confirm my account', url %> to complete your registration.
+<br /><br />
+That's all there is to it. After that, you are ready to start shopping!
+<p style="font-size:11px;color:#999;">If the above link does not work, type in or copy and paste this link into your Web browser: <br />
+<%= link_to url, url %>
+</p>
+<br />
+Thank you for registering!

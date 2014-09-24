@@ -1,0 +1,71 @@
+<% product = @purchase_product.product %>
+<div class="pop-box">
+  <div class="wrap_goods">
+    <span class="img"><%= image_tag @purchase_product.pic_url_version(:thumb) %></span>
+    <div class="goods_info">
+      <p class="name"><%= link_to product.name, product.taobao_url, :target => "blank" %></p>
+      <p><span class='pull-left'>卖家：</span><%= link_to product.store_name, product.store_shop_link, :target => "_blank" %></p>
+    </div>
+  </div>
+  <div style="clear:both"></div>
+  <hr >
+  <%= form_for [:manage, @purchase_product], :html => {:class => "form-horizontal", :id => "purchase"} do |f| %>
+    <div class="control-group">
+      <label class="control-label">买入价格：</label>
+      <div class="controls">
+        <%= f.text_field :buy_price %> ￥
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">淘宝卖家昵称：</label>
+      <div class="controls">
+        <%= f.text_field :store_name, :value => @purchase_product.store_name || @purchase_product.order_product.store_name %>
+        <span class="help-inline">请修改为实际购入卖家昵称</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">淘宝订单号：</label>
+      <div class="controls">
+        <%= f.number_field :taobao_order_num %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">订单发往：</label>
+      <div class="controls">
+        <%= (s = @purchase_product.order.get_shipped_to) ? s : f.select(:shipped_to, Order::SHIPPED_TO, {:include_blank => '选择收件地'}) %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">商品单重：</label>
+      <div class="controls">
+        <%= f.text_field :weight %>
+        <span class="help-inline"> g</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">长x宽x高: </label>
+      <div class="controls">
+        <% product = @purchase_product.product %>
+        <%= f.text_field :length, :class => "span1", :value => product.length %> 
+        x <%= f.text_field :width, :class => "span1", :value => product.width %>
+        x <%= f.text_field :height, :class => "span1", :value => product.height %> cm
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">淘代购状态：</label>
+      <div class="controls">
+        <%= f.select :taobao_status, PurchaseProduct::TS.to_a[0..5] %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">备注：</label>
+      <div class="controls">
+        <%= f.text_area :comment, :rows => 5 %>
+      </div>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "确定更新", :class => "btn btn-primary" %>
+      <button class="btn" type="cancel">取消</button>
+    </div>
+  <% end %>
+</div>

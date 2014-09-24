@@ -1,0 +1,46 @@
+<%= form_for user, :url => signup_path, :html => {:id => 'signup-form', :class=>"form-horizontal hide"} do |f| -%>
+  <%= hidden_field_tag 'type', params[:type] %>
+  <%= hidden_field_tag 'id', params[:id] %>
+  <%= hidden_field_tag 'chat', params[:chat] %>
+  <div id="register-tab-content" class="tab-panel">
+    <div class="control-group">
+      <label class="control-label"> <%= t('email')%></label>
+      <div class="controls">
+        <%= f.email_field :email, :type => "text", :class => "required email text", :remote => "/users/check?type=email" %>
+        <%= f.error_message_on :email, :html_tag => 'span', :css_class => 'help-inline' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><%= t('username')%></label>
+      <div class="controls">
+        <%= f.text_field :username, :class => "required alphanumeric text", :minlength => "6", :maxlength => "20", :remote => "/users/check?type=username" %>
+        <%= f.error_message_on :username, :html_tag => 'span', :css_class => 'help-inline' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><%= t('password')%></label>
+      <div class="controls">
+        <%= f.password_field :password, :class => "required text", :id => "opassword", :minlength => "6", :maxlength => "30" %>
+        <%= f.error_message_on :password %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><%= t('password_confirm')%></label>
+      <div class="controls">
+        <%= f.password_field :password_confirmation, :class => "required text", :equalTo => "#opassword", :minlength => "6", :maxlength => "30" %>
+        <%= f.error_message_on :password_confirmation, :prepend_text => "The rePassword " %>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label"><%= t('verification')%></label>
+      <div class="controls">
+      <%= text_field_tag 'captcha', nil, :class => "required text", :style => "width: 130px", :autocomplete => 'off'%>
+      <%= render 'simple_captcha/update_captcha' %>
+      <%= f.error_message_on :captcha, :html_tag => 'span', :css_class => 'help-inline' %>
+      <p class="help-block"><%= raw t('sign_up_term')%></p>
+    </div>
+    <div class="form-actions">
+      <input class="btn btn-primary" type="submit" value="<%= t('register') %>" id="a-sub">
+    </div>
+  </div>
+<% end %>

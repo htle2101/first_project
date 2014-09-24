@@ -1,0 +1,83 @@
+<header class=" header">
+<figure class="logo"><a href="/" title="buy from china taobao">www.Buychina.com</a></figure>
+
+<!--<div class="welcome">
+  <a href="#"><%= t 'promotion' %></a><span class="split"> |</span>
+  <a href="#"><%= t 'shipping' %></a> <span class="split"> |</span>
+  <a href="#"><%= t 'payment' %></a> <span class="split"> |</span>
+  <a href="#"><%= t 'reviews' %></a>
+</div>-->
+
+<ul class="lang">
+  <li><%= t('language')%>: </li>
+  <li class="top-menu" onMouseOver="this.className='hover top-menu';" onMouseOut="this.className='top-menu';"><%= what_lang %></li>
+</ul>
+
+<div class="sns-area">
+  <a href="https://www.facebook.com/<%= APP_CONFIG[:facebook_account] %>" class="icon fb"></a>
+  <a href="https://plus.google.com/<%= APP_CONFIG[:google_plus_account] %>" class="icon ga"></a>
+  <a href="https://twitter.com/<%= APP_CONFIG[:twitter_account] %>" class="icon tw"></a>
+  <a href="http://pinterest.com/<%= APP_CONFIG[:pinterest_account] %>/" class="icon pi"></a>
+  <a href="/guides" class="icon bl"></a>
+</div>
+<ul class="nav-site">
+  <li class="sign-area">
+  <% if current_user %>
+    <%= t 'welcome' %>, <%= current_user.username %>
+    <%= link_to t('sign_out'), main_app.logout_path, :id => "had_sign", :rel => "nofollow" %>
+  <% else %>
+    <%= link_to t('sign_in'), main_app.login_path, :rel => "nofollow" %>
+    <span class="quiet"><%= t 'or' %></span>
+    <%= link_to t('register'), main_app.signup_path, :class => 'orange', :rel => "nofollow" %>
+  <% end %>
+  </li>
+  <li class="header-menu">
+  <a class="arrow" href="<%= main_app.my_path %>" rel="nofollow"><%= t 'my_buychina' %></a>
+  <div class="menu">
+    <a href="<%= main_app.my_orders_path %>" rel="nofollow"><%= t 'my_orders' %></a>
+    <a href="<%= main_app.my_favourites_path %>" rel="nofollow"><%= t 'my_fav' %></a>
+    <a href="<%= main_app.my_account_path %>" rel="nofollow"><%= t 'my_account' %></a>
+  </div>
+  </li>
+  <li><a href="/help"><%= t 'help' %></a></li>
+  <li><%= render 'shared/live_chat' %></li>
+  <% if controller_name == nil #"home" %>
+    <li class="last ask-ques" id="LR_User_Icon0"><a href="/my/messages/new" rel="nofollow"><%= t("live_chat") %></a></li>
+  <% end %>
+</ul>
+<section class="nav-bar">
+<div class="cate-box">
+  <div class="cate-title"><%= t 'categories' %></div>
+  <%= "<div class='cat hide'></div>".html_safe unless 'home#index' == "#{controller_name}##{action_name}" %>
+</div>
+<div class="search-bar">
+  <form action="<%= action_name == 'search' ? '/search' : main_app.products_path %>" id="header_search">
+    <div class="search-txt">
+      <input type="text" class="span8" name="keyword" placeholder="<%= t 'keyword_tip' %>" value="<%= @keyword || params[:keyword] unless action_name == 'store' %>" id="key" autocomplete="off">
+    </div>
+    <div class="search-selector">
+      <input type="hidden" name="cid" value="<%= params[:cid] %>" id="cate_id">
+      <input type="text" readonly value="<%= @cate.nil? ? t('category.all') : @cate.name %>" id="cate">
+      <div id="catalogListBox" class="hide">
+        <ul>
+          <% @cate.self_and_ancestors.reverse.each_with_index do |c, i| %>
+            <li categoryid="<%= c.cid %>"><%= "#{'∟ ' if i > 0}#{c.name}" %></li>
+            <% end unless @cate.nil? %>
+            <li categoryid=""><%= t 'category.all' %></li>
+            <li class="sub-line"></li>
+            <% cache "root_categories_search_#{I18n.locale}" do %>
+              <% Category.includes(:translations).active_roots.each do |c| -%>
+                <li categoryid="<%= c.cid %>"><%= c.name %></li>
+              <% end -%>
+            <% end -%>
+            <li class="sub-line"></li>
+            <li categoryid=""><%= t 'category.all' %></li>
+          </ul>
+        </div>
+      </div>
+      <input class="search-btn"  type="submit" value="<%= t 'search' %>" />
+    </form>
+  </div>
+  <a href="/cart/edit" class="cart-link" rel="nofollow"><%= t('cart', :count => current_cart.try(:origin_line_items).try(:count) || 0).html_safe %></a>
+  </section>
+  </header>

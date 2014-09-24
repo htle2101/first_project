@@ -1,0 +1,26 @@
+<section class="msg-container" id="msg-info">
+  <h3 class="mmt"><%= t('mes') %></h3>
+  <% if order.conversation.present? %>
+    <ul class="msg-list">
+      <% order.conversation.messages.each do |message| %>
+        <li class="msg-block msg-other">
+          <div class="name-date">
+            <a class="msg-name" href="<%= manage_user_path(message.sender) if can? :manage, message.sender %>"><%= message.sender.username == current_user.username ? message.sender.username : "BuychinaSupport" %></a>
+            <span class="msg-date"><%= message.created_at.to_s(:db) %></span>
+          </div>
+          <p class="msg-classont" id = "messagedetail"><%= message.body %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form_tag action, :id => "order-msg-form", :class => "msg-post" do %>
+    <%= hidden_field_tag 'conversation_id', order.conversation.id if order.conversation %>
+    <%= hidden_field_tag 'id', order.number %>
+    <%= text_area_tag 'body', nil, :rows => 4, :class => "span9 required", :maxlength => 1500 %>
+    <p class="help-block"><%= t('views.my.msg_help') %></p>
+    <div class="msg-btn">
+      <input type="submit" id="send-textarea" class="btn  btn-primary" value="<%= t 'send' %>">&nbsp;&nbsp;
+    </div>
+  <% end %>
+</section>

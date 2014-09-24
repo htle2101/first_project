@@ -1,0 +1,39 @@
+<%= content_for(:width) {'span24'} %>
+<% unless params[:way] %>
+  <% if @cate && false %>
+    <ul class="breadcrumb span20" >
+      <% @cate.self_and_ancestors.reverse.each do |c| %>
+        <% if c.cid != @cate.cid || params[:q] %>
+          <li><a href="<%= category_search_url({'cid' => c.cid}, 'cate') %>"><%= c.name %></a><span class="divider">/</span></li>
+        <% else %>
+          <li class='active'><%= @cate.name %> </li>
+        <% end %>
+      <% end %>
+      <%= "<li class='active'>#{params[:q]}</li>".html_safe if params[:q] %>
+    </ul>
+  <% end %>
+  <%= render '/products/left' %>
+<% end %>
+<div class="span19">
+  <div class="tabbable">
+    <ul class="nav nav-tabs">
+      <li class="<%= 'active' unless params[:way]%>">
+        <a href="<%= add_products_manage_topics_path(:fcid => params[:fcid]) %>">通过搜索添加产品</a>
+      <li>
+      <li class="<%= 'active' if params[:way] == 'product' %>">
+        <a href="<%= add_products_manage_topics_path(:fcid => params[:fcid], :way => 'product')%>">通过ID添加产品</a>
+      <li>
+      <li>
+        <a href="<%= manage_products_manage_topics_path(:id => params[:fcid]) %>">查看已添加产品</a>
+      <li>
+    </ul>
+  </div>
+  <% if !params[:way] %>
+    <%= render :partial => '/manage/front_categories/search' %>
+  <% elsif params[:way] == 'product' %>
+    <%= render :partial => '/manage/front_categories/product' %>
+  <% end %>
+  <div class="modal hide fade" id="favorite-loading">
+    <div class="modal-body"><p>正在添加，请稍候......</p></div>
+  </div>
+</div>

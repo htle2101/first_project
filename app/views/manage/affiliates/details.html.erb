@@ -1,0 +1,19 @@
+<%= render 'title' %>
+<div class="tabbable">
+  <ul class='nav nav-tabs'>
+    <% if params[:q][:referral_agent].blank? %>
+      <li class="<%= 'active' if params[:type] == 'sns' %>">
+      <%= link_to "SNS 推广", details_manage_affiliates_path("q" => params[:q], :type => 'sns') %>
+      </li>
+      <li class="<%= 'active' if params[:type] == 'order' %>">
+      <%= link_to "关联订单", details_manage_affiliates_path('q' => params[:q], :type => 'order') %>
+      </li>
+    <% else %>
+      <li class="<%= 'active' if params[:type] == 'referers' %>">
+      <%= link_to "推广来源统计", details_manage_affiliates_path("q" => params[:q], :type => 'referers') %>
+      </li>
+    <% end -%>
+  </ul>
+</div>
+
+<%= render "#{@type}", :referrals => @referrals %>

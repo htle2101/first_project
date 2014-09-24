@@ -1,0 +1,14 @@
+<tr data-type="<%= rule.type_source %>" id="rule<%= rule.id %>">
+  <td><%= rule.name %></td>
+  <% if rule.base_cost? %>
+    <td><%= rule.base_cost %></td>
+  <% end %>
+  <td><%= rule.weight_range %></td>
+  <td><%= rule.price_range %></td>
+  <td><%= rule.display_discount %></td>
+  <td><%= rule.weight_min %></td>
+  <td>
+    <%= link_to "edit", "javascript:void(0)", :class => 'ruleForm', 'data-id' => rule.id, 'data-toggle' => "modal" %> | 
+    <%= link_to "destroy", manage_ship_method_path(rule), :remote => true, 'data-method' => :delete, :confirm => "确定?" %>
+  </td>
+</tr>

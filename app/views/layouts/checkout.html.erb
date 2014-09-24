@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>checkout</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/buychina.ico" />
+    <%= stylesheet_link_tag 'checkout' %>
+    <% if Rails.env.production? %>
+      <script src="http://a.tbcdn.cn/apps/top/x/sdk.js?appkey=12642556"></script>
+    <% end %>
+    <!--[if lt IE 9]><script src="/assets/html5.js"></script><![endif]-->
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header header-inner">
+        <figure class="logo"><a href="/" title="buy from china taobao">www.Buychina.com</a></figure>
+      </header>
+      <section id="content">
+        <section class="flow-steps">
+          <ol class="num5">
+            <li class="<%= step "index" %>"><span>1. <%= t('address') %></span></li>
+            <li class="<%= step "weight" %>"><span>2. <%= t('weight') %></span></li>
+            <li class="<%= step "shipment" %>"><span>3. <%= t('shipment') %></span></li>
+            <li class="<%= step "preview" %>"><span>4. <%= t('place_order') %></span></li>
+            <li class="<%= step "payment" %> last"><span>5. <%= t('payment') %></span></li>
+          </ol>
+        </section>
+
+        <%= yield %>
+
+      </section>
+      <%= render 'shared/footer' %>
+    </div>
+    <%= javascript_include_tag 'application' %>
+    <%= yield :javascript -%>
+    <%= yield :trace -%>
+  </body>
+</html>

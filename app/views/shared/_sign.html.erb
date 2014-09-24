@@ -1,0 +1,12 @@
+<section id="content" class="clearfix">
+  <ul class="tab clearfix sign-tab">
+    <li class="able" rel="login-form"><a href="javascript:;" rel="nofollow">Sign In</a></li>
+    <li class="" rel="signup-form">
+      <a href="javascript:;" rel="nofollow">Register</a>
+    </li>
+  </ul>
+  <div class="sign-box" >
+    <%= render "shared/sign_in", :user => user %>
+    <%= render "shared/sign_up", :user => user %>
+  </div>
+</section>

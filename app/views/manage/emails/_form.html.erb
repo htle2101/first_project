@@ -1,0 +1,28 @@
+<div class="span24">
+<%= form_for(@manage_email) do |f| %>
+  <% if @manage_email.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@manage_email.errors.count, "error") %> prohibited this manage_email from being saved:</h2>
+
+      <ul>
+      <% @manage_email.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label "主题" %>
+    <%= f.text_field :subject, :class => "span24" %>
+  </div>
+  <div class="field">
+    <span>内容</span>
+    <b>(用户数据采用以下格式获取：**u.username**,**u.email**...页面只支持HTML格式，抬头结尾已由模板完成，勿填)</b>
+    <%= f.text_area :content, :class => "span24" %>
+  </div>
+  <div class="actions">
+    <%= f.submit "提交", :class => "btn btn-primary" %>
+  </div>
+<% end %>
+</div>

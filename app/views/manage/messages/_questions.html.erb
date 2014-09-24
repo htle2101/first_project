@@ -1,0 +1,20 @@
+<table class="order-admin table table-striped">
+  <thead>
+    <tr>
+      <th>主题</th>
+      <th class="input-medium"><%= sort_link @search, :user_id, '用户名', :default_order => 'asc' %></th>
+      <th class="input-small"><%= sort_link @search, :related_id, '问题类别', :default_order => 'asc' %></th>
+      <th class="input-medium"><%= sort_link @search, :updated_at, '更新时间', :default_order => 'asc' %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @messages.each do |m| %>
+    <tr>
+      <td><%= link_to "#{m.subject.truncate(60)}", manage_message_path(m) %></td>
+      <td><%= m.user.username %></td>
+      <td><%= t_models 'message.category', m.get_category %></td>
+      <td><%= m.updated_at.to_local %></td>
+      <td><%= link_to "回复", manage_message_path(m), :class => "btn btn-primary pull-right" %></td>
+    </tr>
+  <% end %>
+</table>

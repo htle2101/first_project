@@ -1,0 +1,8 @@
+<%= high_chart("my_charts", @charts) %>
+<%#= high_chart("my_charts", @charts) do |c| %>
+  <%#= "options.tooltip.formatter = function(){return this.series.name+'<br>日期：'+this.point.name+'<br>新增数:'+this.y;}".html_safe %>
+<%# end %>
+
+<% content_for :javascript do %>
+  <%= javascript_include_tag :highcharts  %>
+<% end %>

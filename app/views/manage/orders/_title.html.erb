@@ -1,0 +1,46 @@
+<table class="info-table">
+  <tbody>
+    <tr>
+      <td width="20%" class="ri">交易号：</td>
+      <td><%= @order.txn_id %></td>
+    </tr>
+    <tr>
+      <td width="20%" class="ri">订单编号：</td>
+      <td><%= @order.number %>
+        <span class='split-left red'><%= "<订单发往: #{@order.get_shipped_to}>" if @order.get_shipped_to %></span>
+      </td>
+    </tr>
+    <% if @order.order_price_changed? && @order.waiting? %>
+      <tr><td width="20%" class="ri">注意：</td>
+        <td class="red"><strong>您修改了订单价格，正在等待买家处理。</strong><br/>修改理由: <%= @order.price_comment %></td>
+      </tr>
+    <% elsif adjust = @order.unpaid_adjustment %>
+      <tr><td width="20%" class="ri">注意：</td>
+        <td class="red"><strong>您增加了新的补单记录，正在等待买家处理。</strong><br/>修改理由: <%= adjust.comment %></td>
+    <% elsif @order.paid_adjust %>
+      <tr><td width="20%" class="ri red">注意：</td>
+        <td class="red"><strong>补单成功，请及时处理订单！</strong></td>
+      </tr>
+    <% end %>
+    <tr class="order_status">
+      <td class="ri">订单状态：</td>
+      <td><strong class="order-status"><%= t_models(@order, 'get_status') %></strong>
+        <%= "( #{t_models(@order, 'get_partial_status')} )" if @order.partial_status? %>
+      </td>
+    </tr>
+      <tr>
+      <td></td>
+      <td data-no-turbolink=''>
+        <% if @order.waiting? %>
+          <%= link_to "修改订单", [:change, :manage, @order], :class=>'btn btn-warning btn-large send_order' if can?(:change, @order) %>
+          <%= link_to "模拟付款（勿点）", payment_manage_order_path(@order), :class=>"btn btn-warning btn-large send_order split-left" if can?(:payment, @order) %>
+        <% end %>
+        <%= link_to "发货", [:deliver, :manage, @order], :class => "btn btn-warning btn-large send_order" if @order.can_deliver? && can?(:deliver, @order) %>
+        <%= link_to "补单", new_manage_order_adjustment_path(:order_id => @order.id), :class=>'btn btn-warning btn-large send_order' if !adjust && @order.after_payment? && can?(:manage, OrderAdjustment) %>
+        <%= link_to "修改补单", [:edit, :manage, adjust], :class=>"btn btn-warning btn-large send_order" if adjust && can?(:change, @order) %>
+        <%= link_to "全额退款", refund_manage_order_path(@order, :type => 'order'), :class=>"btn btn-danger btn-large split-left send_order" if @order.can_refund? && can?(:refund, @order) %>
+        <%= link_to "部分退款", refund_manage_order_path(@order, :type => 'partial'), :class=>"btn btn-danger btn-large split-left send_order" if @order.can_partial_refund? && can?(:refund, @order) %>
+      </td>
+    </tr>
+  </tbody>
+</table>

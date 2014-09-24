@@ -1,0 +1,26 @@
+<tr>
+  <td>
+    <%= check_box_tag "ids[]", tag.id, false, :class => 'check_one' %>
+  </td>
+  <td>
+    <%= tag.pid %>
+  </td>
+  <td class="name">
+    <strong>
+      <% if @klass == "ItemProp" %>
+        <%= tag.name %>
+      <% else %>
+        <%=link_to tag.name, tag.display_url(:en), :target => "_blank" %>
+      <% end %>
+    </strong>
+  </td>
+  <td class="status">
+    <%= tag.status %>
+  </td>
+  <td>
+    <% if @klass == "ItemProp" %>
+      <a href="<%= manage_tags_path(:type => "PropValue", "q[pid_eq]" => tag.pid ) %>"> 属性值</a> |
+    <% end %>
+    <a href="<%= edit_manage_tag_path(tag.id, :type => @klass) %>"> 编辑</a>
+  </td>
+</tr>

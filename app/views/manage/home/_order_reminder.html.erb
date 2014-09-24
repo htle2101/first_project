@@ -1,0 +1,10 @@
+<div class="row-fluid">
+  <span class="span8"><a href="/manage/orders?type=waiting">等待付款订单( <%= Order.group_count("PENDING") %> )</a></span>
+  <span class="span8"><a href="/manage/orders?type=partially_delivered">部分发货订单( <%= Order.group_count("PARTIALLY_DELIVERED") %> )</a></span>
+  <span class="span8"><a href="/manage/orders?type=refunding">退款中订单( <%= Order.group_count("REFUNDING") %> )</a></span>
+</div>
+<div class="row-fluid">
+  <span class="span8"><a href="/manage/orders?type=pending">已付款订单(<%= Order.group_count("PROCESSING", "PENDING") %>) </a></span>
+  <span class="span8"><a href="/manage/orders?type=delivered">已发货订单( <%= Order.group_count("DELIVERED") %> )</a></span>
+  <span class="span8"><a href="/manage/orders?type=refunded">已退款订单( <%= Order.group_count("REFUNDED") %> )</a></span>
+</div>

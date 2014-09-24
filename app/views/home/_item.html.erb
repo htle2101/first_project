@@ -1,0 +1,21 @@
+<ul class="prd-list clearfix">
+  <% hots.each do |hot| %>
+    <li>
+      <div class="listing-img">
+        <p>
+          <%= link_to hot.url, :target => "#{'_blank' if hot.blank}" do %>
+            <%= image_tag hot.image.try(:url), :alt => hot.title %>
+          <% end %>
+        </p>
+      </div>
+      <div class="listing-detail">
+        <%= link_to hot.title, hot.url, :title => hot.title, :target => "#{'_blank' if hot.blank}" %>
+      </div>
+      <div class="price"><b>$<%= hot.price %></b> / <%= hot.unit %></div>
+      <% if type == 0 %>
+        <div class="cate-s"><%= hot.tag %></div>
+      <% end %>
+      <%= add_to_favorite('data-id' => hot.url, 'data-type' => "Product", :class => "button-favorite" ) %>
+    </li>
+  <% end %>
+</ul>

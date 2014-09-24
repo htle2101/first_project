@@ -1,0 +1,4 @@
+<%= form_tag do_comment_manage_task_path(@task), :class => 'send_order' do %>
+  <div class='control-group'><%= text_area_tag :content, nil, :rows => 5 %></div>
+  <div class='control-group'><%= submit_tag "添加", :class => "btn btn-primary" %></div>
+<% end %>

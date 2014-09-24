@@ -1,0 +1,11 @@
+<%= render 'my/shared/account_header' %>
+<div class="alert alert-success" style="display:none;"></div>
+
+<div class="section address-list">
+  <h3><%= t 'my.address.address' %></h3>
+  <div class="body row" id="show_address">
+    <%= render @addresses %>
+  </div>
+</div>
+
+<%= render 'body' %>

@@ -1,0 +1,31 @@
+<div class="span24">
+  <%= link_to '写新邮件', new_manage_email_path, :class => "btn btn-primary" %>
+  <b>(测试邮件发往"buychina.com@gmail.com",邮箱密码请向相关部门咨询)</b>
+  <% if @manage_emails.present? %>
+  <table class="table" style="margin-top:10px;">
+    <tr>
+      <th width="800px">主题</th>
+      <th></th>
+    </tr>
+
+  <% @manage_emails.each do |manage_email| %>
+    <tr>
+      <td><%= manage_email.subject %></td>
+      <td><%= link_to '查看', manage_email %>
+      <%= link_to '编辑', edit_manage_email_path(manage_email) %>
+      <%= link_to '发送', manage_email_send_email_path(manage_email), confirm: '确定发送所有用户？' %>
+      <%= link_to '测试发送', manage_email_test_send_email_path(manage_email) %>
+      <%= link_to '删除', manage_email, confirm: 'Are you sure?', method: :delete %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+  <% else %>
+  </br></br>
+  <div class="alert alert-block">
+    <h4>暂无邮件</h4>
+  </div>
+  <% end %>
+
+  <br />
+</div>

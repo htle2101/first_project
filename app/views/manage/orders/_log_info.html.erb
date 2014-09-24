@@ -1,0 +1,8 @@
+<table class="info-table">
+  <% @logs.each do |log| %>
+    <tr>
+      <td width="20%" class="ri"><%= log.created_at.to_s(:db) %>：</td>
+      <td><%= link_to log.user.username, manage_user_path(log.user) if log.user %> <%= raw "#{log.action} #{log.detail}" %></td>
+    </tr>
+  <% end %>
+</table>

@@ -1,0 +1,23 @@
+<table class="data-table-order table">
+  <thead>
+    <tr>
+      <th colspan='2'>产品</th>
+      <th width="60px">需求数量</th>
+      <th>主题</th>
+      <th width="120px">更新日期</th>
+      <th width='65px'></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @messages.each do |lo| %>
+      <tr>
+        <td width="40px"><%= image_tag image_version((p = lo.related_item).pic_url, :thumb) %></td>
+        <td><%= p.name %></td>
+        <td><%= lo.quantity %></td>
+        <td><b><%= link_to lo.subject, manage_message_path(lo) %></b></td>
+        <td><%= lo.updated_at.to_local %></td>
+        <td><%= link_to "回复", manage_message_path(lo), :class => "btn btn-primary pull-right" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

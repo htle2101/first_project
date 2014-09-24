@@ -1,0 +1,6 @@
+<div class="msg-container clearfix" id="message">
+  <h3 class="mmt">留言信息</h3>
+  <%= render 'manage/messages/messages' %>
+  <%= "<div class='alert alert-success' style='margin:2px 0px -5px 0px;'>#{flash[:notice]}</div>".html_safe if flash[:notice] %>
+  <%= render('manage/messages/reply_block') if can? :manage, @message %>
+</div>

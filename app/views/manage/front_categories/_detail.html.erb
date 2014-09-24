@@ -1,0 +1,38 @@
+<tr class='<%= level > 0 && !@is_search  ? "#{fc.parent.id} hide" : "" %>' id='<%= fc.id %>'>
+  <td>
+    <% if level == 0 %>
+      <% if fc.children.present? %>
+        <i class="icon-plus-sign"></i>
+      <% end %>
+      <%=link_to fc.name, fc.url%>
+    <% elsif level == 1 %>
+      <span style="margin-left:5px">∟</span>
+      <% if fc.children.present? %>
+        <i class="icon-plus-sign"></i>
+      <% end %>
+      <%=link_to fc.name, fc.url%>
+    <% else level == 2 %>
+      <span style="margin-left:25px">∟</span><%=link_to fc.name, fc.url%>
+    <% end %>
+  </td>
+  <td><%= FrontCategory::TEMPLATE[fc.template] %></td>
+  <% if controller_name == "front_categories" -%>
+    <td><%= fc.parent_id.present? ? '' : fc.order %></td>
+    <td><%= fc.url %></td>
+  <% else -%>
+    <td><%= fc.language || 'all' %></td>
+  <% end -%>
+  <td><%= fc.active ? "Yes" : "No" %></td>
+  <td>
+    <% if controller_name != 'front_categories' || fc.parent_id.blank?  %>
+      <%= link_to "添加产品", add_products_manage_topics_path(:fcid => fc.id) %>
+      <%= link_to "管理", manage_products_manage_topics_path(:id => fc.id), :class=>"create" %>
+    <% end %>
+      <% if level != 2 -%>
+        <%= link_to "创建#{level + 2}级#{front_category_title}", new_path(:id => fc.id, :page => params[:page]) %>
+      <% end -%>
+      <%= link_to "修改", edit_path(:id => fc.id, :page => params[:page]), :class=>"create" %>
+      <%= link_to "编辑seo", send("edit_seo_manage_#{controller_name.singularize}_path", fc, :page => params[:page]), :class=>"create" %>
+      <%= link_to "删除", send("manage_#{controller_name.singularize}_path", fc), :class=>"delete" %>
+  </td>
+</tr>

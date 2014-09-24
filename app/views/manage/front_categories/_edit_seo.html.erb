@@ -1,0 +1,40 @@
+<div class="control-group name">
+  <%=f.label "英文title", :class => "split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :seo_title, :value => @front_category.seo_title(:en), :rows => 3, :style =>"margin-left:50px", :class =>"input-xxlarge" %>
+</div>
+<div class="control-group name">
+  <%=f.label "俄文title", :class => "split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :seo_title_ru, :value => @front_category.seo_title(:ru), :rows => 3, :style =>"margin-left:50px", :class => "input-xxlarge" %>
+</div>
+<div class="control-group name">
+  <%=f.label "中文title", :class => "split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :seo_title_cn, :value => @front_category.seo_title(:cn), :rows => 3, :style =>"margin-left:50px", :class => "input-xxlarge" %>
+</div>
+<div class="control-group name">
+  <%=f.label "英文keywords", :class => "split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :seo_keywords, :value => @front_category.seo_keywords(:en),:rows => 3, :style =>"margin-left:19px", :class =>"input-xxlarge" %>
+</div>
+<div class="control-group name">
+  <%=f.label "俄文keywords", :class => "split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :seo_keywords_ru, :value => @front_category.seo_keywords(:ru), :rows=>3, :style =>"margin-left:19px", :class =>"input-xxlarge"%>
+</div>
+<div class="control-group name">
+  <%=f.label "中文keywords", :class => "split-left", :style => "margin-left:90px"%>
+  <%=f.text_area :seo_keywords_cn, :value => @front_category.seo_keywords(:cn),:rows=>3, :style =>"margin-left:19px", :class =>"input-xxlarge" %>
+</div>
+<div class="control-group">
+  <%=f.label "英文描述", :class => "split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :description, :value => @front_category.description(:en), :style => "margin-left:46px", :rows => 3, :class => "input-xxlarge"%>
+</div>
+<div class="control-group">
+  <%=f.label "俄文描述", :class=>"split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :description_ru, :value => @front_category.description(:ru), :rows => 3, :style =>"margin-left:46px", :class=>"input-xxlarge"%>
+</div>
+<div class="control-group">
+  <%=f.label "中文描述", :class=>"split-left", :style => "margin-left:90px" %>
+  <%=f.text_area :description_cn, :value => @front_category.description(:cn), :rows => 3, :style =>"margin-left:46px", :class=>"input-xxlarge"%>
+</div>
+<div class="form-actions" style="margin-left:262px">
+  <%= f.submit "提交" %>
+</div>
+

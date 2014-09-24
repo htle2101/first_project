@@ -1,0 +1,60 @@
+<div id="step2" style="display:none;">
+<% unless @front_category.is_front_category? %>
+  <% unless @front_category.type == 4 && @front_category.level > 1 %>
+    <div class="control-group image" data-attribute="image" data-id="<%= @front_category.id %>">
+      <%= f.label "图片", :class => "control-label" %>
+      <div id="uploader" style="margin-left:160px"></div><br>
+      <div id="zone" class="controls">
+        <div class="preview">
+          <!--<span>拖至此处</span>-->
+          <img src="<%= (image = @front_category.image).present? && image || '/images/front_modules/index_image_tmp.png' %>">
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @front_category.type == 4 && @front_category.level == 1 %>
+    <div class="control-group image" data-attribute="index_image" data-id="<%= @front_category.id %>">
+      <%= f.label "首页图片", :class => "control-label" %>
+      <div id="uploader" style="margin-left:160px"></div><br>
+      <div id="zone" class="controls">
+        <div class="preview">
+          <img src="<%= (image = @front_category.index_image).present? && image || '/images/front_modules/home_image_tmp.png'%>" height="150px">
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group image" data-attribute="left_image" data-id="<%= @front_category.id %>">
+      <%= f.label "左栏图片", :class => "control-label" %>
+      <div id="uploader" style="margin-left:160px"></div><br>
+      <div id="zone" class="controls">
+        <div class="preview">
+          <img src="<%= (image = @front_category.left_image).present? && image || '/images/front_modules/320_85_tmp.png' %>" width="320px">
+        </div>
+      </div>
+    </div>
+
+    <div class="control-group image" data-attribute="list_image" data-id="<%= @front_category.id %>">
+      <%= f.label "列表图片", :class => "control-label" %>
+      <div id="uploader" style="margin-left:160px"></div><br>
+      <div id="zone" class="controls">
+        <div class="preview">
+          <img src="<%= (image = @front_category.list_image).present? && image || '/images/front_modules/200_250_tmp.png' %>" height="150px">
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+<% end %>
+
+<div class="form-actions">
+  <% if action_name == "new" %>
+    <%= button_tag "上一步", :id => "toStep1" %>
+    <%= f.submit "保存" %>
+    <%= button_tag "创建下级", :id => "createChild" %>
+    <%= button_tag "添加产品", :id => "addProduct" %>
+  <% else %>
+    <%= f.submit "提交" %>
+  <% end %>
+</div>
+</div>

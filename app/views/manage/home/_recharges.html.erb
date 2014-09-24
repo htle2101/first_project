@@ -1,0 +1,28 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>时间</th>
+      <th>用户</th>
+      <th>充值方式</th>
+      <th>金额</th>
+      <th>状态</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% role_tasks.each do |deposit| %>
+      <tr class='task_column'>
+        <td><span class="flow-time"><%= timeago_tag deposit.created_at, :lang => 'zh-CN' %></span></td>
+        <td><%= link_to deposit.user_username, [:manage, deposit.user] %></td>
+        <td><%= deposit.get_pay_type %></td>
+        <td><%= number_to_currency(deposit.amount, :locale => 'en') %></td>
+        <td><%= '待确认'%></td>
+        <td>
+          <a href="<%= manage_deposits_path('q[fund_type_eq]' => Deposit::FUND_TYPE['transfer']) %>" class='pull-right go_process btn btn-mini btn-success'>
+            <i class=' icon-arrow-right'></i>
+          </a>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>

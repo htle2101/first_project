@@ -1,0 +1,34 @@
+<form action="<%= add_products_manage_topics_path %>" id="header_search" class="form-inline">
+  <label>关键词:</label>
+  <input type="hidden" name="fcid" value='<%= params[:fcid] %>'>
+  <input type="text" name="keyword" placeholder="请输入关键字" value="<%= params[:keyword] %>" id="key" autocomplete="off">
+  <label class="split-left">目录:</label>
+  <%= select_tag :cid, options_from_collection_for_select(Category.active_roots, :cid, :name, params[:cid]), :prompt => "All" %>
+  <label class="split-left">价格:</label>
+  $ <input type="text" name="start_price" value="<%= params[:start_price] %>" class="pi input-small">
+  至
+  <input type="text" name="end_price" value="<%= params[:end_price] %>" class="pi input-small">
+  <input class="btn split-left" type="submit" value="搜索" />
+</form>
+<br>
+<section  align="center">
+  <div class="search-list-bar clearfix">
+    <div class="sort-options f-right">
+      <label><%= t 'search_list.right.sort_by' %></label>
+      <span class="selector">
+        <form method='get' style="display:inline" action="<%= add_products_manage_topics_path %>" class="form-search">
+          <%= search_hidden_tags('slug') %>
+          <%= select_tag 'order_by', options_for_select(Item::ORDER_BY.invert.to_a, params[:order_by]), :class => 'input-small', :style => 'margin-top:-5px;', :id => 'manage_order_by' %>
+        </form>
+      </span>
+    </div>
+    <label class="sort-options f-left"><b><%= @total %></b> 条搜索结果</label>
+  </div>
+
+  <ul id="gallery_item" class="list clearfix">
+    <% @products.each_with_index do |item, index| %>
+      <%= render '/manage/front_categories/item', :product => item %>
+    <% end %>
+  </ul>
+  <%= will_paginate @pages, :param_name => 'page_no', :renderer => PaginationNoFollow %>
+</section>

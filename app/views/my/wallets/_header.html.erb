@@ -1,0 +1,18 @@
+<ul class="tab clearfix append-bottom" id="wallet_tab">
+  <% if action_name == 'withdraw' %>
+    <li class="able"><a href="#p_<%= action_name %>">Paypal</a></li>
+  <% else %>
+    <li class="able"><a href="#b_<%= action_name %>">Bank Transfer</a></li>
+    <li><a href="#w_<%= action_name %>">Western Union</a></li>
+    <li><a href="#wm_<%= action_name %>">WebMoney</a></li>
+  <% end %>
+</ul>
+<div class='alert alert-success' style="display:none;margin-bottom:12px;"></div>
+<%#= render '/my/shared/notice' %>
+<% if action_name == 'withdraw' %>
+  <%= render "p_#{action_name}"  %>
+<% else %>
+  <%= render "b_#{action_name}" %>
+  <%= render "w_#{action_name}" %>
+  <%= render "wm_#{action_name}" %>
+<% end %>

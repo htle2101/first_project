@@ -1,0 +1,35 @@
+<span><%= t_views 'my.orders.show.order_number' %>: <%= link_to @order.number, my_order_path(@order.number) %></span>
+<span class="pull-right"><%= t 'place_order' %>: <%= @order.created_at.to_s(:db) %></span>
+<%= form_for @order, :url => my_order_reviews_path(@order.number), :method => :post do |f| %>
+  <table class="data-table-order" style="margin-top:5px;">
+    <thead>
+      <th width="80px"><%= t 'product' %></th>
+      <th></th>
+      <th width="100px"><%= t 'reviews' %></th>
+      <th width="280px"><%= t 'detail.comments' %></th>
+    </thead>
+    <% @order.order_products.variable('SHORTAGE').each_with_index do |op, i| %>
+      <tr>
+        <td><%= image_tag(op.pic_url_version :small) %></td>
+        <td>
+          <ul>
+            <li><strong><%= op.name %></strong></li>
+            <li>US $<%= op.price.roundf %> x <%= op.quantity %> <%= t_views 'my.orders.review.pieces' %></li>
+          </ul>
+        </td>
+        <% fb = op.product_feedback || ProductFeedback.new %>
+        <%= f.fields_for :product_feedbacks, fb do |fb_form| %>
+          <td>
+            <%= fb_form.hidden_field :order_product_id, :value => op.id %>
+            <% (1..5).each do |s| %>
+              <%= fb_form.radio_button :stars, s, {:class => "star"}.merge(s == 5 ? {:checked => "checked"} : {}) %>
+            <% end %>
+          </td>
+          <td><%= fb_form.text_area :comment, :placeholder => t_views('holder_msg'), :style => "height:80px;width:98%;" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <% msg = t_views('confirm_recieved') %>
+  <%= f.submit(msg, :class => "btn btn-success btn-large pull-right", :style => "margin-top:40px", :disable_with => msg) %>
+<% end %>

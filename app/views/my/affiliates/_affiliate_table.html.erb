@@ -1,0 +1,44 @@
+<table class="order-admin table table-hover">
+  <thead>
+    <tr class="column-headers">
+      <th width="30%"><%= t_views '.product' %></th>
+      <th><%= t_views '.price' %></th>
+      <th><%= t_views '.quantity' %></th>
+      <th><%= t_views '.total_amount' %></th>
+      <th><%= t_views '.you_earn' %></th>
+      <th><%= t_views '.orderstatus' %><a class="icon-question-sign" rel="tooltip" title="Your will earn the fee when the order complete" href="#"></a></th>
+      <th><%= t_views '.time' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% referral_products.each do |rp| %>
+      <% op = rp.order_product %>
+      <tr>
+        <td><div class="wrap_goods tracking">
+            <span class="img">
+              <a href="<%= product_path(op.taobao_id) %>">
+                <%= image_tag op.pic_url_version(:small) %>
+              </a>
+            </span>
+            <div class="name"><%= link_to "#{op.name}", product_path(op.taobao_id) %></div>
+        </div></td>
+        <td>$<%= op.price.roundf %></td>
+        <td><%= op.quantity %></td>
+        <td>$<%= op.total.roundf %></td>
+        <td><span class="free-s">$<%= op.commission.roundf %></span></td>
+        <td><%= i18n_status(rp.order.status) %></td>
+        <td><span><%= rp.created_at.to_date.to_s%></span></td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr><td colspan="8">
+      <div class="free-s pull-right">
+        <span style="color: #333;"><%= t_views(".total") %>:</span>
+        <span style="color: #5bb75b; font-size: 22px">$<%= referral_products.map(&:order_product).sum(&:commission).roundf %></span>
+        </div>
+      </td>
+    </tr>
+</tfoot>
+</table>
+<%= will_paginate @referral_products, :renderer => PaginationNoFollow %>

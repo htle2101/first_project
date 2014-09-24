@@ -1,0 +1,51 @@
+<h1 align="center"><b>品牌编辑</b></h1><br>
+<%= form_for @brand, :url => manage_brand_path, :html => {:class => "edit_category form-horizontal well form-inline", :multipart => true} do |f| %>
+<%= "<div class='control-group'><p style='padding-left:47px;color:green;'>#{flash[:notice]}</p></div>".html_safe unless flash[:notice].blank? %>
+  <div class="control-group name">
+    <%=f.label "英文名称", :class => "split-left", :style => "margin-left:90px" %>
+    <%=f.text_field :name, :value => @brand.name(:en), :style =>"margin-left:19px", :class =>"required" %>
+    <%=f.label "俄文名称", :class => "split-left" %>
+    <%=f.text_field :name_ru, :value => @brand.name(:ru) %>
+    <%=f.label "中文名称", :class => "split-left" %>
+    <%=f.text_field :name_cn, :value => @brand.name(:cn) %>
+  </div>
+
+  <div class="control-group">
+    <%=f.label "Url", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.text_field :url %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%=f.label "Description", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.text_area :description, :rows => 3 %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%=f.label "Status", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.select :status, Brand::STATUS.invert.to_a %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%=f.label "Logo", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.file_field :logo %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%=f.label "Image", :class=>"control-label" %>
+    <div class="controls">
+      <%=f.file_field :image %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "提交" %>
+  </div>
+<% end %>

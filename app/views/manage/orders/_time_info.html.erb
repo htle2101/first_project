@@ -1,0 +1,24 @@
+<table class="info-table">
+  <tbody>
+    <tr>
+      <th width="20%" class="ri">订单产生：</th>
+      <td><%= @order.created_at.to_s(:db) %></td>
+    </tr>
+    <tr>
+      <th class="ri">订单付款：</th>
+      <td><%= @order.pending_at.try(:to_s, :db) %></td>
+    </tr>
+    <tr>
+      <th class="ri">订单发货：</th>
+      <td><%= (@order.delivered_at || @order.partial_delivered_at).try(:to_s,:db ) %></td>
+    </tr>
+    <tr>
+      <th class="ri">买家确认收货：</th>
+      <td><%= @order.settled_at.try(:to_s,:db ) %></td>
+    </tr>
+    <tr>
+      <th class="ri">订单完成：</th>
+      <td><%= @order.completed_at.try(:to_s,:db ) %></td>
+    </tr>
+  </tbody>
+</table>

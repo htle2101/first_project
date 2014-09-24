@@ -1,0 +1,115 @@
+<% content_for :nav_left do %>
+  <%= render_cell :manage, :left_side, :section => (controller_name=="topics" ? "category" : 'product') %>
+<% end %>
+
+<% path = controller_name == "topics" ? manage_products_manage_topics_path : manage_products_path %>
+<%= form_tag path, :method => :get, :class => "well form-search" do %>
+  <label>站内商品链接或淘宝ID</label>
+  <%= hidden_field_tag :id, params[:id] %>
+  <%= text_field_tag :taobao_id, params[:taobao_id], :class => "input-xxlarge search-query", :id => :taobao_id %>
+  <%= submit_tag "搜索", :name => '', :class => "btn"%>
+<% end %>
+<% if notice %>
+  <div class="alert"><%= notice %></div>
+<% end %>
+<% if @manage_products.first.nil? %>
+  <div class = "alert">您还没有搜索</div>
+<% else %>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th></th>
+        <th>淘宝ID</th>
+        <th>产品名称</th>
+        <th>状态</th>
+        <th width=300>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%=form_for ProductPromotion.new, :url => edit_promotion_manage_products_path, :method => :post, :html => {:id => "edit_promotion", :class => "edit_promotion" } do |promotion| %>
+        <% @manage_products.first.present? && @manage_products.each do |product| %>
+          <% taobao_id = product.taobao_id %>
+          <% product = product.product if product.respond_to?(:product) %>
+          <% if product %>
+            <% next unless product.taobao_id.present? %>
+            <tr>
+              <td><%= check_box_tag "ids[]", product.taobao_id, false, :class => 'check_one' %></td>
+              <td><%= product.taobao_id %></td>
+              <% if params[:id].present? %>
+                <td><%= image_tag TopicProduct.find_by_taobao_id(product.taobao_id).pic_url_version(:small) %>
+                <% else %>
+                  <td><%=image_tag product.pic_url_version(:small) %> &nbsp; <%= link_to product.name(:cn), product_path(product.taobao_id) %></td>
+                <% end %>
+                <td><%= "#{product.on_sale? ? '上': '下'}架" %></td>
+                <td>
+                  <div class="btn-group">
+                    <%= link_to '编辑', "#{edit_manage_product_path(product.taobao_id)}?fcid=#{params[:id]}", :class => "btn btn-success" %>
+                    <%= link_to '清除缓存', "#{expire_cache_manage_product_path(product.taobao_id)}?fcid=#{params[:id]}", :class => "btn btn-warning", 'data-method' => 'put' %>
+                    <% if controller_name == "topics" %>
+                      <%= link_to '删除', "#{manage_destroy_product_path(product.taobao_id)}?fcid=#{params[:id]}", :class => 'delete btn btn-danger' %>
+                    <% else %>
+                      <% if product.on_sale? %>
+                        <%= link_to '下架', "#{off_sale_manage_product_path(product.taobao_id)}?fcid=#{params[:id]}", :class => 'delete btn btn-danger' if product.on_sale? %>
+                      <% else %>
+                        <%= link_to '上架', "#{on_sale_manage_product_path(product.taobao_id)}?fcid=#{params[:id]}",  :class => "btn btn-success", 'data-method' => 'put'  unless product.on_sale? %>
+                      <% end %>
+                    <% end %>
+                    <button type="button" data-toggle="modal" data-target="#fill_category" class="btn btn-info ebay_publish_modal" data-url="<%= manage_ebay_publish_path(product.taobao_id) %>">Ebay发布</button>
+                  </div>
+                </td>
+              </tr>
+            <% else %>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>本产品在淘宝已下架</td>
+                <td></td>
+                <td>
+                  <%= link_to '删除', "#{manage_destroy_product_path(taobao_id)}?fcid=#{params[:id]}", :class => 'delete btn btn-danger' %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+          <div class="modal hide fade" id="form-edit-promotion">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+              <h3>批量编辑产品打折信息</h3>
+            </div>
+            <div class="modal-body">
+              <%= render "/manage/products/promotion", :promotion => promotion %>
+            </div>
+            <div class="modal-footer">
+              <div align="center">
+                <a href="javascript:void(0);" class="btn btn-primary" id="btn-edit-promotion">提交</a>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <tr>
+          <td><input type="checkbox" class="check_all"></td>
+          <td colspan="4">
+            <a class="btn btn-danger" href="#form-edit-promotion" data-toggle="modal">
+              批量编辑
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+
+  <div id="fill_category" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">修改发布目录ID</h3>
+    </div>
+    <div class="modal-body">
+      <div class="input-prepend input-append">
+        <span class="add-on">Category Id</span>
+        <input id="category" name="category" type="text" value="73959" class="input">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+      <button class="btn btn-primary ebay_publish">点击发布</button>
+    </div>
+  </div>

@@ -1,0 +1,5 @@
+<div class="span12">
+  <%= form_for @address, :url => [:shipping, :manage, @order], :html => {:class => 'send_order form-horizontal'} do |f| %>
+    <%= render '/addresses/form_fields', :f => f %>
+  <% end %>
+</div>

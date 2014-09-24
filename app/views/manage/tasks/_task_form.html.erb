@@ -1,0 +1,21 @@
+<div class='control-group'>
+  <label class='control-label'>指派给: </label>
+  <div class='controls'>
+    <%= select_tag 'to_id', may_assigned_users_selection, {:class => 'input-large'} %>
+  </div>
+</div>
+<div class='control-group'>
+  <label class='control-label'>优先级: </label>
+  <div class='controls'>
+    <%= select_tag 'priority', options_for_select(Task::DISPLAY_PRIORITY.to_a, [Task::PRIORITY['medium']]), :class => 'input-small pn' %>
+  </div>
+</div>
+<div class="control-group">
+  <label class="control-label">描述：</label>
+  <div class="controls">
+    <%= text_area_tag :subject, nil, :rows => 7, :style => 'width: 350px;' %>
+  </div>
+</div>
+<div class="form-actions">
+  <%= submit_tag "提交", :class => "btn btn-primary" %>
+</div>

@@ -1,0 +1,32 @@
+<table class="table">
+  <% order = @pp.order %>
+  <tr>
+    <td><b>产品站内单价</b></td>
+    <td>$<%= @pp.price.roundf(2) %></td>
+  </tr>
+  <tr>
+    <td><b>产品单重</b></td>
+    <td>
+      <%= @pp.weight.roundf(2) %>克
+      <%= link_to "修改错误重量", manage_products_path(:taobao_id => @pp.taobao_id), :target => "_blank" %>
+    </td>
+  </tr>
+  <tr>
+    <td><b>产品总重</b></td>
+    <td>
+      <%= @pp.weight.roundf(2).to_f * @pp.quantity %>克
+    </td>
+  </tr>
+  <tr>
+    <td><b>用户选择运输</b></td>
+    <td><%= order.ship_method %></td>
+  </tr>
+  <tr>
+    <td><b>所属订单总运费</b></td>
+    <td>$<%= order.shipping_cost.roundf(2) %></td>
+  </tr>
+  <tr>
+    <td><b>发货地址</b></td>
+    <td><address><%= address_html order.order_address, true %></address></td>
+  </tr>
+</table>

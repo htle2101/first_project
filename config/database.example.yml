@@ -1,0 +1,12 @@
+login: &login
+  adapter: mysql2
+  encoding: utf8
+  username: root
+  password: 123$%^qaz
+  host: 66.148.112.150
+  port: 3306
+
+production:
+  database: aaa
+  <<: *login
+  pool: 30

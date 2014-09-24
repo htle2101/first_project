@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title><%= browser_title(yield(:title)) %></title>
+    <%= raw(%(<meta name="description" content="#{@meta.meta_description}" />)) if @meta.meta_description.present? -%>
+    <%= raw(%(<meta name="keywords" content="#{@meta.meta_keywords}">)) if @meta.meta_keywords.present? -%>
+    <%= raw(%(<link rel="canonical" content="#{@canonical}" />)) if @canonical.present? -%>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/buychina.ico" />
+    <!--[if lt IE 9]><script src="/assets/html5.js"></script><![endif]-->
+    <%= cache_page_assets(:css, 'buychina') %>
+    <link id="wide-screen" href="" media="screen" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+    <script>
+      if (window.screen.width >= 1200)
+  document.getElementById("wide-screen").href = "/assets/wide-screen.css";
+  </script>
+  <![endif]-->
+  <%= csrf_meta_tag %>
+</head>
+<body>
+
+  <!--<div class="hints">
+    <% if controller_name == 'home' %>
+      <a href="#" class="help-info"  >How to Buy?</a>
+    <% end %>
+  </div>-->
+
+  <div class="container <%= fixed_controller %>">
+    <%= render 'shared/header' %>
+    <section id="content" class="<%= controller_name == 'home' ? 'row append-bottom' : 'clearfix' %>">
+      <%= render('shared/nav') if 'products;categories'[controller_name] %>
+      <%= yield %>
+    </section>
+    <% if controller_name == "home" -%>
+      <%= render 'shared/seo_txt' %>
+    <% end -%>
+    <%= render 'shared/footer' %>
+  </div>
+
+  <%= javascript_include_tag "application" %>
+  <%= yield :javascript -%>
+  <%= yield :trace -%>
+  </body>
+</html>

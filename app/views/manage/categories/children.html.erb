@@ -1,0 +1,17 @@
+<tr class="child<%= @category.id %>">
+  <td>子目录</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td><a href="javascript:;" class="pack-up">收起<a></td>
+</tr>
+<% @category.children.each do |two_child| -%>
+  <%= render 'detail', :category => two_child, :mark_class => "child#{@category.id}" %>
+<% end -%>
+<tr class="child<%= @category.id %>">
+  <td>子目录</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td><a href="javascript:;" class="pack-up">收起<a></td>
+</tr>

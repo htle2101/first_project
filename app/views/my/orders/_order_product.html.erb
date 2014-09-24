@@ -1,0 +1,44 @@
+<% (ops = order.order_products).each_with_index do |op, index| %>
+  <tr>
+    <td>
+      <div class="wrap_goods">
+        <span class="img">
+          <%= link_to product_url(op.taobao_id), :target => "_blank" do %>
+            <%= image_tag op.pic_url_version(:small), :alt => op.get_name %>
+          <% end %>
+        </span>
+        <div class="goods_info" style="width:82%">
+          <p class="name"><%= link_to op.get_name, product_url(op.taobao_id), :target => "_blank" %></p>
+          <p class="note"><%= op.get_pv_values %></p>
+        </div>
+      </div>
+    </td>
+    <td class="no_left">$<%= op.price.roundf %></td>
+    <td class="no_left"><%= op.quantity %></td>
+    <% if index == 0 %>
+      <td rowspan="<%= ops.size %>">
+        <div>
+          <strong><%= "$#{order.total.roundf}" if index == 0 %></strong>
+          <p style="color: gray">(<%= order.shipping_cost? ? "#{t_views 'shipping_fee'}#{order.shipping_cost.roundf}" : t_views('free_shipping')%>)</p>
+        </div>
+      </td>
+      <td rowspan="<%= ops.size %>">
+        <strong><%= t_models(order, 'get_status') %></strong>
+        <% if adjust = order.unpaid_adjustment %>
+          <br/><strong style="color:#F89406"><%= t_views 'extra_payment' %> USD<%= adjust.price.roundf %></strong>
+        <% end %>
+      </td>
+      <td class='last' rowspan="<%= ops.size %>">
+        <%= link_to t_views('.pay_now'), order_adjustment_checkouts_path(:id => adjust.id, :pay_type => :order_adjustment), :class => "btn btn-warning" if adjust %>
+        <%= link_to(t_views('.pay_now'), payment_checkouts_path(:id => order.id), :class => "btn btn-warning") if order.waiting? %>
+        <% if order.delivered? || order.settled? %>
+          <%= link_to t_views('.confirm_delivered'), my_order_reviews_path(order.number), :class => "btn btn-primary" %>
+        <% end %>
+        <ul style="margin-top: 10px;">
+          <li><%= link_to t_views('.view_detail'), my_order_path(order.number) %></li>
+          <li><%= link_to(t('cancel'), cancel_my_order_path(order.number), :class => "cancel-order") if order.waiting? %></li>
+        </ul>
+      </td>
+    <% end %>
+  </tr>
+<% end %>

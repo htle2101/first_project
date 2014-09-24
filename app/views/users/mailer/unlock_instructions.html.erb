@@ -1,0 +1,7 @@
+<p><%= t 'welcome' %> <%= @resource.email %>!</p>
+
+<p><%= t 'views.users.mailer.unlock.lock_instruction' %></p>
+
+<p><%= t 'views.users.mailer.unlock.click_to_unlock' %></p>
+
+<p><%= link_to t("views.users.mailer.unlock.unlock_link"), unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>

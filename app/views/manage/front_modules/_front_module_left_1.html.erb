@@ -1,0 +1,24 @@
+<aside class="span5">
+<section class="reviews box" id = "front_module_left_1" data-content="<%= fm.content if fm.present? %>" data-id="<%= fm.id if fm.present? %>">
+  <h3 class="title" id="slot_h3">未编辑</h3>
+  <div class="bd">
+    <% 7.times do |i| %>
+    <div class="reviews-c">
+    	<a href="" class="img" id="slot_a_<%= i %>"> <img src="images/default80x80.jpg" alt="" id="slot_img_<%= i %>"/></a>
+      <div class="sname">
+      	<a href="" id="slot_a_<%= i+7 %>">未编辑</a>
+      </div>
+      <span class="price" id="slot_span_<%= i %>">US $88.88</span>
+    </div>
+    <% end %>
+
+    <div class="reviews-c last">
+      <a href="#" class="img" id="slot_a_14"> <img src="images/default80x80.jpg" alt="" id="slot_img_7" /></a>
+      <div class="sname">
+      <a href="" id="slot_a_15">未编辑</a>
+      </div>
+      <span class="price" id="slot_span_7">US $88.88</span>
+    </div>
+  </div>
+</section>
+</aside>

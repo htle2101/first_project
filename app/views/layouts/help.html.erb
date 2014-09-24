@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="<%= lang %>">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <%= render "shared/head_meta" %>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/buychina.ico" />
+    <!--[if lt IE 9]><script src="/assets/html5.js"></script><![endif]-->
+    <%= stylesheet_link_tag "bootstrap.min" %>
+    <%= stylesheet_link_tag "custom" %>
+    <%= stylesheet_link_tag "help" %>
+    <link id="wide-screen" href="" media="screen" rel="stylesheet" type="text/css">
+    <link rel="canonical" href="<%= request.base_url + request.path %>">
+    <% if Rails.env.production? %>
+      <script src="http://a.tbcdn.cn/apps/top/x/sdk.js?appkey=12642556"></script>
+    <% end %>
+    <!--[if lt IE 9]>
+    <script>
+      if (window.screen.width >= 1200)
+      document.getElementById("wide-screen").href = "/assets/wide-screen.css";
+    </script>
+    <![endif]-->
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
+    <div class="container help">
+      <%= render 'pages/header' %>
+      <section id="content">
+        <div class="location">
+          <%= content_for?(:breadcrumb) ? yield(:breadcrumb) : ("<a href='/'>#{t 'home'}</a> &gt; #{t 'help'}".html_safe) %>
+        </div>
+        <div class="row">
+          <%= render (@page && @page.common?) ? 'pages/common_left' : 'pages/page_left' %>
+          <section class='span18'>
+          <%= yield %>
+          </section>
+        </div>
+      </section>
+      <%= render 'shared/footer' %>
+      <%= yield :javascript -%>
+    </body>
+  </html>

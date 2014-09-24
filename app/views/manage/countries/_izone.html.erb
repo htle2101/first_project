@@ -1,0 +1,10 @@
+<br>
+<%= form_for ShipMethod.new, :url => manage_countries_path do |f|  %>
+  <%= f.hidden_field :izone, :value => izone %>
+  <%= f.hidden_field :ship_method_name, :value => ship_method %>
+  <label class="control-label"> <%= izone %>区国家列表 </label>
+  <div class="controls">
+    <%= f.text_field :country_tokens, "data-pre" => Country.where("#{ship_method}=#{izone}").map(&:collect_by_id_and_name).to_json, :class => "edit_country_izone span21" %>
+  </div>
+  <%= f.submit "提交" %>
+<% end %>
